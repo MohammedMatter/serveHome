@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "453542456893",
+    "project_id": "servehome-ae236",
+    "storage_bucket": "servehome-ae236.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453542456893:android:db6731efd30a74769f8454",
+        "android_client_info": {
+          "package_name": "com.example.serve_home"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453542456893-8i7jdjer7e1onb43p2g3ddkvpmb7touq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxhYZOO3ScNQz0wZ5quAXVf-2QhaIXUkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453542456893-8i7jdjer7e1onb43p2g3ddkvpmb7touq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453542456893-9joio5clnbah0il61debtroho95nfsbb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.serveHome"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
