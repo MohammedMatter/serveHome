@@ -4,8 +4,7 @@ import 'package:serve_home/features/services/data/repositories_impl/services_rep
 class GetServicesUseCase {
   ServicesRepositoriesImpl servicesRepositoriesImpl =
       ServicesRepositoriesImpl();
-
-  List<ServiceModel> call() {
+  Future<List<ServiceModel>> call() async {
     return servicesRepositoriesImpl.getServices();
   }
 }

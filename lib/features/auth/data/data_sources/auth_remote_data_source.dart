@@ -27,6 +27,7 @@ class AuthRemoteDataSource {
           phone: userModel.phone,
           email: userModel.email,
           id: firebaseUser.uid,
+          role: userModel.role,
         );
         await firestore
             .collection('users')
@@ -52,10 +53,10 @@ class AuthRemoteDataSource {
       );
       final user = userCredential.user;
       final doc = await firestore.collection('users').doc(user!.uid).get();
-      log('${user.uid}') ; 
+      log('${user.uid}');
       final data = doc.data();
       return right(UserModel.fromMap(data!));
-    } on FirebaseAuthException catch (e) {  
+    } on FirebaseAuthException catch (e) {
       throw FirebaseAuthExceptionHandler(message: e.code);
     }
   }

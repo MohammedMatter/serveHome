@@ -14,9 +14,27 @@ class BookingRepositoryImpl extends BookingRepository {
   Future<List<BookModel>> fetchAllBookings({required String idUser}) {
     return bookingRemoteDataSource.fetchAllBookings(idUser);
   }
-  
+
   @override
   Future<List<BookModel>> fetchInProgressBookings({required String idUser}) {
-  return bookingRemoteDataSource.fetchInProgressBookings(idUser) ; 
+    return bookingRemoteDataSource.fetchInProgressBookings(idUser);
+  }
+
+  @override
+  Future updateBookingStatus({
+    required String idUser,
+    required String idbook,
+    required String status,
+  }) {
+    return bookingRemoteDataSource.updateBookingStatus(
+      idUser: idUser,
+      idbook: idbook,
+      status: status,
+    );
+  }
+
+  @override
+  Future<List<BookModel>> fetchAllUsersBookings() {
+    return bookingRemoteDataSource.fetchAllUsersBookings();
   }
 }

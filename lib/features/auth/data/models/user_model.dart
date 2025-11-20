@@ -5,6 +5,7 @@ class UserModel extends UserApp {
     required super.name,
     required super.phone,
     required super.email,
+    required super.role , 
      super.id,
   });
 
@@ -14,6 +15,7 @@ class UserModel extends UserApp {
       'phone': phone,
       'email': email,
       'id': id,
+      'role' : role 
     };
   }
 
@@ -23,6 +25,7 @@ class UserModel extends UserApp {
       phone: map['phone'],
       email: map['email'],
       id: map['id'],
+      role: map['role'],
     );
   }
 }

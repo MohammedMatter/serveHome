@@ -12,7 +12,7 @@ class ServiceCtegoriesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<HomeViewModel, ServiceViewModel>(
       builder:
-          (context, provHome, provService ,  child) => SizedBox(
+          (context, provHome, provService, child) => SizedBox(
             height: 120,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -42,12 +42,16 @@ class ServiceCtegoriesWidget extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SizedBox(
-                              height: 50,
-                              child: Image.asset(
-                                provService.services[index].categoryImageUrl,
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                                child: Image.network(
+                                  provService.services[index].categoryImageUrl,
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             ),
+                        SizedBox(height: 15,) , 
                             Text(
                               provService.services[index].name,
                               textAlign: TextAlign.center,
@@ -55,7 +59,9 @@ class ServiceCtegoriesWidget extends StatelessWidget {
                                 fontSize: 12,
                                 color: AppColor.primary,
                               ),
+                              maxLines: 1,
                             ),
+                                    SizedBox(height: 15,) , 
                           ],
                         ),
                       ),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,9 +11,15 @@ import 'package:serve_home/features/booking/presentation/views/fitst_book_view.d
 import 'package:serve_home/features/booking/presentation/views/second_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/third_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/track_order_view.dart';
+import 'package:serve_home/features/categories/presentation/views/web/categories_web_view.dart';
 import 'package:serve_home/features/home/presentation/views/home_view.dart';
+import 'package:serve_home/features/home/presentation/views/web/bookings_web_view.dart';
+import 'package:serve_home/features/home/presentation/views/web/dashboard_web_view.dart';
+import 'package:serve_home/features/home/presentation/views/web/home_web_view.dart';
+
 import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/views/service_details_view.dart';
+import 'package:serve_home/features/services/presentation/views/service_web_view.dart';
 
 class AppRouter {
   static final String homeView = 'HomeView';
@@ -29,12 +34,19 @@ class AppRouter {
   static final String notificationView = 'Notification View';
   static final String bookingsListView = 'Bookings List View';
   static final String profileView = 'Profile View';
+  static final String dashboardViewWeb = 'Dashboard Web View';
+  static final String bookingsWebView = 'Bookings Web View';
+  static final String homeWebView = 'HomeWebView';
+  static final String servicesWebView = 'Services Web View';
+  static final String categoriesWebView = 'Categories Web View';
+
+
   static final routers = GoRouter(
-    initialLocation: '/signInView',
+    initialLocation: '/home',
     routes: [
       GoRoute(
         path: '/signInView',
-        name: signInView,
+        name: signInView, 
         builder: (context, state) => SignInView(),
       ),
       GoRoute(
@@ -46,6 +58,11 @@ class AppRouter {
         path: '/home',
         name: homeView,
         builder: (context, state) => HomeView(),
+      ),
+      GoRoute(
+        path: '/categoriesWebView',
+        name: categoriesWebView,
+        builder: (context, state) => CategoriesWebView(),
       ),
       GoRoute(
         path: '/bookingsListView',
@@ -122,6 +139,35 @@ class AppRouter {
                   (context, animation, secondaryAnimation, child) =>
                       FadeTransition(opacity: animation, child: child),
             ),
+      ),
+
+      GoRoute(
+        path: '/bookingsWebView',
+        name: bookingsWebView,
+        builder: (context, state) {
+          return BookingsWebView();
+        },
+      ),
+      GoRoute(
+        path: '/dashboardWebView',
+        name: dashboardViewWeb,
+        builder: (context, state) {
+          return DashboardWebView();
+        },
+      ),
+      GoRoute(
+        path: '/homeWebView',
+        name: homeWebView,
+        builder: (context, state) {
+          return HomeWebView();
+        },
+      ),
+      GoRoute(
+        path: '/servicesWebView',
+        name: servicesWebView,
+        builder: (context, state) {
+          return ServicesWebView();
+        },
       ),
     ],
   );

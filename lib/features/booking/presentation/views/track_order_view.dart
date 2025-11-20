@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -49,11 +48,13 @@ class TrackOrderView extends StatelessWidget {
                         serviceAddress: provLocation.address,
                         paymentMethod: provBooking.selectedPaymentMethod,
                         serviceName: provService.selectedService!.name,
-                        userId: provAuth.user!.id!,
-                        status: 'InProgress',
+                        userId:provAuth.user!.id!,
+                        status: 'Pending',
                         note: provBooking.note,
                         imageUrl: provService.selectedService!.detailImageUrl,
-                        price: provService.selectedService!.price
+                        price: provService.selectedService!.price , 
+                        provider: provAuth.user!.name ,
+                        email: provAuth.user!.email
                       
                       );
                       await provBooking.createBooking(bookModel: bookModel);

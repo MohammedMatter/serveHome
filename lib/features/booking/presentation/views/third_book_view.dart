@@ -22,7 +22,7 @@ class ThirdBookView extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16,),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
             height: ScreenSize.h(context) * 0.9,
             decoration: BoxDecoration(
@@ -36,7 +36,12 @@ class ThirdBookView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CusstomBookWidget(indexScreen: 2),
+                    CusstomBookWidget(
+                      indexScreen: 2,
+                      fun: () {
+                        GoRouter.of(context).pop();
+                      },
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(

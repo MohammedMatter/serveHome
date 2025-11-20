@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
+import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
-import 'package:serve_home/features/home/presentation/widgets/bottom_navigation_bar_widget.dart';
+import 'package:serve_home/features/home/presentation/widgets/mobile_widgets/bottom_navigation_bar_widget.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 
 class BookingsListView extends StatelessWidget {
@@ -207,195 +209,249 @@ class BookingsListView extends StatelessWidget {
                           SizedBox(
                             child: Column(
                               children:
-                                  provBooking.selectedBookings
-                                      .map(
-                                        (book) => Container(
-                                          margin: EdgeInsets.only(bottom: 15),
-                                          decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black12,
-                                                blurRadius: 10,
+                                  provBooking.allBookings.isNotEmpty
+                                      ? provBooking.selectedBookings
+                                          .map(
+                                            (book) => Container(
+                                              margin: EdgeInsets.only(
+                                                bottom: 15,
                                               ),
-                                            ],
-                                            borderRadius: BorderRadius.circular(
-                                              20,
-                                            ),
-                                            color: Colors.white,
-                                          ),
-                                          height: 430,
-                                          width: double.infinity,
-
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                      top: Radius.circular(20),
-                                                    ),
-                                                child: SizedBox(
-                                                  height: 200,
-                                                  width: double.infinity,
-                                                  child: Image.asset(
-                                                    book.imageUrl,
-                                                    fit: BoxFit.cover,
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    blurRadius: 10,
                                                   ),
-                                                ),
+                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: Colors.white,
                                               ),
-                                              SizedBox(height: 20),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 20,
-                                                    ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      book.serviceName,
-                                                      style: AppStyle.body19,
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    SizedBox(
-                                                      child: Text(
-                                                        overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                        book.note ?? '',
-                                                        style: AppStyle
-                                                            .hintTextStyle
-                                                            .copyWith(
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
+                                              height: 430,
+                                              width: double.infinity,
+
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                          top: Radius.circular(
+                                                            20,
+                                                          ),
+                                                        ),
+                                                    child: SizedBox(
+                                                      height: 200,
+                                                      width: double.infinity,
+                                                      child: Image.asset(
+                                                        book.imageUrl,
+                                                        fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                                    SizedBox(height: 15),
-                                                    Row(
+                                                  ),
+                                                  SizedBox(height: 20),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 20,
+                                                        ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        Icon(
-                                                          size: 20,
-                                                          Icons
-                                                              .calendar_today_outlined,
-                                                          color:
-                                                              AppColor.primary,
-                                                        ),
-                                                        SizedBox(width: 8),
                                                         Text(
-                                                          book.date,
-                                                          style: AppStyle.body17
-                                                              .copyWith(
-                                                                color:
-                                                                    Colors
-                                                                        .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
+                                                          book.serviceName,
+                                                          style:
+                                                              AppStyle.body19,
                                                         ),
-                                                        SizedBox(width: 10),
-                                                        Icon(
-                                                          size: 20,
-                                                          Icons
-                                                              .access_time_outlined,
-                                                          color:
-                                                              AppColor.primary,
+                                                        SizedBox(height: 5),
+                                                        SizedBox(
+                                                          child: Text(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            book.note ?? '',
+                                                            style: AppStyle
+                                                                .hintTextStyle
+                                                                .copyWith(
+                                                                  fontSize: 17,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                ),
+                                                          ),
                                                         ),
-                                                        SizedBox(width: 8),
-                                                        Text(
-                                                          provBooking
-                                                              .selectedTime,
-                                                          style: AppStyle.body17
-                                                              .copyWith(
-                                                                color:
-                                                                    Colors
-                                                                        .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(height: 15),
-                                                    Divider(),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
+                                                        SizedBox(height: 15),
+                                                        Row(
                                                           children: [
-                                                            Text(
-                                                              'Total Price',
-                                                              style:
-                                                                  AppStyle
-                                                                      .body17,
+                                                            Icon(
+                                                              size: 20,
+                                                              Icons
+                                                                  .calendar_today_outlined,
+                                                              color:
+                                                                  AppColor
+                                                                      .primary,
                                                             ),
-                                                            SizedBox(height: 5),
+                                                            SizedBox(width: 8),
                                                             Text(
-                                                              '\$ ${book.price}',
+                                                              book.date,
                                                               style: AppStyle
                                                                   .body17
                                                                   .copyWith(
                                                                     color:
                                                                         Colors
-                                                                            .green,
+                                                                            .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                            ),
+                                                            SizedBox(width: 10),
+                                                            Icon(
+                                                              size: 20,
+                                                              Icons
+                                                                  .access_time_outlined,
+                                                              color:
+                                                                  AppColor
+                                                                      .primary,
+                                                            ),
+                                                            SizedBox(width: 8),
+                                                            Text(
+                                                              provBooking
+                                                                  .selectedTime,
+                                                              style: AppStyle
+                                                                  .body17
+                                                                  .copyWith(
+                                                                    color:
+                                                                        Colors
+                                                                            .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
                                                                   ),
                                                             ),
                                                           ],
                                                         ),
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                            backgroundColor:
-                                                                WidgetStatePropertyAll(
-                                                                  AppColor
-                                                                      .primary,
+                                                        SizedBox(height: 15),
+                                                        Divider(),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  'Total Price',
+                                                                  style:
+                                                                      AppStyle
+                                                                          .body17,
                                                                 ),
-                                                            shape: WidgetStatePropertyAll(
-                                                              RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
-                                                                      15,
+                                                                SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                  '\$ ${book.price}',
+                                                                  style: AppStyle
+                                                                      .body17
+                                                                      .copyWith(
+                                                                        color:
+                                                                            Colors.green,
+                                                                      ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            ElevatedButton(
+                                                              style: ButtonStyle(
+                                                                backgroundColor:
+                                                                    WidgetStatePropertyAll(
+                                                                      AppColor
+                                                                          .primary,
                                                                     ),
+                                                                shape: WidgetStatePropertyAll(
+                                                                  RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                          15,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {},
+                                                              child: Container(
+                                                                padding:
+                                                                    EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          12,
+                                                                    ),
+                                                                child: Text(
+                                                                  'View Details',
+                                                                  style:
+                                                                      AppStyle
+                                                                          .button,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          onPressed: () {},
-                                                          child: Container(
-                                                            padding:
-                                                                EdgeInsets.symmetric(
-                                                                  vertical: 12,
-                                                                ),
-                                                            child: Text(
-                                                              'View Details',
-                                                              style:
-                                                                  AppStyle
-                                                                      .button,
-                                                            ),
-                                                          ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                          .toList()
+                                      : [
+                                        Center(
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'The booking list is empty, start booking your first service now !',
+                                                textAlign: TextAlign.center,
+                                                style: AppStyle.body17,
+                                              ),
+                                              SizedBox(height: 50),
+                                              ElevatedButton.icon(
+                                                onPressed: () {},
+                                                iconAlignment:
+                                                    IconAlignment.end,
+                                                icon: Icon(
+                                                  Icons.arrow_forward_rounded,
+                                                  color: Colors.white,
+                                                ),
+                                                label: Text(
+                                                  'Book a Service',
+                                                  style: AppStyle.button,
+                                                ),
+                                                style: ButtonStyle(
+                                                  shape: WidgetStatePropertyAll(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            15,
+                                                          ),
+                                                    ),
+                                                  ),
+
+                                                  backgroundColor:
+                                                      WidgetStatePropertyAll(
+                                                        AppColor.secondry,
+                                                      ),
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      )
-                                      .toList(),
+                                      ],
                             ),
                           ),
                         ],

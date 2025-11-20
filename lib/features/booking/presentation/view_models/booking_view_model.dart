@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
-
 import 'package:serve_home/features/booking/data/models/book_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_all_bookings_use_case.dart';
+import 'package:serve_home/features/booking/domain/use_cases/fetch_all_users_bookings_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_in_progress_bookings_use_case.dart';
+import 'package:serve_home/features/booking/domain/use_cases/update_status_book_use_case.dart';
 
 class BookingViewModel extends ChangeNotifier {
   int timeIndex = -1;
@@ -18,15 +18,20 @@ class BookingViewModel extends ChangeNotifier {
   String selectedPaymentMethod = '';
   String selectedDate = '';
   List<BookModel> allBookings = [];
+  List<BookModel> allUsersBookings = [];
   List<BookModel> inProgressBookings = [];
   String note = '';
   CreateBookingUseCase createBookingUseCase;
   FetchAllBookingsUseCase fetchAllBookingsUseCase;
   FetchInProgressBookingsUseCase fetchInProgressBookingsUseCase;
+  FetchAllUsersBookingsUseCase fetchAllUsersBookingsUseCase;
+  UpdateStatusBookUseCase updateStatusBookUseCase;
   BookingViewModel({
     required this.createBookingUseCase,
     required this.fetchAllBookingsUseCase,
     required this.fetchInProgressBookingsUseCase,
+    required this.updateStatusBookUseCase,
+    required this.fetchAllUsersBookingsUseCase,
   });
   void changeTimeIndex(int timeIndex) {
     this.timeIndex = timeIndex;
@@ -41,6 +46,7 @@ class BookingViewModel extends ChangeNotifier {
       case 1:
         selectedBookings = inProgressBookings;
     }
+
     notifyListeners();
   }
 
@@ -74,11 +80,18 @@ class BookingViewModel extends ChangeNotifier {
   }
 
   Future fetchAllBookings({required String idUser}) async {
-    reset() ; 
-    if(_isFetched)return ; 
+    reset();
+    if (_isFetched) return;
     allBookings = await fetchAllBookingsUseCase.call(isUser: idUser);
     selectedBookings = allBookings;
     _isFetched = true;
+
+    notifyListeners();
+  }
+
+  Future fetchAllUsersBookings() async {
+    log('message') ; 
+    allUsersBookings = await fetchAllUsersBookingsUseCase.call();
     notifyListeners();
   }
 
@@ -86,12 +99,32 @@ class BookingViewModel extends ChangeNotifier {
     inProgressBookings = await fetchInProgressBookingsUseCase.call(
       idUser: idUser,
     );
-    log('---- ${allBookings}');
+
+    notifyListeners();
+  }
+
+  Future updateBookingStatus({
+    required String idUser,
+    required String idbook,
+    required String status,
+  }) async {
+    await updateStatusBookUseCase.call(
+      idUser: idUser,
+      idbook: idbook,
+      status: status,
+    );
+    int index = allUsersBookings.indexOf(
+      allUsersBookings.firstWhere((element) => element.id == idbook),
+    );
+    if (index != -1) {
+      allUsersBookings[index].status = status;
+    }
     notifyListeners();
   }
 
   void reset() {
     selectedBookingTabIndex = 0;
+    selectedDate = '';
     notifyListeners();
   }
 }

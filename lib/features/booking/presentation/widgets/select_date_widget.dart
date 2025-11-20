@@ -1,16 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 
 class SelectDateWidget extends StatelessWidget {
-  const SelectDateWidget({super.key, required this.dateFormatter});
-
-  final MaskTextInputFormatter dateFormatter;
+  const SelectDateWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,25 +26,32 @@ class SelectDateWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              TextField(
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  provBooking.selectDate(value);
-                  log(provBooking.selectedDate) ; 
+              GestureDetector(
+                onTap: () async {
+                  final picker = await showDatePicker(
+                    initialDate: DateTime.now(),
+                    context: context,
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(2026),
+                  );
+
+                  provBooking.selectDate(
+                    DateFormat('dd/MM/yyyy').format(picker!),
+                  );
+                  log(provBooking.selectedDate);
                 },
-                inputFormatters: [dateFormatter],
-                decoration: InputDecoration(
-                  hintText: 'mm/dd/yy',
-                  filled: true,
-                  fillColor: AppColor.filledTextField,
-                  focusedBorder: OutlineInputBorder(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColor.filledTextField,
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(style: BorderStyle.none),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(style: BorderStyle.none),
-                  ),
+                  child:
+                      provBooking.selectedDate.isEmpty
+                          ? Text('Tap here to select date')
+                          : Text(provBooking.selectedDate),
                 ),
               ),
             ],

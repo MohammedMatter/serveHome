@@ -1,27 +1,31 @@
 class Book {
-  String userId ; 
+  String userId;
   String date;
   String time;
   String serviceAddress;
   String? note;
   String paymentMethod;
   String serviceName;
-  String ?id ; 
-  String status ; 
-  String imageUrl ; 
-  String price ; 
+  String? id;
+  String status;
+  String imageUrl;
+  String price;
+  String provider;
+  String email ; 
 
   Book({
-    required this.id , 
-    required this.userId , 
-    required this.status , 
+    required this.id,
+    required this.userId,
+    required this.status,
+    required this.provider,
     required this.date,
     required this.time,
     required this.serviceAddress,
     required this.paymentMethod,
     required this.serviceName,
-    required this.imageUrl , 
+    required this.imageUrl,
     this.note,
-    required this.price ,
+    required this.price,
+    required this.email,
   });
 }

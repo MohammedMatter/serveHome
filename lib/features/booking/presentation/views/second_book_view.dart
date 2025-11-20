@@ -39,7 +39,12 @@ class SecondBookView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CusstomBookWidget(indexScreen: 1),
+                      CusstomBookWidget(
+                        indexScreen: 1,
+                        fun: () {
+                          GoRouter.of(context).pop();
+                        },
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,
@@ -53,7 +58,7 @@ class SecondBookView extends StatelessWidget {
                                 Text('Service Address', style: AppStyle.body15),
                                 SizedBox(height: 10),
                                 TextFieldServiceAddress(
-                                  hint: 'Enter Your Adress'
+                                  hint: 'Enter Your Adress',
                                 ),
                                 SizedBox(height: 25),
                                 DottedBorderWidget(),

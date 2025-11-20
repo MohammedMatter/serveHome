@@ -23,7 +23,7 @@ class ServiceHeaderWidget extends StatelessWidget {
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15),
                     ),
-                    child: Image.asset(
+                    child: Image.network(
                       fit: BoxFit.fill,
                       height: 250,
                       width: double.infinity,

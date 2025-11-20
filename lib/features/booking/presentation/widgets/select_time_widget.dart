@@ -4,8 +4,17 @@ import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 
 class SelectTimeWidget extends StatelessWidget {
-  const SelectTimeWidget({super.key});
-
+  SelectTimeWidget({super.key});
+  List times = [
+    '11 : 00 Am',
+    '12 : 00 Pm',
+    '01 : 00 Pm',
+    '02 : 00 Pm',
+    '03 : 00 Pm',
+    '04 : 00 Pm',
+    '05 : 00 Pm',
+    '06 : 00 Pm',
+  ];
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -25,7 +34,7 @@ class SelectTimeWidget extends StatelessWidget {
               (context, provHome, child) => GridView.builder(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: 8,
+                itemCount: times.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 8 / 4.4,
                   mainAxisSpacing: 10,
@@ -36,7 +45,7 @@ class SelectTimeWidget extends StatelessWidget {
                     (context, index) => InkWell(
                       onTap: () {
                         provHome.changeTimeIndex(index);
-                        provHome.selectTime('11:00 Am');
+                        provHome.selectTime(times[index]);
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -58,7 +67,7 @@ class SelectTimeWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '11:00 Am',
+                              times[index],
                               style: AppStyle.subTitle.copyWith(
                                 fontSize: 15,
                                 color: Colors.black,

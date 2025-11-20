@@ -6,14 +6,19 @@ import 'package:serve_home/features/auth/domain/use_cases/sign_up_use_case.dart'
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_all_bookings_use_case.dart';
+import 'package:serve_home/features/booking/domain/use_cases/fetch_all_users_bookings_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_in_progress_bookings_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/get_address_from_lat_lng_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/get_current_location_use_case.dart';
+import 'package:serve_home/features/booking/domain/use_cases/update_status_book_use_case.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 import 'package:serve_home/features/booking/presentation/view_models/location_view_model.dart';
 import 'package:serve_home/features/home/presentation/view_models/home_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:serve_home/features/services/domain/user_cases/add_services_use_case.dart';
+import 'package:serve_home/features/services/domain/user_cases/delete_service_use_case.dart';
 import 'package:serve_home/features/services/domain/user_cases/get_services_use_case.dart';
+import 'package:serve_home/features/services/domain/user_cases/update_service_use_case.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 import 'package:serve_home/firebase_options.dart';
 
@@ -30,12 +35,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => HomeViewModel()),
-        ChangeNotifierProvider(create: (context) => LocationViewModel(getCurrentLocationUseCase: GetCurrentLocationUseCase() , getAddressFromLatLngUseCase: GetAddressFromLatLngUseCase())),
-        ChangeNotifierProvider(create: (context) => ServiceViewModel(getServicesUseCase: GetServicesUseCase())),
-        ChangeNotifierProvider(create: (context) => BookingViewModel(createBookingUseCase : CreateBookingUseCase() , fetchAllBookingsUseCase: FetchAllBookingsUseCase() , fetchInProgressBookingsUseCase: FetchInProgressBookingsUseCase()) ),
         ChangeNotifierProvider(
-          create: (context) => AuthViewModel(signUpUseCase: SignUpUseCase() , signInUseCase: SignInUseCase()),
+          create: (context) => HomeViewModel(),
+          lazy: false,
+        ),
+        ChangeNotifierProvider(
+          create:
+              (context) => LocationViewModel(
+                getCurrentLocationUseCase: GetCurrentLocationUseCase(),
+                getAddressFromLatLngUseCase: GetAddressFromLatLngUseCase(),
+              ),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (context) =>
+                  ServiceViewModel(addServicesUseCase: AddServicesUseCase() ,getServicesUseCase: GetServicesUseCase() , deleteServiceUseCase: DeleteServiceUseCase() ,  updateServiceUseCase: UpdateServiceUseCase()),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (context) => BookingViewModel(
+                createBookingUseCase: CreateBookingUseCase(),
+                fetchAllBookingsUseCase: FetchAllBookingsUseCase(),
+                fetchInProgressBookingsUseCase:
+                    FetchInProgressBookingsUseCase(),
+                updateStatusBookUseCase: UpdateStatusBookUseCase(),
+                fetchAllUsersBookingsUseCase: FetchAllUsersBookingsUseCase(),
+              ),
+        ),
+        ChangeNotifierProvider(
+          create:
+              (context) => AuthViewModel(
+                signUpUseCase: SignUpUseCase(),
+                signInUseCase: SignInUseCase(),
+              ),
         ),
       ],
       child: MaterialApp.router(

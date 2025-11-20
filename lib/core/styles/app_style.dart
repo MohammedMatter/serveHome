@@ -14,6 +14,12 @@ class AppStyle {
     fontWeight: FontWeight.w600,
     fontSize: 17,
   );
+  static final TextStyle body30= TextStyle(
+    color: Color(0xff0f3c4c),
+    fontFamily: 'Poppins',
+    fontWeight: FontWeight.w600,
+    fontSize: 30,
+  );
   static final TextStyle body15 = TextStyle(
     color: Colors.black,
     fontSize: 15,
