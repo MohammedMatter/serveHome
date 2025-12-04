@@ -26,7 +26,7 @@ final List <String > workers = [
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
 
-                  color: Colors.white,
+                  color: Color(0xfff2f1f1)
                 ),
                 margin: EdgeInsets.only(right: 15),
                 height: 200,

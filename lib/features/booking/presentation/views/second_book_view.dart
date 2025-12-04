@@ -8,7 +8,7 @@ import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/booking/presentation/view_models/location_view_model.dart';
 import 'package:serve_home/features/booking/presentation/widgets/additional_notes_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/custom_book_widget.dart';
-import 'package:serve_home/features/booking/presentation/widgets/text_field_service_address.dart';
+import 'package:serve_home/features/booking/presentation/widgets/text_field_service_address_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/dotted_border_widget.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
 
@@ -57,7 +57,7 @@ class SecondBookView extends StatelessWidget {
                               children: [
                                 Text('Service Address', style: AppStyle.body15),
                                 SizedBox(height: 10),
-                                TextFieldServiceAddress(
+                                TextFieldServiceAddressWidget(
                                   hint: 'Enter Your Adress',
                                 ),
                                 SizedBox(height: 25),

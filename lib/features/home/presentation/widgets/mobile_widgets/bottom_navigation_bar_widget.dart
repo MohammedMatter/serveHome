@@ -22,17 +22,30 @@ class BottomNavigationBarWidget extends StatelessWidget {
             currentIndex: provHome.bottomNavigationBarIndex,
             onTap: (index) {
               provHome.changeBottomNavigationBarIndex(index);
-              provHome.bottomNavigationBarIndex == 1
-                  ? GoRouter.of(context).pushReplacementNamed(AppRouter.bookingsListView)
-                  : GoRouter.of(context).pushReplacementNamed(AppRouter.homeView);
+              switch (provHome.bottomNavigationBarIndex) {
+                case 0:
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.homeView);
+                case 1:
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.allServicesView);
+                case 2:
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.bookingsListView);
+                case 3:
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.notificationView);
+                case 4:
+                  GoRouter.of(context).pushReplacementNamed(AppRouter.profileView);
+              }
             },
             items: [
               SalomonBottomBarItem(icon: Icon(Icons.home), title: Text('Home')),
-
+              SalomonBottomBarItem(
+                icon: Icon(Icons.home_repair_service),
+                title: Text('Services'),
+              ),
               SalomonBottomBarItem(
                 icon: Icon(Icons.event),
                 title: Text('Bookings'),
               ),
+
               SalomonBottomBarItem(
                 icon: Icon(Icons.notifications_none_outlined),
                 title: Text('Notifications'),

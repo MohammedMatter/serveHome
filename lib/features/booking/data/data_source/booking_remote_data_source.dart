@@ -4,7 +4,7 @@ import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/booking/data/models/book_model.dart';
 
 class BookingRemoteDataSource {
-  Future createBooking(BookModel bookModel) async {
+  Future<BookModel> createBooking(BookModel bookModel) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     final bookingRef =
         await firestore
@@ -19,6 +19,7 @@ class BookingRemoteDataSource {
       'idBooking': idBooking,
       'createdAt': FieldValue.serverTimestamp(),
     });
+    return BookModel.copyWith(bookModel, idBooking);
   }
 
   Future updateBookingStatus({
@@ -27,8 +28,7 @@ class BookingRemoteDataSource {
     required String status,
   }) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
-     log('${idUser}') ; 
-  
+
     await firestore
         .collection('users')
         .doc(idUser)
@@ -37,25 +37,19 @@ class BookingRemoteDataSource {
         .update({'status': status});
   }
 
-  Future<List<BookModel>> fetchAllBookings(String idUser) async {
+  Stream<List<BookModel>> listenToAllBookings(String idUser) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-     List<BookModel> data = [];
-    try {
-  final snapShot =
-      await firestore
-          .collection('users')
-          .doc(idUser)
-          .collection('bookings')
-          .get();
-     
-  for (var element in snapShot.docs) {
-    data.add(BookModel.fromMap(element.data()));
-  }
-}  catch (e) {
-  log('errrrrrrrrrrrror : ${e}') ; 
-}
-
-    return data;
+    return firestore
+        .collection('users')
+        .doc(idUser)
+        .collection('bookings')
+        .snapshots()
+        .map(
+          (snapShot) =>
+              snapShot.docs
+                  .map((doc) => BookModel.fromMap(doc.data()))
+                  .toList(),
+        );
   }
 
   Future<List<BookModel>> fetchAllUsersBookings() async {
@@ -63,7 +57,7 @@ class BookingRemoteDataSource {
     final usersSnapshot = await firestore.collection('users').get();
     final List<UserModel> users = [];
     final List<BookModel> data = [];
-    log('----------');
+
     for (var element in usersSnapshot.docs) {
       users.add(
         UserModel(
@@ -71,13 +65,12 @@ class BookingRemoteDataSource {
           phone: element.data()['phone'],
           email: element.data()['email'],
           id: element.data()['id'],
-          role: element.data()['role']
+          role: element.data()['role'],
         ),
       );
     }
-log('message' );  
+
     for (var element in users) {
-      
       final snapShoot =
           await firestore
               .collection('users')
@@ -88,34 +81,32 @@ log('message' );
         data.add(BookModel.fromMap(book.data()));
       }
     }
-    
-   for (var element in data) {
-    log('--------------------------------------------') ;
-    log(data.length.toString()) ; 
-     
-   }
+
     return data;
   }
 
-  Future<List<BookModel>> fetchInProgressBookings(String idUser) async {
+  Future<List<BookModel>> fetchBookingsByStatus(
+    String idUser,
+    String status,
+  ) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-     List<BookModel> data = [];
+    List<BookModel> data = [];
     try {
-  final snapShot =
-      await firestore
-          .collection('users')
-          .doc(idUser)
-          .collection('bookings')
-          .where('status', isEqualTo: 'InProgress')
-          .get();
- 
-  for (var element in snapShot.docs) {
-    data.add(BookModel.fromMap(element.data()));
+      final snapShot =
+          await firestore
+              .collection('users')
+              .doc(idUser)
+              .collection('bookings')
+              .where('status', isEqualTo: status)
+              .get();
+
+      for (var element in snapShot.docs) {
+        data.add(BookModel.fromMap(element.data()));
+        return data;
+      }
+    } catch (e) {
+      log('***${e}');
+    }
     return data;
-  }
-}  catch (e) {
-  log('***${e}') ; 
-}
-return data;  
   }
 }

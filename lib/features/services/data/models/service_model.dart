@@ -2,6 +2,7 @@ import 'package:serve_home/features/services/domain/entities/service.dart';
 
 class ServiceModel extends Service {
   ServiceModel({
+    required super.category,
     super.id,
     required super.name,
     required super.description,
@@ -9,7 +10,7 @@ class ServiceModel extends Service {
     required super.categoryImageUrl,
     required super.detailImageUrl,
     required super.creatdAt,
-    required super.time
+    required super.time,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,10 +19,10 @@ class ServiceModel extends Service {
       'name': name,
       'description': description,
       'price': price,
-      'time' : time  ,
+      'time': time,
       'categoryImageUrl': categoryImageUrl,
       'creatdAt': creatdAt,
-      
+      'category': category,
     };
   }
 
@@ -34,7 +35,21 @@ class ServiceModel extends Service {
       categoryImageUrl: map['categoryImageUrl'],
       detailImageUrl: map['categoryImageUrl'],
       creatdAt: map['creatdAt'],
-      time: map['time'].toString()
+      time: map['time'].toString(),
+      category: map['category'],
+    );
+  }
+  ServiceModel copyWith({String? id, required ServiceModel serviceModel}) {
+    return ServiceModel(
+      id:id , 
+      name: serviceModel.name  , 
+      description: serviceModel.description ,
+      price: serviceModel.price ,
+      time: serviceModel.time ,
+      category: serviceModel.category,
+      categoryImageUrl: serviceModel.categoryImageUrl,
+      detailImageUrl: serviceModel.detailImageUrl ,
+      creatdAt: serviceModel.creatdAt 
     );
   }
 }

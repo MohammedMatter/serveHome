@@ -46,9 +46,13 @@ class ServiceFormFieldWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  GoRouter.of(context).pop();
-                },
+                onPressed:
+                    !provService.isLoading
+                        ? () {
+                          GoRouter.of(context).pop();
+                        }
+                        : null,
+
                 child: Text('Cancel'),
               ),
               ElevatedButton(
@@ -67,7 +71,7 @@ class ServiceFormFieldWidget extends StatelessWidget {
             ],
             backgroundColor: Colors.white,
             title: Text(title, style: AppStyle.body17),
-            content: Container(
+            content: SizedBox(
               height: ScreenSize.h(context) * 0.5,
               width: 400,
               child: Column(
@@ -130,14 +134,38 @@ class ServiceFormFieldWidget extends StatelessWidget {
                     ],
                   ),
                   Text('Category', style: AppStyle.body15),
-                  AddServiceTextField(
-                    controller: categoryServiceController,
-                    textInputFormatter: FilteringTextInputFormatter.allow(
-                      RegExp(r'[a-zA-Z\s]'),
-                    ),
-                    hint: 'eg : Electricity',
-                    maxLines: 1,
+
+                  DropdownButton(
+                    isExpanded: true,
+                    hint: Text('Select Category'),
+                    value: provService.selectedCategory,
+                    items: [
+                      DropdownMenuItem(
+                        value: provService.categories[0].name,
+                        child: Text(provService.categories[0].name),
+                      ),
+                      DropdownMenuItem(
+                        value: provService.categories[1].name,
+                        child: Text(provService.categories[1].name),
+                      ),
+                      DropdownMenuItem(
+                        value: provService.categories[2].name,
+                        child: Text(provService.categories[2].name),
+                      ),
+                      DropdownMenuItem(
+                        value: provService.categories[3].name,
+                        child: Text(provService.categories[3].name),
+                      ),
+                      DropdownMenuItem(
+                        value: provService.categories[4].name,
+                        child: Text(provService.categories[4].name),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      provService.selectCategory(value!);
+                    },
                   ),
+
                   Text('Image Url ', style: AppStyle.body15),
                   AddServiceTextField(
                     controller: imageUrlServiceControllwer,

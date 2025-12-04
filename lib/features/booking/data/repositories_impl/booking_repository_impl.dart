@@ -11,13 +11,8 @@ class BookingRepositoryImpl extends BookingRepository {
   }
 
   @override
-  Future<List<BookModel>> fetchAllBookings({required String idUser}) {
-    return bookingRemoteDataSource.fetchAllBookings(idUser);
-  }
-
-  @override
-  Future<List<BookModel>> fetchInProgressBookings({required String idUser}) {
-    return bookingRemoteDataSource.fetchInProgressBookings(idUser);
+  Stream<List<BookModel>> listenToAllBookings({required String idUser}) {
+    return bookingRemoteDataSource.listenToAllBookings(idUser);
   }
 
   @override
@@ -36,5 +31,11 @@ class BookingRepositoryImpl extends BookingRepository {
   @override
   Future<List<BookModel>> fetchAllUsersBookings() {
     return bookingRemoteDataSource.fetchAllUsersBookings();
+  }
+
+ 
+  @override
+  Future<List<BookModel>> fetchBookingsByStatus({required String idUser , required String status}) {
+    return bookingRemoteDataSource.fetchBookingsByStatus(idUser , status) ; 
   }
 }

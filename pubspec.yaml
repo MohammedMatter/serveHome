@@ -49,6 +49,14 @@ dependencies:
   geocoding: ^4.0.0
   intl: ^0.20.2
   fl_chart: ^0.70.2
+  file_picker: ^8.0.7
+  firebase_storage: ^11.7.2
+  overlay_support: ^2.1.0
+  flutter_local_notifications: ^19.5.0
+  hive: ^2.2.3
+  path_provider: ^2.1.5
+
+
 
 
 dev_dependencies:
@@ -77,9 +85,12 @@ flutter:
   assets:
     - assets/images/logo/
     - assets/images/workers/
-    - assets/images/services/
+    - assets/images/categories/
     - assets/images/service_details/
     - assets/images/icons/
+    - assets/images/placeholderImage/
+    - assets/images/profile/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -105,6 +116,9 @@ flutter:
           weight: 600
         - asset: assets/fonts/Poppins/Poppins-Bold.ttf
           weight: 700
+    - family: Vesper
+      fonts:  
+        -  asset: assets/fonts/Vesper_Libre/VesperLibre-Bold.ttf
     
          
     

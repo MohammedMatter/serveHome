@@ -22,52 +22,53 @@ class ServiceCtegoriesWidget extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: AppColor.primary, width: 0.8),
-                        color: Colors.white,
+                        color: Color(0xfff2f1f1)
                       ),
                       margin: EdgeInsets.only(right: 15),
-                      height: 120,
+
                       width: 90,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(15),
                         onTap: () {
-                          GoRouter.of(context).pushNamed(
-                            AppRouter.serviceDetailsView,
-                            extra: provService.services[index],
+                          GoRouter.of(
+                            context,
+                          ).pushNamed(AppRouter.categoryServicesView);
+                          provService.selectCategory(
+                            provService.categories[index].name,
                           );
-                          provService.selectService(
-                            provService.services[index],
-                          );
+                          provService.filterServices();
                         },
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            SizedBox(height: 5),
                             Expanded(
                               child: ClipRRect(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-                                child: Image.network(
-                                  provService.services[index].categoryImageUrl,
-                                  fit: BoxFit.fill,
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15),
+                                ),
+                                child: Image.asset(
+                                  provService.categories[index].image,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                        SizedBox(height: 15,) , 
+                            SizedBox(height: 15),
                             Text(
-                              provService.services[index].name,
+                              provService.categories[index].name,
                               textAlign: TextAlign.center,
-                              style: AppStyle.body19.copyWith(
-                                fontSize: 12,
+                              style: AppStyle.body15.copyWith(
+                                fontWeight: FontWeight.bold,
                                 color: AppColor.primary,
                               ),
                               maxLines: 1,
                             ),
-                                    SizedBox(height: 15,) , 
+                            SizedBox(height: 15),
                           ],
                         ),
                       ),
                     ),
                   ),
-              itemCount: provService.services.length,
+              itemCount: provService.categories.length,
             ),
           ),
     );

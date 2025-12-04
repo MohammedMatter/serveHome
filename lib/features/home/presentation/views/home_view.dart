@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,18 +20,28 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async{
-      await fetchAllBookings();
-     await  fetchServices();
+    WidgetsBinding.instance.addPostFrameCallback((_)  {
+       fetchAllBookings();
+       fetchServices();
     });
   }
 
+
   Future fetchAllBookings() async {
     final provBookings = Provider.of<BookingViewModel>(context, listen: false);
-    await provBookings.fetchAllBookings(idUser: "typJarkAVHUEr6SqDV98ZGc6gy53");
+    await provBookings.fetchAllBookings(idUser: "ABQ4EkIh4cbQDoyDQZZfd55p81k1");
     await provBookings.fetchAllUsersBookings();
     await provBookings.fetchInProgressBookings(
-      idUser: "typJarkAVHUEr6SqDV98ZGc6gy53",
+      idUser: "ABQ4EkIh4cbQDoyDQZZfd55p81k1",
+    );
+    await provBookings.fetchComoletedBookings(
+      idUser: "ABQ4EkIh4cbQDoyDQZZfd55p81k1",
+    );
+    await provBookings.fetchCanceledBookings(
+      idUser: "ABQ4EkIh4cbQDoyDQZZfd55p81k1",
+    );
+    await provBookings.fetchPendingBookings(
+      idUser: "ABQ4EkIh4cbQDoyDQZZfd55p81k1",
     );
   }
 

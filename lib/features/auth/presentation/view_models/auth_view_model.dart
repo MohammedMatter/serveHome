@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:serve_home/core/errors/failure.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
+import 'package:serve_home/features/auth/domain/use_cases/listen_to_user_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_in_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_up_use_case.dart';
 
@@ -14,19 +17,20 @@ class AuthViewModel extends ChangeNotifier {
   SignInUseCase signInUseCase;
   UserModel? _currentUser;
   UserModel? get user => _currentUser;
-  AuthViewModel({required this.signUpUseCase, required this.signInUseCase});
+  ListenToUserUseCase listenToUserUseCase;
+  AuthViewModel({
+    required this.signUpUseCase,
+    required this.signInUseCase,
+    required this.listenToUserUseCase,
+  });
 
-  void setUser(UserModel userModel) {
-    _currentUser = userModel;
+  void reset() {
+    errorMessage = '';
+    isLoading = false;
+    log('message');
     notifyListeners();
   }
-void reset(){
-   errorMessage = '';
-   isLoading = false ; 
-   log('message') ; 
-   notifyListeners() ; 
 
-}
   Future<Either<Failure, Unit>> signUp({
     required String password,
     required UserModel userModel,
@@ -37,7 +41,7 @@ void reset(){
       password: password,
       userModel: userModel,
     );
-    await Future.delayed(Duration(seconds: 2)) ;
+    await Future.delayed(Duration(seconds: 2));
     result.fold(
       (error) async {
         notifyListeners();
@@ -54,26 +58,36 @@ void reset(){
     return result;
   }
 
-  Future<Either<Failure, UserModel>> signIn({
-
+  Future<Either<Failure, Unit>> signIn({
     required String password,
     required String email,
   }) async {
-    isLoading = true ; 
-    notifyListeners() ; 
+    isLoading = true;
+    notifyListeners();
     final result = await signInUseCase.call(password: password, email: email);
-      await Future.delayed(Duration(seconds: 2)) ;
-    result.fold((error) {
-      errorMessage = error.message ;
-         isLoading = false ;  
-      notifyListeners() ; 
-    }, (user) {
-      setUser(user);
-      errorMessage = '';
-      isLoading = false ; 
-      return user;
-    });
+    await Future.delayed(Duration(seconds: 2));
+    result.fold(
+      (error) {
+        errorMessage = error.message;
+        isLoading = false;
+        notifyListeners();
+      },
+      (user) {
+        errorMessage = '';
+        isLoading = false;
+        final idUser = FirebaseAuth.instance.currentUser!.uid;
+        listenToUser(idUser: idUser);
+        notifyListeners();
+      },
+    );
     notifyListeners();
     return result;
+  }
+
+  void listenToUser({required String idUser}) {
+    listenToUserUseCase.call(idUser).listen((user) {
+      _currentUser = user;
+      notifyListeners();
+    });
   }
 }

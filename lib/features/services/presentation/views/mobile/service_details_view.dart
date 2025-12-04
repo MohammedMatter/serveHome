@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
@@ -9,10 +10,11 @@ import 'package:serve_home/features/services/presentation/widgets/service_featur
 import 'package:serve_home/features/services/presentation/widgets/service_header_widget.dart';
 import 'package:serve_home/features/services/presentation/widgets/service_inclusion_widget.dart';
 
+// ignore: must_be_immutable
 class ServiceDetailsView extends StatelessWidget {
-  ServiceModel service ; 
-  ServiceDetailsView({super.key , required this.service});
- 
+  ServiceModel service;
+  ServiceDetailsView({super.key, required this.service});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +27,7 @@ class ServiceDetailsView extends StatelessWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Stack(
@@ -39,7 +42,7 @@ class ServiceDetailsView extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          ServiceHeaderWidget(service: service,),
+                          ServiceHeaderWidget(service: service),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: Column(
@@ -47,14 +50,13 @@ class ServiceDetailsView extends StatelessWidget {
                                 SizedBox(height: 25),
                                 ServiceFeaturesWidget(),
                                 SizedBox(height: 25),
-                                ServiceDescriptionWidget(service: service,),
+                                ServiceDescriptionWidget(service: service),
                                 SizedBox(height: 15),
                                 ServiceInclusionsWidget(),
                               ],
                             ),
                           ),
-
-                          CustomerReviewsWidget(),
+                          SizedBox(height: ScreenSize.h(context) * 0.03),
                         ],
                       ),
                     ),

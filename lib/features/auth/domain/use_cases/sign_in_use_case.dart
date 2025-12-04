@@ -1,12 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:serve_home/core/errors/exception.dart';
 import 'package:serve_home/core/errors/failure.dart';
-import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/auth/data/repositories_impl/auth_repository_impl.dart';
 
 class SignInUseCase {
   AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl();
-  Future<Either<Failure, UserModel>> call({
+  Future<Either<Failure, Unit>> call({
     required String email,
     required String password,
   }) async {

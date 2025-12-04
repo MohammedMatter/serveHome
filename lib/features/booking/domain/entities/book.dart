@@ -1,6 +1,8 @@
 class Book {
   String userId;
   String date;
+  String serviceCategory;
+  String serviceDescription;
   String time;
   String serviceAddress;
   String? note;
@@ -14,6 +16,8 @@ class Book {
   String email ; 
 
   Book({
+    required this.serviceCategory ,
+    required this.serviceDescription ,
     required this.id,
     required this.userId,
     required this.status,

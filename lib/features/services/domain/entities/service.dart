@@ -2,6 +2,7 @@
 class Service {
   String ?id;
   String name;
+  String category;
   String description;
   String price;
   String categoryImageUrl;
@@ -10,6 +11,7 @@ class Service {
   String creatdAt;
 
   Service({
+    required this.category , 
     required this.id,
     required this.name,
     required this.time , 

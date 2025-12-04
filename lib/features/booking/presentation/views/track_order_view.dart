@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +11,9 @@ import 'package:serve_home/features/booking/presentation/view_models/location_vi
 import 'package:serve_home/features/booking/presentation/widgets/cancel_order_button_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/order_status_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/service_details_widget.dart';
-import 'package:serve_home/features/booking/presentation/widgets/track_order_header.dart';
+import 'package:serve_home/features/booking/presentation/widgets/track_order_header_widget.dart';
+import 'package:serve_home/features/notification/data/models/notification_model.dart';
+import 'package:serve_home/features/notification/presentation/view_models/notification_view_model.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
 
@@ -21,11 +22,12 @@ class TrackOrderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<
+    return Consumer5<
       LocationViewModel,
       BookingViewModel,
       ServiceViewModel,
-      AuthViewModel
+      AuthViewModel,
+      NotificationViewModel
     >(
       builder:
           (
@@ -34,6 +36,7 @@ class TrackOrderView extends StatelessWidget {
             provBooking,
             provService,
             provAuth,
+            provNotification,
             child,
           ) => Scaffold(
             bottomNavigationBar: SizedBox(
@@ -43,21 +46,44 @@ class TrackOrderView extends StatelessWidget {
                   BottomNavigationBarDetailsWidget(
                     navigationToAnotherScreen: () async {
                       final bookModel = BookModel(
+                        serviceDescription:
+                            provService.selectedService!.description,
+                        serviceCategory: provService.selectedService!.category,
                         date: provBooking.selectedDate,
                         time: provBooking.selectedTime,
                         serviceAddress: provLocation.address,
                         paymentMethod: provBooking.selectedPaymentMethod,
                         serviceName: provService.selectedService!.name,
-                        userId:provAuth.user!.id!,
+                        userId: provAuth.user!.id!,
                         status: 'Pending',
                         note: provBooking.note,
                         imageUrl: provService.selectedService!.detailImageUrl,
-                        price: provService.selectedService!.price , 
-                        provider: provAuth.user!.name ,
-                        email: provAuth.user!.email
-                      
+                        price: provService.selectedService!.price,
+                        provider: provAuth.user!.name,
+                        email: provAuth.user!.email,
                       );
-                      await provBooking.createBooking(bookModel: bookModel);
+                   final book =    await provBooking.createBooking(bookModel: bookModel);
+                      NotificationModel notification = NotificationModel(
+                        createAt: DateTime.now(),
+                        status: 'Pending',
+                        bookingId:
+                            book.id! , 
+                        title: "ServeHome",
+                        body:
+                            "Your request for ${provService.selectedService!.name} awaiting confirmation",
+                        dateTime: DateTime.now(),
+                        read: false,
+                        userId: provAuth.user!.id!,
+                        type: "booking",
+                      );
+                      await provNotification.addNotification(
+                        idUser: provAuth.user!.id!,
+                        notification: notification,
+                      );
+                      await provNotification.showNotification(
+                        notification: notification,
+                      );
+
                       GoRouter.of(context).pushNamed(AppRouter.completeView);
                     },
                     label: 'Complete',
@@ -78,7 +104,7 @@ class TrackOrderView extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      TrackOrderHeader(),
+                      TrackOrderHeaderWidget(),
 
                       SizedBox(height: 20),
                       Container(

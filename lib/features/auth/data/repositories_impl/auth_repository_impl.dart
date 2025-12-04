@@ -7,12 +7,28 @@ import 'package:serve_home/features/auth/domain/repositories/auth_repository.dar
 class AuthRepositoryImpl extends AuthRepository {
   AuthRemoteDataSource _authRemoteDataSource = AuthRemoteDataSource();
   @override
-  Future <Either<Failure , UserModel>> signIn({required String password ,required String email}) {
-    return _authRemoteDataSource.signIn(email: email , password: password);
+  Future<Either<Failure, Unit>> signIn({
+    required String password,
+    required String email,
+  }) {
+    return _authRemoteDataSource.signIn(email: email, password: password);
   }
 
   @override
-  Future <Either<Failure , Unit>>signUp({required String password , required UserModel userModel}) {
-    return _authRemoteDataSource.signUp(password:password , userModel:  userModel);
+  Future<Either<Failure, Unit>> signUp({
+    required String password,
+    required UserModel userModel,
+  }) {
+    return _authRemoteDataSource.signUp(
+      password: password,
+      userModel: userModel,
+    );
   }
+
+  @override
+  Stream<UserModel> listenToUser(String idUser) {
+    return _authRemoteDataSource.listenToUser(idUser);
+  }
+
+
 }

@@ -19,6 +19,7 @@ class HomeViewMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         automaticallyImplyLeading: false,
         actionsPadding: EdgeInsets.only(right: 15),
         backgroundColor: AppColor.primary,
@@ -45,7 +46,7 @@ class HomeViewMobile extends StatelessWidget {
                   children: [
                     SearchWidget(),
                     SizedBox(height: 15),
-                    Text('Services ', style: AppStyle.body19),
+                    Text('Services Categories ', style: AppStyle.body19),
                     SizedBox(height: 10),
                     ServiceCtegoriesWidget(),
                     SizedBox(height: 15),

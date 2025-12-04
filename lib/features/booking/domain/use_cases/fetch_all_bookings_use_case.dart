@@ -3,7 +3,7 @@ import 'package:serve_home/features/booking/data/repositories_impl/booking_repos
 
 class FetchAllBookingsUseCase {
   BookingRepositoryImpl bookingRepositoryImpl = BookingRepositoryImpl();
-  Future<List<BookModel>> call({required isUser}) async {
-    return bookingRepositoryImpl.fetchAllBookings(idUser: isUser);
+  Stream<List<BookModel>> call({required isUser})  {
+    return bookingRepositoryImpl.listenToAllBookings(idUser: isUser);
   }
 }

@@ -8,17 +8,17 @@ import 'package:serve_home/features/booking/presentation/view_models/booking_vie
 import 'package:serve_home/features/booking/presentation/view_models/location_view_model.dart';
 
 // ignore: must_be_immutable
-class TextFieldServiceAddress extends StatefulWidget {
+class TextFieldServiceAddressWidget extends StatefulWidget {
   String hint;
 
-  TextFieldServiceAddress({required this.hint, super.key});
+  TextFieldServiceAddressWidget({required this.hint, super.key});
 
   @override
-  State<TextFieldServiceAddress> createState() =>
+  State<TextFieldServiceAddressWidget> createState() =>
       _TextFieldServiceAddressState();
 }
 
-class _TextFieldServiceAddressState extends State<TextFieldServiceAddress> {
+class _TextFieldServiceAddressState extends State<TextFieldServiceAddressWidget> {
   final TextEditingController serviceAddress = TextEditingController();
 
   @override

@@ -8,7 +8,7 @@ import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/constants/drawer_actions.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
-import 'package:serve_home/features/categories/presentation/views/web/categories_web_view.dart';
+
 import 'package:serve_home/features/home/presentation/view_models/home_view_model.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -59,19 +59,16 @@ class DrawerWidget extends StatelessWidget {
                                         GoRouter.of(
                                           context,
                                         ).pushNamed(AppRouter.servicesWebView);
+                          
                                       case 3:
                                         GoRouter.of(
                                           context,
-                                        ).pushNamed(AppRouter.categoriesWebView);
+                                        ).pushNamed(AppRouter.bookingsWebView);
                                       case 4:
                                         GoRouter.of(
                                           context,
                                         ).pushNamed(AppRouter.bookingsWebView);
                                       case 5:
-                                        GoRouter.of(
-                                          context,
-                                        ).pushNamed(AppRouter.bookingsWebView);
-                                      case 6:
                                         GoRouter.of(
                                           context,
                                         ).pushNamed(AppRouter.bookingsWebView);

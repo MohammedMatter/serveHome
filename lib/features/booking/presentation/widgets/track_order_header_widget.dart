@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 
-class TrackOrderHeader extends StatelessWidget {
-  const TrackOrderHeader({
+class TrackOrderHeaderWidget extends StatelessWidget {
+  const TrackOrderHeaderWidget({
     super.key,
   });
 

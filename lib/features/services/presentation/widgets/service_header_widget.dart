@@ -25,28 +25,17 @@ class ServiceHeaderWidget extends StatelessWidget {
                     ),
                     child: Image.network(
                       fit: BoxFit.fill,
-                      height: 250,
+                      height: 200,
                       width: double.infinity,
-                     service.detailImageUrl,
+                      service.detailImageUrl,
+                      errorBuilder:
+                          (context, error, stackTrace) => Image.asset(
+                            fit: BoxFit.fill,
+                            'assets/images/placeholderImage/placeholder.png',
+                          ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColor.primary.withOpacity(0.8),
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(30),
-                        ),
-                      ),
-                      padding: EdgeInsets.only(bottom: 5, top: 5),
-                      alignment: Alignment.center,
-                      width: 200,
 
-                      child: Text(service.name, style: AppStyle.button),
-                    ),
-                  ),
                   Positioned(
                     left: 0,
                     top: 20,
@@ -81,7 +70,10 @@ class ServiceHeaderWidget extends StatelessWidget {
                           shape: WidgetStatePropertyAll(CircleBorder()),
                         ),
                         onPressed: () {},
-                        child: Icon(Icons.favorite_border_outlined),
+                        child: Icon(
+                          Icons.favorite_border_outlined,
+                          color: AppColor.primary,
+                        ),
                       ),
                     ),
                   ),
@@ -91,6 +83,7 @@ class ServiceHeaderWidget extends StatelessWidget {
               Container(
                 alignment: Alignment.topLeft,
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0, 5),
@@ -98,33 +91,40 @@ class ServiceHeaderWidget extends StatelessWidget {
                       color: Colors.black12,
                     ),
                   ],
-                  color: Colors.white,
+
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15),
                   ),
                 ),
 
-                height: 80,
                 width: double.infinity,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [Text('Starting from'), Text('Duration')],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${service.name} Service',
+                        style: AppStyle.body17,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     SizedBox(height: 5),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('From \$${service.price}', style: AppStyle.body19),
-                        Row(
-                          children: [
-                            Icon(Icons.access_time_sharp, size: 20),
-                            SizedBox(width: 5),
-                            Text('2 - 3 hours', style: AppStyle.body15),
-                          ],
+                        Text('${service.time} hours', style: AppStyle.body17),
+                        SizedBox(width: 5),
+                        Icon(
+                          Icons.access_time_sharp,
+                          size: 17,
+                          color: AppColor.primary,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '${service.price}\$',
+                          style: AppStyle.body19.copyWith(color: Colors.green),
                         ),
                       ],
                     ),

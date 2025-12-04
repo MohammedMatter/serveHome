@@ -11,15 +11,17 @@ import 'package:serve_home/features/booking/presentation/views/fitst_book_view.d
 import 'package:serve_home/features/booking/presentation/views/second_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/third_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/track_order_view.dart';
-import 'package:serve_home/features/categories/presentation/views/web/categories_web_view.dart';
 import 'package:serve_home/features/home/presentation/views/home_view.dart';
 import 'package:serve_home/features/home/presentation/views/web/bookings_web_view.dart';
 import 'package:serve_home/features/home/presentation/views/web/dashboard_web_view.dart';
 import 'package:serve_home/features/home/presentation/views/web/home_web_view.dart';
-
+import 'package:serve_home/features/notification/presentation/views/notification_view.dart';
+import 'package:serve_home/features/profile/presentation/views/profile_view.dart';
 import 'package:serve_home/features/services/data/models/service_model.dart';
-import 'package:serve_home/features/services/presentation/views/service_details_view.dart';
-import 'package:serve_home/features/services/presentation/views/service_web_view.dart';
+import 'package:serve_home/features/services/presentation/views/mobile/all_services_view.dart';
+import 'package:serve_home/features/services/presentation/views/mobile/category_services_view.dart';
+import 'package:serve_home/features/services/presentation/views/mobile/service_details_view.dart';
+import 'package:serve_home/features/services/presentation/views/web/service_web_view.dart';
 
 class AppRouter {
   static final String homeView = 'HomeView';
@@ -39,10 +41,11 @@ class AppRouter {
   static final String homeWebView = 'HomeWebView';
   static final String servicesWebView = 'Services Web View';
   static final String categoriesWebView = 'Categories Web View';
-
+  static final String categoryServicesView = 'Category Services View';
+  static final String allServicesView = 'All Services View';
 
   static final routers = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/signInView',
     routes: [
       GoRoute(
         path: '/signInView',
@@ -60,14 +63,30 @@ class AppRouter {
         builder: (context, state) => HomeView(),
       ),
       GoRoute(
-        path: '/categoriesWebView',
-        name: categoriesWebView,
-        builder: (context, state) => CategoriesWebView(),
+        path: '/profileView',
+        name: profileView,
+        builder: (context, state) => ProfileView(),
       ),
+      GoRoute(
+        path: '/allServicesView',
+        name: allServicesView,
+        builder: (context, state) => AllServicesView(),
+      ),
+   
       GoRoute(
         path: '/bookingsListView',
         name: bookingsListView,
         builder: (context, state) => BookingsListView(),
+      ),
+      GoRoute(
+        path: '/categoryServicesView',
+        name: categoryServicesView,
+        builder: (context, state) => CategoryServicesView(),
+      ),
+      GoRoute(
+        path: '/notificationView',
+        name: notificationView,
+        builder: (context, state) => NotificationView(),
       ),
       GoRoute(
         path: '/serviceDetails',
