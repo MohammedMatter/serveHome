@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
@@ -64,5 +63,8 @@ class AuthRemoteDataSource {
         .map((snap) => UserModel.fromMap(snap.data()!));
   }
 
-
+  Future<void> signOut() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
+  }
 }

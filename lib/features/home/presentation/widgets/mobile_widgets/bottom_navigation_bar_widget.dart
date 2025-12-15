@@ -21,18 +21,30 @@ class BottomNavigationBarWidget extends StatelessWidget {
             backgroundColor: Colors.white,
             currentIndex: provHome.bottomNavigationBarIndex,
             onTap: (index) {
+              if (index == provHome.bottomNavigationBarIndex) {
+                return;
+              }
               provHome.changeBottomNavigationBarIndex(index);
+
               switch (provHome.bottomNavigationBarIndex) {
                 case 0:
                   GoRouter.of(context).pushReplacementNamed(AppRouter.homeView);
                 case 1:
-                  GoRouter.of(context).pushReplacementNamed(AppRouter.allServicesView);
+                  GoRouter.of(
+                    context,
+                  ).pushReplacementNamed(AppRouter.allServicesView);
                 case 2:
-                  GoRouter.of(context).pushReplacementNamed(AppRouter.bookingsListView);
+                  GoRouter.of(
+                    context,
+                  ).pushReplacementNamed(AppRouter.bookingsListView);
                 case 3:
-                  GoRouter.of(context).pushReplacementNamed(AppRouter.notificationView);
+                  GoRouter.of(
+                    context,
+                  ).pushReplacementNamed(AppRouter.notificationView);
                 case 4:
-                  GoRouter.of(context).pushReplacementNamed(AppRouter.profileView);
+                  GoRouter.of(
+                    context,
+                  ).pushReplacementNamed(AppRouter.profileView);
               }
             },
             items: [

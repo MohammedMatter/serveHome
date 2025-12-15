@@ -29,6 +29,11 @@ class AuthRepositoryImpl extends AuthRepository {
   Stream<UserModel> listenToUser(String idUser) {
     return _authRemoteDataSource.listenToUser(idUser);
   }
+  
+  @override
+  Future<void> signOut() {
+   return _authRemoteDataSource.signOut() ; 
+  }
 
 
 }

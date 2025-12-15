@@ -44,7 +44,7 @@ class HomeViewMobile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SearchWidget(),
+             
                     SizedBox(height: 15),
                     Text('Services Categories ', style: AppStyle.body19),
                     SizedBox(height: 10),

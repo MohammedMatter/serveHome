@@ -54,15 +54,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(height: 15),
-                  TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                 
                   const SizedBox(height: 15),
                   TextField(
                     controller: phoneController,

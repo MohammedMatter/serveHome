@@ -6,6 +6,8 @@ import 'package:serve_home/features/home/presentation/widgets/web_widgets/all_bo
 import 'package:serve_home/features/home/presentation/widgets/web_widgets/drawer_widget.dart';
 
 class BookingsWebView extends StatelessWidget {
+  const BookingsWebView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +18,13 @@ import 'package:serve_home/features/services/presentation/view_models/service_vi
 // ignore: must_be_immutable
 class BookingsListView extends StatelessWidget {
   BookingsListView({super.key});
-  List statusBookings = ['All', 'Pending', 'In Progress ', 'Completed ', 'Canceled '];
+  List statusBookings = [
+    'All',
+    'Pending',
+    'In Progress ',
+    'Completed ',
+    'Canceled ',
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,14 +40,15 @@ class BookingsListView extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        BookingStatusTabWidget(
-                          statusBookings: statusBookings,
-                        ),
+                        BookingStatusTabWidget(statusBookings: statusBookings),
                         SizedBox(height: 30),
                         Expanded(
                           child: SingleChildScrollView(
                             child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15 , vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                                vertical: 8,
+                              ),
                               child: Column(
                                 children:
                                     provBooking.selectedBookings.isNotEmpty
@@ -63,9 +72,9 @@ class BookingsListView extends StatelessWidget {
                                                       BorderRadius.circular(20),
                                                   color: Colors.white,
                                                 ),
-                                                
+
                                                 width: double.infinity,
-                                                
+
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -92,14 +101,15 @@ class BookingsListView extends StatelessWidget {
                                                             child: Text(
                                                               book.serviceName,
                                                               style:
-                                                                  AppStyle.body19,
+                                                                  AppStyle
+                                                                      .body19,
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
                                                               maxLines: 2,
                                                             ),
                                                           ),
-                                                    SizedBox(width: 2,) , 
+                                                          SizedBox(width: 2),
                                                           ElevatedButton(
                                                             style: ButtonStyle(
                                                               backgroundColor:
@@ -120,7 +130,8 @@ class BookingsListView extends StatelessWidget {
                                                               showDialog(
                                                                 barrierDismissible:
                                                                     false,
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 builder:
                                                                     (
                                                                       context,
@@ -222,7 +233,7 @@ class BookingsListView extends StatelessWidget {
                                                                             foregroundColor: WidgetStatePropertyAll(
                                                                               Colors.black,
                                                                             ),
-                                                
+
                                                                             shape: WidgetStatePropertyAll(
                                                                               RoundedRectangleBorder(
                                                                                 borderRadius: BorderRadius.circular(
@@ -244,29 +255,27 @@ class BookingsListView extends StatelessWidget {
                                                                       titlePadding:
                                                                           EdgeInsets
                                                                               .zero,
-                                                
+
                                                                       shape: RoundedRectangleBorder(
                                                                         borderRadius:
                                                                             BorderRadius.circular(
                                                                               8,
                                                                             ),
                                                                       ),
-                                                
+
                                                                       backgroundColor:
                                                                           Colors
                                                                               .white,
                                                                       title: ClipRRect(
-                                                                        borderRadius:
-                                                                            BorderRadius.vertical(
-                                                                              top: Radius.circular(
-                                                                                8,
-                                                                              ),
-                                                                            ),
+                                                                        borderRadius: BorderRadius.vertical(
+                                                                          top: Radius.circular(
+                                                                            8,
+                                                                          ),
+                                                                        ),
                                                                         child: Container(
-                                                                          padding:
-                                                                              EdgeInsets.all(
-                                                                                10,
-                                                                              ),
+                                                                          padding: EdgeInsets.all(
+                                                                            10,
+                                                                          ),
                                                                           width:
                                                                               double.infinity,
                                                                           height:
@@ -303,7 +312,7 @@ class BookingsListView extends StatelessWidget {
                                                                                     padding: EdgeInsets.all(
                                                                                       5,
                                                                                     ),
-                                                
+
                                                                                     child: Icon(
                                                                                       size:
                                                                                           15,
@@ -368,10 +377,10 @@ class BookingsListView extends StatelessWidget {
                                                                                             ? Colors.green
                                                                                             : book.status ==
                                                                                                 'InProgress'
-                                                                                            ? Colors.orange
+                                                                                            ? Colors.blue
                                                                                             : book.status ==
                                                                                                 'Pending'
-                                                                                            ? Colors.blue
+                                                                                            ? Colors.orange
                                                                                             : Colors.red,
                                                                                     label:
                                                                                         'Status',
@@ -407,7 +416,7 @@ class BookingsListView extends StatelessWidget {
                                                                                 height:
                                                                                     10,
                                                                               ),
-                                                
+
                                                                               LabeledInfoWidget(
                                                                                 label:
                                                                                     'Price',
@@ -444,12 +453,12 @@ class BookingsListView extends StatelessWidget {
                                                                                 height:
                                                                                     10,
                                                                               ),
-                                                
+
                                                                               SizedBox(
                                                                                 height:
                                                                                     10,
                                                                               ),
-                                                
+
                                                                               Column(
                                                                                 crossAxisAlignment:
                                                                                     CrossAxisAlignment.start,
@@ -510,7 +519,8 @@ class BookingsListView extends StatelessWidget {
                                                               style: AppStyle
                                                                   .button
                                                                   .copyWith(
-                                                                    fontSize: 13,
+                                                                    fontSize:
+                                                                        13,
                                                                   ),
                                                             ),
                                                           ),
@@ -582,7 +592,7 @@ class BookingsListView extends StatelessWidget {
                                                                 ),
                                                           ),
                                                         ),
-                                                
+
                                                         backgroundColor:
                                                             WidgetStatePropertyAll(
                                                               AppColor.secondry,

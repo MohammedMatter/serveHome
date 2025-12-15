@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -7,17 +5,19 @@ import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
-import 'package:serve_home/core/utils/input_validator.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
+import 'package:serve_home/features/auth/presentation/widgets/text_form_field_widget.dart';
+import 'package:serve_home/features/auth/presentation/widgets/welcome_sign_up_widget.dart';
 
+// ignore: must_be_immutable
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController password = TextEditingController();
-  GlobalKey<FormState> _key = GlobalKey<FormState>();
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,32 +29,7 @@ class SignUpView extends StatelessWidget {
                 (context, provAuth, child) => Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColor.primary,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10),
-                          bottom: Radius.circular(45),
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Create Account', style: AppStyle.button),
-                            SizedBox(height: 5),
-                            Text(
-                              'Join SERVE HOME today',
-                              style: AppStyle.button.copyWith(
-                                color: Color(0xffb7eaf7),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    WelcomeSignUpWidget(),
                     Padding(
                       padding: const EdgeInsets.only(top: 130),
                       child: Align(
@@ -81,144 +56,36 @@ class SignUpView extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Full Name'),
-                              TextFormField(
-                                validator: (value) {
-                                  return InputValidator.vaildateNameSignUp(
-                                    value!,
-                                  );
-                                },
-                                controller: name,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  prefixIcon: Icon(
-                                    Icons.email_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: 'Enter your Full name',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: AppColor.filledTextField,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                ),
+                              TextFormFieldWidget(
+                                contoller: name,
+                                hintText: 'Enter your name',
+                                icon: Icons.person_2_outlined,
+                                label: 'Name',
+                                isSignIn: false,
                               ),
                               SizedBox(height: 10),
-                              Text('Email'),
-                              SizedBox(height: 3),
-                              TextFormField(
-                                validator: (value) {
-                                  return InputValidator.vaildateEmailSignUp(
-                                    value!,
-                                  );
-                                },
-                                controller: email,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  prefixIcon: Icon(
-                                    Icons.email_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: 'Enter your address',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: AppColor.filledTextField,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                ),
+                              TextFormFieldWidget(
+                                contoller: email,
+                                hintText: 'Enter your address',
+                                icon: Icons.email_outlined,
+                                label: 'Email',
+                                isSignIn: false,
                               ),
                               SizedBox(height: 10),
-                              Text('Phone Number'),
-                              SizedBox(height: 3),
-                              TextFormField(
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                keyboardType: TextInputType.phone,
-                                validator: (value) {
-                                  return InputValidator.vaildatePhoneSignUp(
-                                    value!,
-                                  );
-                                },
-                                controller: phone,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  prefixIcon: Icon(
-                                    Icons.call_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: 'Enter your phone number',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: AppColor.filledTextField,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                ),
+                              TextFormFieldWidget(
+                                contoller: phone,
+                                hintText: 'Enter your phone number',
+                                icon: Icons.phone,
+                                label: 'Phone Number',
+                                isSignIn: false,
                               ),
                               SizedBox(height: 10),
-                              Text('Password'),
-                              SizedBox(height: 3),
-                              TextFormField(
-                                validator: (value) {
-                                  return InputValidator.vaildatePassSignUp(
-                                    value!,
-                                  );
-                                },
-                                controller: password,
-                                decoration: InputDecoration(
-                                  errorMaxLines: 3,
-                                  suffixIcon: Icon(
-                                    Icons.visibility_outlined,
-                                    color: Colors.grey,
-                                  ),
-                                  filled: true,
-                                  prefixIcon: Icon(
-                                    Icons.lock_outline_rounded,
-                                    color: Colors.grey,
-                                  ),
-                                  hintText: 'Enter your password',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  fillColor: AppColor.filledTextField,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                ),
+                              TextFormFieldWidget(
+                                contoller: password,
+                                hintText: 'Enter your password',
+                                icon: Icons.password,
+                                label: 'Password',
+                                isSignIn: false,
                               ),
 
                               SizedBox(height: 20),
@@ -253,7 +120,7 @@ class SignUpView extends StatelessWidget {
                                                   name: name.text,
                                                   phone: phone.text,
                                                   email: email.text,
-                                                  role: 'user'
+                                                  role: 'user',
                                                 );
                                                 await provAuth.signUp(
                                                   password: password.text,
@@ -286,7 +153,11 @@ class SignUpView extends StatelessWidget {
                                                       )
                                                       .closed
                                                       .then((value) {
-                                                        provAuth.reset();
+                                                        ;
+                                                        provAuth.errorMessage =
+                                                            '';
+                                                        provAuth.isLoading =
+                                                            false;
                                                       });
                                                 }
                                               }

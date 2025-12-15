@@ -1,14 +1,17 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:serve_home/core/notifications/firebase_messaging_service.dart';
 import 'package:serve_home/core/notifications/notification_service.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/auth/domain/use_cases/listen_to_user_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_in_use_case.dart';
+import 'package:serve_home/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_up_use_case.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
@@ -39,13 +42,22 @@ import 'package:serve_home/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-    await NotificationService.init();  
+  if (!kIsWeb) {
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    await NotificationService.init();
+    await FirebaseMessagingService.init();
+  }
 
-Directory appDocDir = await getApplicationDocumentsDirectory() ; 
-  String path = appDocDir.path;
-   Hive.init(path) ; 
+  // Directory appDocDir = await getApplicationDocumentsDirectory();
+  // String path = appDocDir.path;
+  // Hive.init(path);
 
   runApp(const MyApp());
+}
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Background Message: ${message.messageId}");
 }
 
 class MyApp extends StatelessWidget {
@@ -61,10 +73,13 @@ class MyApp extends StatelessWidget {
             lazy: false,
           ),
           ChangeNotifierProvider(
-            create: (context) => ProfileViewModel(updateUserDataUseCase: UpdateUserDataUseCase()),
+            create:
+                (context) => ProfileViewModel(
+                  updateUserDataUseCase: UpdateUserDataUseCase(),
+                ),
             lazy: false,
           ),
-      
+
           ChangeNotifierProvider(
             create:
                 (context) => LocationViewModel(
@@ -74,22 +89,29 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create:
-                (context) =>
-                    ServiceViewModel(addServicesUseCase: AddServicesUseCase() ,getServicesUseCase: GetServicesUseCase() , deleteServiceUseCase: DeleteServiceUseCase() ,  updateServiceUseCase: UpdateServiceUseCase() , getCategoriesUseCase: GetCategoriesUseCase() , ),
+                (context) => ServiceViewModel(
+                  addServicesUseCase: AddServicesUseCase(),
+                  getServicesUseCase: GetServicesUseCase(),
+                  deleteServiceUseCase: DeleteServiceUseCase(),
+                  updateServiceUseCase: UpdateServiceUseCase(),
+                  getCategoriesUseCase: GetCategoriesUseCase(),
+                ),
           ),
           ChangeNotifierProvider(
             create:
                 (context) => BookingViewModel(
-             fetchBookingsByStatusUseCase: FetchBookingsByStatusUseCase(),
+                  notificationViewModel: NotificationViewModel(serviceViewModel: ServiceViewModel(getCategoriesUseCase: GetCategoriesUseCase(), addServicesUseCase: AddServicesUseCase(), getServicesUseCase: GetServicesUseCase(), deleteServiceUseCase: DeleteServiceUseCase(), updateServiceUseCase: UpdateServiceUseCase()), addNotificationUseCase: AddNotificationUseCase(), markAsReadUseCase: MarkAsReadUseCase(), getNotificationUseCase: GetNotificationUseCase()),
+                  fetchBookingsByStatusUseCase: FetchBookingsByStatusUseCase(),
                   createBookingUseCase: CreateBookingUseCase(),
-                  fetchAllBookingsUseCase: FetchAllBookingsUseCase(),   
+                  fetchAllBookingsUseCase: FetchAllBookingsUseCase(),
                   updateStatusBookUseCase: UpdateStatusBookUseCase(),
-                  fetchAllUsersBookingsUseCase: FetchAllUsersBookingsUseCase(), 
+                  fetchAllUsersBookingsUseCase: FetchAllUsersBookingsUseCase(),
                 ),
           ),
           ChangeNotifierProvider(
             create:
                 (context) => AuthViewModel(
+                  signOutUseCase: SignOutUseCase(),
                   listenToUserUseCase: ListenToUserUseCase(),
                   signUpUseCase: SignUpUseCase(),
                   signInUseCase: SignInUseCase(),
@@ -97,12 +119,23 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create:
-                (context) =>NotificationViewModel( serviceViewModel: ServiceViewModel(getCategoriesUseCase: GetCategoriesUseCase(), addServicesUseCase: AddServicesUseCase(), getServicesUseCase: GetServicesUseCase(), deleteServiceUseCase: DeleteServiceUseCase(), updateServiceUseCase: UpdateServiceUseCase()), addNotificationUseCase:AddNotificationUseCase(), getNotificationUseCase:GetNotificationUseCase() , markAsReadUseCase: MarkAsReadUseCase() )
+                (context) => NotificationViewModel(
+                  serviceViewModel: ServiceViewModel(
+                    getCategoriesUseCase: GetCategoriesUseCase(),
+                    addServicesUseCase: AddServicesUseCase(),
+                    getServicesUseCase: GetServicesUseCase(),
+                    deleteServiceUseCase: DeleteServiceUseCase(),
+                    updateServiceUseCase: UpdateServiceUseCase(),
+                  ),
+                  addNotificationUseCase: AddNotificationUseCase(),
+                  getNotificationUseCase: GetNotificationUseCase(),
+                  markAsReadUseCase: MarkAsReadUseCase(),
+                ),
           ),
         ],
         child: MaterialApp.router(
           theme: ThemeData().copyWith(scaffoldBackgroundColor: Colors.white),
-          debugShowCheckedModeBanner: false,                                                            
+          debugShowCheckedModeBanner: false,
           routerConfig: AppRouter.routers,
         ),
       ),

@@ -2,28 +2,42 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationRemoteDataSource {
+  // متغير لتخزين حالة السماح بالموقع أثناء الجلسة
+  bool _isPermissionGranted = false;
+
   Future<Position> getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
     }
 
-    permission = await Geolocator.checkPermission();
+    // إذا تم السماح مسبقاً، رجع الموقع مباشرة
+    if (_isPermissionGranted) {
+      return await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    }
+
+    // تحقق من الإذن الحالي
+    LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
     }
+
     if (permission == LocationPermission.deniedForever) {
       return Future.error(
         'Location permissions are permanently denied, cannot request.',
       );
     }
 
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      _isPermissionGranted = true; // تم السماح، خزّن الحالة
+      return await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+    } else {
+      return Future.error('Location permission denied.');
+    }
   }
 
   Future<String> getAddressFromLatLng(double lat, double lng) async {
@@ -32,8 +46,7 @@ class LocationRemoteDataSource {
       Placemark place = placeMarks[0];
       return '${place.street} - ${place.locality} - ${place.country}';
     } on Exception catch (e) {
-      Future.error('${e}');
-      return '';
+      return Future.error('$e');
     }
   }
 }

@@ -35,7 +35,7 @@ class BookingRepositoryImpl extends BookingRepository {
 
  
   @override
-  Future<List<BookModel>> fetchBookingsByStatus({required String idUser , required String status}) {
+  Stream<List<BookModel>> fetchBookingsByStatus({required String idUser , required String status}) {
     return bookingRemoteDataSource.fetchBookingsByStatus(idUser , status) ; 
   }
 }

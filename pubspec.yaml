@@ -53,8 +53,10 @@ dependencies:
   firebase_storage: ^11.7.2
   overlay_support: ^2.1.0
   flutter_local_notifications: ^19.5.0
-  hive: ^2.2.3
+  # hive: ^2.2.3
   path_provider: ^2.1.5
+  firebase_messaging: ^14.9.4
+  
 
 
 

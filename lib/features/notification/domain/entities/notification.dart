@@ -3,7 +3,7 @@ class NotificationClass {
   final String? id;
   final String title;
   final String body;
-  final DateTime dateTime;
+
   final bool read;
   final String userId;
   final String type;
@@ -16,7 +16,7 @@ class NotificationClass {
     this.id,
     required this.title,
     required this.body,
-    required this.dateTime,
+
     required this.read,
     required this.userId,
     required this.type,

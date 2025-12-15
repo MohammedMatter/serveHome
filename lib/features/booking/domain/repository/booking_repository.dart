@@ -5,7 +5,7 @@ abstract class BookingRepository {
   Stream<List<BookModel>> listenToAllBookings({required String idUser});
   Future<List<BookModel>> fetchAllUsersBookings();
 
-  Future<List<BookModel>> fetchBookingsByStatus({required String idUser , required String status });
+  Stream<List<BookModel>> fetchBookingsByStatus({required String idUser , required String status });
   Future updateBookingStatus({
     required String idUser,
     required String idbook,

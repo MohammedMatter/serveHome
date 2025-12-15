@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
+import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
@@ -63,7 +64,11 @@ class _ProfileViewState extends State<ProfileView> {
                           top: 25,
                           right: 20,
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              GoRouter.of(
+                                context,
+                              ).pushNamed(AppRouter.settingsView);
+                            },
                             icon: Icon(
                               Icons.settings,
                               color: Colors.white,
@@ -156,35 +161,52 @@ class _ProfileViewState extends State<ProfileView> {
                                     showDialog(
                                       context: context,
                                       builder:
-                                          (context) => AlertDialog(
-                                            title: Text('Confirm Logout'),
-                                            content: Text(
-                                              'Are you sure you want to logout?',
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed:
-                                                    () =>
+                                          (context) => Consumer<AuthViewModel>(
+                                            builder: (context, provAuth, child) =>  Stack(
+                                              children: [
+                                                                                  
+                                                AlertDialog(
+                                                  title: Text('Confirm Logout'),
+                                                  content: Text(
+                                                    'Are you sure you want to logout?',
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed:
+                                                          () =>
+                                                              GoRouter.of(
+                                                                context,
+                                                              ).pop(),
+                                                      child: Text(
+                                                        'Cancel',
+                                                        style: TextStyle(
+                                                          color: AppColor.primary,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        await provAuth.signOut();
+                                                        provAuth.reset(context) ; 
                                                         GoRouter.of(
+                                                          // ignore: use_build_context_synchronously
                                                           context,
-                                                        ).pop(),
-                                                child: Text(
-                                                  'Cancel',
-                                                  style: TextStyle(
-                                                    color: AppColor.primary,
-                                                  ),
+                                                        ).pushReplacementNamed(
+                                                          AppRouter.signInView,
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                        'Logout',
+                                                        style: TextStyle(
+                                                          color: Colors.red,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {},
-                                                child: Text(
-                                                  'Logout',
-                                                  style: TextStyle(
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                                 provAuth.isLoading?Center(child: CircularProgressIndicator(color: AppColor.primary,)):SizedBox.shrink()
+                                              ],
+                                            ),
                                           ),
                                     );
                                   },

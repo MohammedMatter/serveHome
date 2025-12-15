@@ -43,7 +43,7 @@ class BookingRemoteDataSource {
         .collection('users')
         .doc(idUser)
         .collection('bookings')
-        .snapshots()
+        .snapshots(source: ListenSource.defaultSource)
         .map(
           (snapShot) =>
               snapShot.docs
@@ -70,7 +70,7 @@ class BookingRemoteDataSource {
       );
     }
 
-    for (var element in users) {
+  for (var element in users) {
       final snapShoot =
           await firestore
               .collection('users')
@@ -85,28 +85,20 @@ class BookingRemoteDataSource {
     return data;
   }
 
-  Future<List<BookModel>> fetchBookingsByStatus(
-    String idUser,
-    String status,
-  ) async {
+  Stream<List<BookModel>> fetchBookingsByStatus(String idUser, String status) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    List<BookModel> data = [];
-    try {
-      final snapShot =
-          await firestore
-              .collection('users')
-              .doc(idUser)
-              .collection('bookings')
-              .where('status', isEqualTo: status)
-              .get();
 
-      for (var element in snapShot.docs) {
-        data.add(BookModel.fromMap(element.data()));
-        return data;
-      }
-    } catch (e) {
-      log('***${e}');
-    }
-    return data;
+    final snapShot =
+        firestore
+            .collection('users')
+            .doc(idUser)
+            .collection('bookings')
+            .where('status', isEqualTo: status)
+            .snapshots();
+
+    return snapShot.map(
+      (snapShot) =>
+          snapShot.docs.map((doc) => BookModel.fromMap(doc.data())).toList(),
+    );
   }
 }

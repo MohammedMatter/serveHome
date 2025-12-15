@@ -10,6 +10,7 @@ import 'package:serve_home/features/services/domain/user_cases/get_services_use_
 import 'package:serve_home/features/services/domain/user_cases/update_service_use_case.dart';
 
 class ServiceViewModel extends ChangeNotifier {
+  String searchText = '';
   bool isLoading = false;
   AddServicesUseCase addServicesUseCase;
   GetServicesUseCase getServicesUseCase;
@@ -19,6 +20,7 @@ class ServiceViewModel extends ChangeNotifier {
   List<ServiceModel> services = [];
   List<Category> categories = [];
   List<ServiceModel> servicesFilterList = [];
+  List<ServiceModel> SearchServiceFilterSList = [];
   String? selectedCategory;
   bool isHovered = false;
 
@@ -32,6 +34,31 @@ class ServiceViewModel extends ChangeNotifier {
   });
   void isContainerHovered(bool isHovered) {
     this.isHovered = isHovered;
+    notifyListeners();
+  }
+
+  void reset() {
+    searchText = '';
+    servicesFilterList = [...services] ; 
+    notifyListeners();
+  }
+
+  void changeSearchtext(String txt) {
+    searchText = txt.trim();
+    if (searchText.isEmpty) {
+      servicesFilterList = [...services];
+    } else {
+      log(txt);
+   
+      servicesFilterList =
+          services
+              .where(
+                (service) =>
+                    service.name.toLowerCase().contains(txt.toLowerCase()),
+              )
+              .map((service) => service)
+              .toList();
+    }
     notifyListeners();
   }
 
@@ -70,7 +97,7 @@ class ServiceViewModel extends ChangeNotifier {
     isLoading = true;
 
     services = await getServicesUseCase.call();
-
+    servicesFilterList = [...services];
     isLoading = false;
     getCategories();
     notifyListeners();
@@ -86,8 +113,6 @@ class ServiceViewModel extends ChangeNotifier {
     services.remove(serviceModel);
     notifyListeners();
   }
-
- 
 
   Future updateService({required ServiceModel serviceModel}) async {
     await updateServiceUseCase.call(serviceModel: serviceModel);

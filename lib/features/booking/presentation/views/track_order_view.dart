@@ -12,6 +12,7 @@ import 'package:serve_home/features/booking/presentation/widgets/cancel_order_bu
 import 'package:serve_home/features/booking/presentation/widgets/order_status_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/service_details_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/track_order_header_widget.dart';
+import 'package:serve_home/features/home/presentation/view_models/home_view_model.dart';
 import 'package:serve_home/features/notification/data/models/notification_model.dart';
 import 'package:serve_home/features/notification/presentation/view_models/notification_view_model.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
@@ -22,12 +23,13 @@ class TrackOrderView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer5<
+    return Consumer6<
       LocationViewModel,
       BookingViewModel,
       ServiceViewModel,
       AuthViewModel,
-      NotificationViewModel
+      NotificationViewModel,
+      HomeViewModel
     >(
       builder:
           (
@@ -37,6 +39,7 @@ class TrackOrderView extends StatelessWidget {
             provService,
             provAuth,
             provNotification,
+            provHome,
             child,
           ) => Scaffold(
             bottomNavigationBar: SizedBox(
@@ -54,24 +57,37 @@ class TrackOrderView extends StatelessWidget {
                         serviceAddress: provLocation.address,
                         paymentMethod: provBooking.selectedPaymentMethod,
                         serviceName: provService.selectedService!.name,
-                        userId: provAuth.user!.id!,
+                        userId: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
                         status: 'Pending',
                         note: provBooking.note,
                         imageUrl: provService.selectedService!.detailImageUrl,
-                        price: provService.selectedService!.price,
+                        price:
+                            provBooking.isFirstBooking
+                                ? (double.parse(
+                                          provService.selectedService!.price,
+                                        ) -
+                                        ((double.parse(
+                                                  provService
+                                                      .selectedService!
+                                               .price,
+                                                ) +
+                                                1.90) *
+                                            0.2)).toStringAsFixed(2)
+                                    .toString()
+                                : (double.parse(provService.selectedService!.price)+ 1.90).toString(),
                         provider: provAuth.user!.name,
                         email: provAuth.user!.email,
                       );
-                   final book =    await provBooking.createBooking(bookModel: bookModel);
+                      final book = await provBooking.createBooking(
+                        bookModel: bookModel,
+                      );
                       NotificationModel notification = NotificationModel(
                         createAt: DateTime.now(),
                         status: 'Pending',
-                        bookingId:
-                            book.id! , 
-                        title: "ServeHome",
+                        bookingId: book.id!,
+                        title: "Your reservation has been received",
                         body:
-                            "Your request for ${provService.selectedService!.name} awaiting confirmation",
-                        dateTime: DateTime.now(),
+                            "Your request for ${provService.selectedService!.name} awaiting confirmation",                 
                         read: false,
                         userId: provAuth.user!.id!,
                         type: "booking",
@@ -83,7 +99,8 @@ class TrackOrderView extends StatelessWidget {
                       await provNotification.showNotification(
                         notification: notification,
                       );
-
+                      provHome.reset();
+                      provBooking.reset();
                       GoRouter.of(context).pushNamed(AppRouter.completeView);
                     },
                     label: 'Complete',

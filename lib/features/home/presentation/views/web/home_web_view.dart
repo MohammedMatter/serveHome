@@ -9,7 +9,7 @@ import 'package:serve_home/features/home/presentation/widgets/web_widgets/drawer
 
 // ignore: must_be_immutable
 class HomeWebView extends StatelessWidget {
-  HomeWebView({super.key});
+  const HomeWebView({super.key});
 
   @override
   Widget build(BuildContext context) {

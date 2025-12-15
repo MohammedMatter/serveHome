@@ -16,7 +16,10 @@ import 'package:serve_home/features/home/presentation/views/web/bookings_web_vie
 import 'package:serve_home/features/home/presentation/views/web/dashboard_web_view.dart';
 import 'package:serve_home/features/home/presentation/views/web/home_web_view.dart';
 import 'package:serve_home/features/notification/presentation/views/notification_view.dart';
+import 'package:serve_home/features/profile/presentation/views/about_app_view.dart';
+import 'package:serve_home/features/profile/presentation/views/change_password_view.dart';
 import 'package:serve_home/features/profile/presentation/views/profile_view.dart';
+import 'package:serve_home/features/profile/presentation/views/settings_view.dart';
 import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/views/mobile/all_services_view.dart';
 import 'package:serve_home/features/services/presentation/views/mobile/category_services_view.dart';
@@ -43,9 +46,12 @@ class AppRouter {
   static final String categoriesWebView = 'Categories Web View';
   static final String categoryServicesView = 'Category Services View';
   static final String allServicesView = 'All Services View';
+  static final String settingsView = 'Settings View';
+  static final String changePasswordView = 'Change Password View';
+  static final String aboutAppView = 'About App View';
 
   static final routers = GoRouter(
-    initialLocation: '/signInView',
+    initialLocation: '/home',
     routes: [
       GoRoute(
         path: '/signInView',
@@ -66,6 +72,21 @@ class AppRouter {
         path: '/profileView',
         name: profileView,
         builder: (context, state) => ProfileView(),
+      ),
+      GoRoute(
+        path: '/aboutAppView',
+        name: aboutAppView,
+        builder: (context, state) => AboutAppView(),
+      ),
+      GoRoute(
+        path: '/settingsView',
+        name: settingsView,
+        builder: (context, state) => SettingsView(),
+      ),
+      GoRoute(
+        path: '/changePasswordView',
+        name: changePasswordView,
+        builder: (context, state) => ChangePasswordView(),
       ),
       GoRoute(
         path: '/allServicesView',

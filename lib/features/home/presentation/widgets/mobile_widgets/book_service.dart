@@ -5,6 +5,7 @@ import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
+import 'package:serve_home/features/home/presentation/view_models/home_view_model.dart';
 import 'package:serve_home/features/notification/presentation/view_models/notification_view_model.dart';
 
 class BookServiceWidget extends StatelessWidget {
@@ -51,11 +52,12 @@ class BookServiceWidget extends StatelessWidget {
                     style: AppStyle.appBarTitle.copyWith(fontSize: 20),
                   ),
                   SizedBox(height: 5),
-                  Consumer<NotificationViewModel>(
+                  Consumer<HomeViewModel>(
                     builder:
-                        (context, provListNotification, child) =>
+                        (context, provHome, child) =>
                             ElevatedButton.icon(
                               onPressed: () async {
+                                provHome.changeBottomNavigationBarIndex(1) ; 
                                 GoRouter.of(
                                   context,
                                 ).pushNamed(AppRouter.allServicesView);

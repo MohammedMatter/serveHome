@@ -44,7 +44,6 @@ class BookModel extends Book {
       serviceCategory: map['serviceCategory'],
       serviceDescription: map['serviceDescription'],
       date: map['date'].toString(),
-
       time: map['time'],
       serviceAddress: map['serviceAddress'],
       paymentMethod: map['paymentMethod'],

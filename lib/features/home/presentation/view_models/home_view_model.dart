@@ -13,8 +13,16 @@ class HomeViewModel extends ChangeNotifier {
     this.drowerIndex = drowerIndex;
     notifyListeners();
   }
+
   void changeStatus(String status) {
     this.status = status;
     notifyListeners();
+  }
+
+  void reset() {
+     bottomNavigationBarIndex = 0;
+     drowerIndex = 0;
+     status = '';
+     notifyListeners() ; 
   }
 }

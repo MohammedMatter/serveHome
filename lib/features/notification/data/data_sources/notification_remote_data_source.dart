@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:serve_home/features/notification/data/models/notification_model.dart';
 
@@ -6,6 +8,7 @@ class NotificationRemoteDataSource {
     required String idUser,
     required NotificationModel notification,
   }) async {
+ 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     final collectionReference =
         firestore
@@ -13,6 +16,7 @@ class NotificationRemoteDataSource {
             .doc(idUser)
             .collection('notifications')
             .doc();
+
     final idReferance = collectionReference.id;
     collectionReference.set({...notification.toMap(), 'id': idReferance});
   }
@@ -35,7 +39,7 @@ class NotificationRemoteDataSource {
         .collection('users')
         .doc(idUser)
         .collection('notifications')
-        .orderBy('dateTime', descending: true)
+        .orderBy('createAt', descending: true)
         .snapshots(source: ListenSource.defaultSource)
         .map(
           (snapShot) =>
