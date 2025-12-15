@@ -51,7 +51,7 @@ class AppRouter {
   static final String aboutAppView = 'About App View';
 
   static final routers = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/signInView',
     routes: [
       GoRoute(
         path: '/signInView',
