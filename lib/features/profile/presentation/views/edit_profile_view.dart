@@ -42,61 +42,68 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
       body: Consumer2<ProfileViewModel, AuthViewModel>(
         builder:
-            (context, provProfile, provAuth, child) => Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      prefixIcon: Icon(Icons.account_circle),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                 
-                  const SizedBox(height: 15),
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Mobile',
-                      prefixIcon: Icon(Icons.phone_android),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () async {
-                      provProfile.updateUserData(
-                        idUser: provAuth.user!.id!,
-                        name: nameController.text,
-                        email: emailController.text,
-                        phone: phoneController.text,
-                      );
-                      final user = FirebaseAuth.instance.currentUser;
-                      await user!.updateDisplayName(nameController.text);
+            (context, provProfile, provAuth, child) => Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          labelText: 'Name',
+                          prefixIcon: Icon(Icons.account_circle),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
 
-                      await user.updateEmail(emailController.text);
-                      await user.reload();
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.primary,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 15,
-                        horizontal: 50,
+                      const SizedBox(height: 15),
+                      TextField(
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          labelText: 'Mobile',
+                          prefixIcon: Icon(Icons.phone_android),
+                          border: OutlineInputBorder(),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await provProfile.updateUserData(
+                            idUser: provAuth.user!.id!,
+                            name: nameController.text,
+                            email: emailController.text,
+                            phone: phoneController.text,
+                          );
+                          final user = FirebaseAuth.instance.currentUser;
+                          await user!.updateDisplayName(nameController.text);
+
+                          await user.updateEmail(emailController.text);
+                          await user.reload();
+                          Navigator.pop(context);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.primary,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 15,
+                            horizontal: 50,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                provProfile.isLoading == true
+                    ? Center(child: CircularProgressIndicator())
+                    : SizedBox.shrink(),
+              ],
             ),
       ),
     );

@@ -17,11 +17,13 @@ class BookingRepositoryImpl extends BookingRepository {
 
   @override
   Future updateBookingStatus({
+
     required String idUser,
     required String idbook,
     required String status,
   }) {
     return bookingRemoteDataSource.updateBookingStatus(
+
       idUser: idUser,
       idbook: idbook,
       status: status,

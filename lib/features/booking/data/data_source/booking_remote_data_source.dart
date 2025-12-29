@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/booking/data/models/book_model.dart';
@@ -26,6 +26,8 @@ class BookingRemoteDataSource {
     required String idUser,
     required String idbook,
     required String status,
+
+    
   }) async {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -34,7 +36,9 @@ class BookingRemoteDataSource {
         .doc(idUser)
         .collection('bookings')
         .doc(idbook)
-        .update({'status': status});
+        .update({'status': status,
+  
+        });
   }
 
   Stream<List<BookModel>> listenToAllBookings(String idUser) {

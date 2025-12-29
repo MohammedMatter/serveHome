@@ -15,6 +15,7 @@ class BookingsHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<BookingViewModel>(
       builder: (context, provBooking, child) =>  Container(
+        margin: EdgeInsets.only(top: 15),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(color: Colors.black12, blurRadius: 10),

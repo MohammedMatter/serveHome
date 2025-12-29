@@ -5,17 +5,20 @@ import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/booking/presentation/widgets/custom_book_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/payment_methods_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/price_details_widget.dart';
+import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
 
+// ignore: must_be_immutable
 class ThirdBookView extends StatelessWidget {
-  const ThirdBookView({super.key});
+   ThirdBookView({super.key , required this.serviceModel});
+  ServiceModel serviceModel ; 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBarDetailsWidget(
         navigationToAnotherScreen: () {
-          GoRouter.of(context).pushNamed(AppRouter.trackOrderView);
+          GoRouter.of(context).pushNamed(AppRouter.trackOrderView );
         },
         label: 'Confirm bokking',
         icon: null,
@@ -32,11 +35,11 @@ class ThirdBookView extends StatelessWidget {
             child: Center(
               child: SizedBox(
                 height: double.infinity,
-
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CusstomBookWidget(
+                      serviceModel: serviceModel,
                       indexScreen: 2,
                       fun: () {
                         GoRouter.of(context).pop();

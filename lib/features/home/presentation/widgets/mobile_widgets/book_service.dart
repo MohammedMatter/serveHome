@@ -6,13 +6,13 @@ import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/home/presentation/view_models/home_view_model.dart';
-import 'package:serve_home/features/notification/presentation/view_models/notification_view_model.dart';
 
 class BookServiceWidget extends StatelessWidget {
   const BookServiceWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final double radius = (ScreenSize.w(context) * 0.02).clamp(12, 20);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -22,12 +22,13 @@ class BookServiceWidget extends StatelessWidget {
           color: AppColor.primary,
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 25),
+          padding:  EdgeInsets.only(top: ScreenSize.h(context)*0.04),
           child: Align(
             child: Container(
+              margin: EdgeInsets.symmetric(horizontal: ScreenSize.w(context)*0.1),
               alignment: Alignment.center,
-              height: 100,
-              width: 350,
+              height: (ScreenSize.h(context)*0.11).clamp(100, double.infinity),
+              width: double.infinity,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -36,7 +37,7 @@ class BookServiceWidget extends StatelessWidget {
                     offset: Offset(0, 5),
                   ),
                 ],
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(radius),
                 gradient: LinearGradient(
                   colors: [
                     AppColor.primary,
@@ -49,37 +50,41 @@ class BookServiceWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Ready to book your service?',
-                    style: AppStyle.appBarTitle.copyWith(fontSize: 20),
+                    style: AppStyle.appBarTitle.copyWith(fontSize: (ScreenSize.w(context)*0.04).clamp(20, 25)),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: ScreenSize.h(context)*0.01),
                   Consumer<HomeViewModel>(
                     builder:
                         (context, provHome, child) =>
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                provHome.changeBottomNavigationBarIndex(1) ; 
-                                GoRouter.of(
-                                  context,
-                                ).pushNamed(AppRouter.allServicesView);
-                              },
-                              iconAlignment: IconAlignment.end,
-                              icon: Icon(
-                                Icons.arrow_forward_rounded,
-                                color: Colors.white,
-                              ),
-                              label: Text(
-                                'Book a Service',
-                                style: AppStyle.button,
-                              ),
-                              style: ButtonStyle(
-                                shape: WidgetStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
+                            SizedBox(
+                              height:( ScreenSize.h(context)*0.05).clamp(40, double.infinity) ,
+                              width: ScreenSize.w(context)*0.5,
+                              child: ElevatedButton.icon(
+                                onPressed: () async {
+                                  provHome.changeBottomNavigationBarIndex(1) ; 
+                                  GoRouter.of(
+                                    context,
+                                  ).pushNamed(AppRouter.allServicesView);
+                                },
+                                iconAlignment: IconAlignment.end,
+                                icon: Icon(
+                                  Icons.arrow_forward_rounded,
+                                  color: Colors.white,
                                 ),
-
-                                backgroundColor: WidgetStatePropertyAll(
-                                  AppColor.secondry,
+                                label: Text(
+                                  'Book a Service',
+                                  style: AppStyle.button,
+                                ),
+                                style: ButtonStyle(
+                                  shape: WidgetStatePropertyAll(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(radius),
+                                    ),
+                                  ),
+                              
+                                  backgroundColor: WidgetStatePropertyAll(
+                                    AppColor.secondry,
+                                  ),
                                 ),
                               ),
                             ),

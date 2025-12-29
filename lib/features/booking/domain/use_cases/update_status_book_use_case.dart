@@ -6,11 +6,14 @@ class UpdateStatusBookUseCase {
     required String idUser,
     required String idbook,
     required String status,
+    required String lastUpdatedBy
   }) async {
     return bookingRepositoryImpl.updateBookingStatus(
+
       idUser: idUser,
       idbook: idbook,
       status: status,
+      
     );
   }
 }

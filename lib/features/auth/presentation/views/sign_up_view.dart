@@ -122,6 +122,7 @@ class SignUpView extends StatelessWidget {
                                                   email: email.text,
                                                   role: 'user',
                                                 );
+                                           
                                                 await provAuth.signUp(
                                                   password: password.text,
                                                   userModel: userModel,

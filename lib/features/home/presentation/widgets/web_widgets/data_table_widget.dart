@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
@@ -93,7 +93,9 @@ class DateTableWidget extends StatelessWidget {
                             DataCell(
                               PopupMenuButton(
                                 onSelected: (value) async {
+                                
                                   await provBooking.updateBookingStatus(
+                                    lastUpdatedBy: 'web',
                                     idUser: e.userId,
                                     idbook: e.id!,
                                     status: value,

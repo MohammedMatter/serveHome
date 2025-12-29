@@ -6,11 +6,10 @@ class NotificationModel extends NotificationClass {
     required  super.status , 
     required super.title,
     required super.body,
-
     required super.read,
     required super.userId,
     required super.type,
-  required  super.createAt , 
+    super.createAt , 
     super.id,
     super.bookingId,
   });
@@ -19,13 +18,12 @@ class NotificationModel extends NotificationClass {
       'id': id,
       'title': title,
       'body': body,
-
       'read': read,
       'userId': userId,
       'type': type,
       'bookingId': bookingId,
       'status': status,
-      'createAt':createAt
+      'createAt':FieldValue.serverTimestamp()
     };
   }
 

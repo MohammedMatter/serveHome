@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:serve_home/core/notifications/notification_service.dart';
 import 'package:serve_home/features/notification/data/models/notification_model.dart';
@@ -24,7 +23,6 @@ class NotificationViewModel extends ChangeNotifier {
   List<NotificationModel> unreadNotifications = [];
   List<NotificationModel> bookingNotification = [];
   List<NotificationModel> get notifications => _notifications;
-
   Future addNotification({
     required String idUser,
     required NotificationModel notification,
@@ -40,7 +38,7 @@ class NotificationViewModel extends ChangeNotifier {
     await NotificationService.showNotification(notification: notification);
   }
 
-  Future<void> maekAsRead({
+  Future<void> markAsRead({
     required String idNotification,
     required String idUser,
   }) async {
@@ -52,6 +50,7 @@ class NotificationViewModel extends ChangeNotifier {
 
   void startListening({required String idUser}) async {
     _sub = getNotificationUseCase.call(idUser: idUser).listen((list) async {
+      _notifications.clear();
       _notifications = list;
       unreadNotifications =
           _notifications

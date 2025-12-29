@@ -3,7 +3,7 @@ class UserApp {
   String? id;
   String email;
   String phone;
-String role  ; 
+String ?role  ; 
 
   UserApp({
     required this.name,

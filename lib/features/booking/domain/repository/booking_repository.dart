@@ -10,5 +10,6 @@ abstract class BookingRepository {
     required String idUser,
     required String idbook,
     required String status,
+   
   });
 }

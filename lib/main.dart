@@ -1,15 +1,18 @@
-import 'dart:io';
+import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/notifications/firebase_messaging_service.dart';
 import 'package:serve_home/core/notifications/notification_service.dart';
 import 'package:serve_home/core/router/app_router.dart';
+import 'package:serve_home/features/auth/domain/use_cases/get_login_status_use_case.dart';
+import 'package:serve_home/features/auth/domain/use_cases/get_user_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/listen_to_user_use_case.dart';
+import 'package:serve_home/features/auth/domain/use_cases/save_login_status_use_case.dart';
+import 'package:serve_home/features/auth/domain/use_cases/save_user_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_in_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_up_use_case.dart';
@@ -38,30 +41,42 @@ import 'package:serve_home/features/services/domain/user_cases/get_services_use_
 import 'package:serve_home/features/services/domain/user_cases/update_service_use_case.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 import 'package:serve_home/firebase_options.dart';
-
+late final AppRouter appRouter;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (!kIsWeb) {
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
     await NotificationService.init();
     await FirebaseMessagingService.init();
   }
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
+  final authViewModel = AuthViewModel(
+    saveLoginStatusUseCase: SaveLoginStatusUseCase(),
+    getLoginStatusUseCase: GetLoginStatusUseCase(),
+    signOutUseCase: SignOutUseCase(),
+    listenToUserUseCase: ListenToUserUseCase(),
+    signUpUseCase: SignUpUseCase(),
+    signInUseCase: SignInUseCase(),
+    getUserUseCase: GetUserUseCase(),
+    saveUserUseCase: SaveUserUseCase(),
+  );
+  final isLogin = await authViewModel.getLoginStatusUseCase.call();
+    appRouter = AppRouter(isLogin: isLogin);
 
-  // Directory appDocDir = await getApplicationDocumentsDirectory();
-  // String path = appDocDir.path;
-  // Hive.init(path);
-
-  runApp(const MyApp());
+  runApp(MyApp(authViewModel: authViewModel, isLogin: isLogin));
 }
 
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print("Background Message: ${message.messageId}");
-}
-
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AuthViewModel authViewModel;
+  bool isLogin;
+  MyApp({super.key, required this.authViewModel, required this.isLogin});
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +115,18 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create:
                 (context) => BookingViewModel(
-                  notificationViewModel: NotificationViewModel(serviceViewModel: ServiceViewModel(getCategoriesUseCase: GetCategoriesUseCase(), addServicesUseCase: AddServicesUseCase(), getServicesUseCase: GetServicesUseCase(), deleteServiceUseCase: DeleteServiceUseCase(), updateServiceUseCase: UpdateServiceUseCase()), addNotificationUseCase: AddNotificationUseCase(), markAsReadUseCase: MarkAsReadUseCase(), getNotificationUseCase: GetNotificationUseCase()),
+                  notificationViewModel: NotificationViewModel(
+                    serviceViewModel: ServiceViewModel(
+                      getCategoriesUseCase: GetCategoriesUseCase(),
+                      addServicesUseCase: AddServicesUseCase(),
+                      getServicesUseCase: GetServicesUseCase(),
+                      deleteServiceUseCase: DeleteServiceUseCase(),
+                      updateServiceUseCase: UpdateServiceUseCase(),
+                    ),
+                    addNotificationUseCase: AddNotificationUseCase(),
+                    markAsReadUseCase: MarkAsReadUseCase(),
+                    getNotificationUseCase: GetNotificationUseCase(),
+                  ),
                   fetchBookingsByStatusUseCase: FetchBookingsByStatusUseCase(),
                   createBookingUseCase: CreateBookingUseCase(),
                   fetchAllBookingsUseCase: FetchAllBookingsUseCase(),
@@ -108,15 +134,7 @@ class MyApp extends StatelessWidget {
                   fetchAllUsersBookingsUseCase: FetchAllUsersBookingsUseCase(),
                 ),
           ),
-          ChangeNotifierProvider(
-            create:
-                (context) => AuthViewModel(
-                  signOutUseCase: SignOutUseCase(),
-                  listenToUserUseCase: ListenToUserUseCase(),
-                  signUpUseCase: SignUpUseCase(),
-                  signInUseCase: SignInUseCase(),
-                ),
-          ),
+          ChangeNotifierProvider(create: (context) => authViewModel),
           ChangeNotifierProvider(
             create:
                 (context) => NotificationViewModel(
@@ -136,7 +154,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           theme: ThemeData().copyWith(scaffoldBackgroundColor: Colors.white),
           debugShowCheckedModeBanner: false,
-          routerConfig: AppRouter.routers,
+          routerConfig: appRouter.routers,
         ),
       ),
     );

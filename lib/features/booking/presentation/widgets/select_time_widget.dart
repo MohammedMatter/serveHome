@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 
 class SelectTimeWidget extends StatelessWidget {
   SelectTimeWidget({super.key});
-  List times = [
-    '11 : 00 Am',
-    '12 : 00 Pm',
-    '01 : 00 Pm',
-    '02 : 00 Pm',
-    '03 : 00 Pm',
-    '04 : 00 Pm',
-    '05 : 00 Pm',
-    '06 : 00 Pm',
+  final List<String> times = [
+    '11 : 00 AM',
+    '12 : 00 PM',
+    '01 : 00 PM',
+    '02 : 00 PM',
+    '03 : 00 PM',
+    '04 : 00 PM',
+    '05 : 00 PM',
+    '06 : 00 PM',
   ];
+
   @override
   Widget build(BuildContext context) {
+    final double titleFontSize = (ScreenSize.w(context) * 0.04).clamp(14, 18);
+    final double gridSpacing = (ScreenSize.w(context) * 0.02).clamp(8, 15);
+    final double borderRadius = (ScreenSize.w(context) * 0.03).clamp(10, 16);
+    final double fontSize = (ScreenSize.w(context) * 0.035).clamp(12, 16);
+    final double childAspectRatio = ScreenSize.w(context) / ScreenSize.h(context) * 2.5;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,62 +32,62 @@ class SelectTimeWidget extends StatelessWidget {
           'Select Time',
           style: AppStyle.body15.copyWith(
             color: Colors.black,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
+            fontSize: titleFontSize,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 15),
+        SizedBox(height: gridSpacing),
         Consumer<BookingViewModel>(
-          builder:
-              (context, provHome, child) => GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: times.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 8 / 4.4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  crossAxisCount: 2,
+          builder: (context, provBooking, child) => GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: times.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: ScreenSize.w(context) > 500 ? 3 : 2,
+              mainAxisSpacing: gridSpacing,
+              crossAxisSpacing: gridSpacing,
+              childAspectRatio: childAspectRatio,
+            ),
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+                provBooking.changeTimeIndex(index);
+                provBooking.selectTime(times[index]);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1.5,
+                    color: provBooking.timeIndex == index
+                        ? Color(0xff1f5d8c)
+                        : Colors.grey.withOpacity(0.4),
+                  ),
+                  color: provBooking.timeIndex == index
+                      ? Color(0xffeff6ff).withOpacity(0.7)
+                      : Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
-                itemBuilder:
-                    (context, index) => InkWell(
-                      onTap: () {
-                        provHome.changeTimeIndex(index);
-                        provHome.selectTime(times[index]);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1.2,
-                            color:
-                                provHome.timeIndex == index
-                                    ? Color(0xff1f5d8c)
-                                    : Colors.grey.withOpacity(0.4),
-                          ),
-                          color:
-                              provHome.timeIndex == index
-                                  ? Color(0xffeff6ff).withOpacity(0.7)
-                                  : Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              times[index],
-                              style: AppStyle.subTitle.copyWith(
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(Icons.timer_sharp, color: Colors.black),
-                          ],
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      times[index],
+                      style: AppStyle.subTitle.copyWith(
+                        fontSize: fontSize,
+                        color: Colors.black,
                       ),
                     ),
+                    SizedBox(width: gridSpacing / 2),
+                    Icon(
+                      Icons.timer_sharp,
+                      color: Colors.black,
+                      size: fontSize + 4,
+                    ),
+                  ],
+                ),
               ),
+            ),
+          ),
         ),
       ],
     );

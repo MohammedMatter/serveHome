@@ -29,7 +29,11 @@ class _NotificationViewState extends State<NotificationView> {
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      provNotification.startListening(idUser: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1');
+      final  provAuth = Provider.of<AuthViewModel>(
+      context,
+      listen: false,
+    );
+      provNotification.startListening(idUser: provAuth.user!.id!);
     });
   }
 
@@ -96,10 +100,10 @@ class _NotificationViewState extends State<NotificationView> {
                                         notification,
                                       ) {
                                         final difference = DateTime.now()
-                                            .difference(notification.createAt);
+                                            .difference(notification.createAt!);
                                         return GestureDetector(
                                           onTap: () async {
-                                            await provNotification.maekAsRead(
+                                            await provNotification.markAsRead(
                                               idNotification: notification.id!,
                                               idUser:
                                                   'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',

@@ -11,6 +11,10 @@ abstract class AuthRepository {
     required String password,
     required String email,
   });
+  Future<void>saveLoginStatus(bool isLoggedIn) ; 
+  Future<void>saveUser(UserModel user) ; 
+  Future<UserModel>getUser() ; 
+    Future<bool> getLoginStatus();
   Stream<UserModel> listenToUser(String idUser);
   Future<void> signOut();
 }

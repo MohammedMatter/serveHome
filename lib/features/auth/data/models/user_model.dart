@@ -5,7 +5,7 @@ class UserModel extends UserApp {
     required super.name,
     required super.phone,
     required super.email,
-    required super.role , 
+     super.role , 
      super.id,
   });
 

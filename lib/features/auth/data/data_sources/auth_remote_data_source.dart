@@ -1,10 +1,10 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:serve_home/core/errors/exception.dart';
 import 'package:serve_home/core/errors/failure.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthRemoteDataSource {
   Future<Either<Failure, Unit>> signUp({
@@ -66,5 +66,33 @@ class AuthRemoteDataSource {
   Future<void> signOut() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.signOut();
+  }
+
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setBool('isLoggedIn', isLoggedIn);
+  }
+
+  Future<bool> getLoginStatus() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    return pref.getBool('isLoggedIn')!;
+  }
+
+  Future<UserModel> getUser() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    return UserModel(
+      name: pref.getString('user_name')!,
+      phone: pref.getString('user_phone')!,
+      email: pref.getString('user_email')!,
+      id: pref.getString('user_id')
+    );
+  }
+
+  Future<void> saveUser(UserModel user) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('user_name', user.name);
+    await pref.setString('user_email', user.email);
+    await pref.setString('user_phone', user.phone);
+    await pref.setString('user_id', user.id!);
   }
 }

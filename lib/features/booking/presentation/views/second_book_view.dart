@@ -10,11 +10,12 @@ import 'package:serve_home/features/booking/presentation/widgets/additional_note
 import 'package:serve_home/features/booking/presentation/widgets/custom_book_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/text_field_service_address_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/dotted_border_widget.dart';
+import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
 
 class SecondBookView extends StatelessWidget {
-  const SecondBookView({super.key});
-
+   SecondBookView({super.key , required this.serviceModel});
+ServiceModel serviceModel ; 
   @override
   Widget build(BuildContext context) {
     return Consumer<LocationViewModel>(
@@ -50,7 +51,7 @@ class SecondBookView extends StatelessWidget {
                   );
                   return;
                 }
-                GoRouter.of(context).pushNamed(AppRouter.thirdBookView);
+                GoRouter.of(context).pushNamed(AppRouter.thirdBookView,  extra: serviceModel);
               },
               label: 'Continue',
               icon: null,
@@ -68,6 +69,7 @@ class SecondBookView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CusstomBookWidget(
+                        serviceModel: serviceModel,
                         indexScreen: 1,
                         fun: () {
                           GoRouter.of(context).pop();

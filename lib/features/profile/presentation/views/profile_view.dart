@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
@@ -23,224 +26,249 @@ class _ProfileViewState extends State<ProfileView> {
     super.initState();
     final authVM = Provider.of<AuthViewModel>(context, listen: false);
     final idUser = FirebaseAuth.instance.currentUser!.uid;
+
     authVM.listenToUser(idUser: idUser);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBarWidget(),
-      body: SafeArea(
-        child: Consumer2<BookingViewModel, AuthViewModel>(
-          builder:
-              (context, provBooking, provAuth, child) => SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBarWidget(),
+        body: Consumer2<BookingViewModel, AuthViewModel>(
+          builder: (context, provBooking, provAuth, child) {
+            if (provAuth.user == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          color: AppColor.primary,
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(40),
+                            bottomRight: Radius.circular(40),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 40,
+                        left: 20,
+                        child: Text(
+                          'My Profile',
+                          style: AppStyle.body17.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 30,
+                        right: 20,
+                        child: IconButton(
+                          onPressed: () {
+                            GoRouter.of(
+                              context,
+                            ).pushNamed(AppRouter.settingsView);
+                          },
+                          icon: Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: 120,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            foregroundColor: AppColor.primary,
+                            backgroundImage: AssetImage(
+                              'assets/images/placeholderImage/placeholder.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 80),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
                       children: [
-                        Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: AppColor.primary,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(40),
-                              bottomRight: Radius.circular(40),
-                            ),
-                          ),
+                        _buildProfileItem(
+                          Icons.account_circle_outlined,
+                          'Name',
+                          provAuth.user!.name,
                         ),
-                        Positioned(
-                          top: 30,
-                          left: 20,
-                          child: Text(
-                            'My Profile',
-                            style: AppStyle.body17.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        _buildProfileItem(
+                          Icons.email_outlined,
+                          'Email',
+                          provAuth.user!.email,
                         ),
-                        Positioned(
-                          top: 25,
-                          right: 20,
-                          child: IconButton(
-                            onPressed: () {
-                              GoRouter.of(
-                                context,
-                              ).pushNamed(AppRouter.settingsView);
-                            },
-                            icon: Icon(
-                              Icons.settings,
-                              color: Colors.white,
-                              size: 28,
-                            ),
-                          ),
+                        _buildProfileItem(
+                          Icons.phone_android_outlined,
+                          'Mobile',
+                          provAuth.user!.phone,
                         ),
-                        Positioned(
-                          top: 120,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: CircleAvatar(
-                              radius: 60,
-                              backgroundColor: Colors.white,
-                              foregroundColor: AppColor.primary,
-                              backgroundImage: AssetImage(
-                                'assets/images/profile/profile_image.jpg',
+                        _buildProfileItem(
+                          Icons.event,
+                          'My Bookings',
+                          provBooking.allBookings.length.toString(),
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (_) => EditProfileView(
+                                            user: provAuth.user!,
+                                          ),
+                                    ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColor.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 15,
+                                  ),
+                                ),
+                                child: Text(
+                                  'Edit Profile',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder:
+                                        (context) => Consumer<AuthViewModel>(
+                                          builder:
+                                              (
+                                                context,
+                                                provAuth,
+                                                child,
+                                              ) => Stack(
+                                                children: [
+                                                  AlertDialog(
+                                                    title: Text(
+                                                      'Confirm Logout',
+                                                    ),
+                                                    content: Text(
+                                                      'Are you sure you want to logout?',
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed:
+                                                            () =>
+                                                                GoRouter.of(
+                                                                  context,
+                                                                ).pop(),
+                                                        child: Text(
+                                                          'Cancel',
+                                                          style: TextStyle(
+                                                            color:
+                                                                AppColor
+                                                                    .primary,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          await provAuth
+                                                              .signOut();
+                                                          provAuth.reset(
+                                                            context,
+                                                          );
+                                                          GoRouter.of(
+                                                            // ignore: use_build_context_synchronously
+                                                            context,
+                                                          ).pushReplacementNamed(
+                                                            AppRouter
+                                                                .signInView,
+                                                          );
+                                                        },
+                                                        child: Text(
+                                                          'Logout',
+                                                          style: TextStyle(
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  provAuth.isLoading
+                                                      ? Center(
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                              color:
+                                                                  AppColor
+                                                                      .primary,
+                                                            ),
+                                                      )
+                                                      : SizedBox.shrink(),
+                                                ],
+                                              ),
+                                        ),
+                                  );
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  side: BorderSide(color: Colors.red, width: 2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 15,
+                                  ),
+                                ),
+                                child: Text(
+                                  'Logout',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 30),
                       ],
                     ),
-
-                    const SizedBox(height: 80),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          _buildProfileItem(
-                            Icons.account_circle_outlined,
-                            'Name',
-                            provAuth.user!.name,
-                          ),
-                          _buildProfileItem(
-                            Icons.email_outlined,
-                            'Email',
-                            provAuth.user!.email,
-                          ),
-                          _buildProfileItem(
-                            Icons.phone_android_outlined,
-                            'Mobile',
-                            provAuth.user!.phone,
-                          ),
-                          _buildProfileItem(
-                            Icons.event,
-                            'My Bookings',
-                            provBooking.allBookings.length.toString(),
-                          ),
-                          const SizedBox(height: 20),
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder:
-                                            (_) => EditProfileView(
-                                              user: provAuth.user!,
-                                            ),
-                                      ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColor.primary,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Edit Profile',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 15),
-                              Expanded(
-                                child: OutlinedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder:
-                                          (context) => Consumer<AuthViewModel>(
-                                            builder: (context, provAuth, child) =>  Stack(
-                                              children: [
-                                                                                  
-                                                AlertDialog(
-                                                  title: Text('Confirm Logout'),
-                                                  content: Text(
-                                                    'Are you sure you want to logout?',
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed:
-                                                          () =>
-                                                              GoRouter.of(
-                                                                context,
-                                                              ).pop(),
-                                                      child: Text(
-                                                        'Cancel',
-                                                        style: TextStyle(
-                                                          color: AppColor.primary,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () async {
-                                                        await provAuth.signOut();
-                                                        provAuth.reset(context) ; 
-                                                        GoRouter.of(
-                                                          // ignore: use_build_context_synchronously
-                                                          context,
-                                                        ).pushReplacementNamed(
-                                                          AppRouter.signInView,
-                                                        );
-                                                      },
-                                                      child: Text(
-                                                        'Logout',
-                                                        style: TextStyle(
-                                                          color: Colors.red,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                 provAuth.isLoading?Center(child: CircularProgressIndicator(color: AppColor.primary,)):SizedBox.shrink()
-                                              ],
-                                            ),
-                                          ),
-                                    );
-                                  },
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
-                                      color: Colors.red,
-                                      width: 2,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 15,
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Logout',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 30),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            );
+          },
         ),
       ),
     );

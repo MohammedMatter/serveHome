@@ -7,7 +7,7 @@ import 'package:serve_home/features/auth/presentation/views/sign_up_view.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 import 'package:serve_home/features/booking/presentation/views/bookings_list_view.dart';
 import 'package:serve_home/features/booking/presentation/views/complete_view.dart';
-import 'package:serve_home/features/booking/presentation/views/fitst_book_view.dart';
+import 'package:serve_home/features/booking/presentation/views/first_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/second_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/third_book_view.dart';
 import 'package:serve_home/features/booking/presentation/views/track_order_view.dart';
@@ -28,7 +28,7 @@ import 'package:serve_home/features/services/presentation/views/web/service_web_
 
 class AppRouter {
   static final String homeView = 'HomeView';
-  static final String fitstBookView = 'Fitst Book View';
+  static final String firstBookView = 'First Book View';
   static final String serviceDetailsView = 'Service Details view';
   static final String secondBookView = 'Second Book View';
   static final String thirdBookView = 'Third Book View';
@@ -50,12 +50,15 @@ class AppRouter {
   static final String changePasswordView = 'Change Password View';
   static final String aboutAppView = 'About App View';
 
-  static final routers = GoRouter(
-    initialLocation: '/signInView',
+  bool isLogin;
+  AppRouter({required this.isLogin});
+  late final routers = GoRouter(
+    initialLocation: isLogin ? '/home' : '/signInView',
+
     routes: [
       GoRoute(
         path: '/signInView',
-        name: signInView, 
+        name: signInView,
         builder: (context, state) => SignInView(),
       ),
       GoRoute(
@@ -93,7 +96,7 @@ class AppRouter {
         name: allServicesView,
         builder: (context, state) => AllServicesView(),
       ),
-   
+
       GoRoute(
         path: '/bookingsListView',
         name: bookingsListView,
@@ -118,38 +121,47 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/fitstBookView',
-        name: fitstBookView,
+        path: '/firstBookView',
+        name: firstBookView,
+
         onExit: (context, state) {
           final proBook = Provider.of<BookingViewModel>(context, listen: false);
           proBook.changeTimeIndex(-1);
           return true;
         },
-        builder: (context, state) => FitstBookView(),
+
+        builder: (context, state) {
+          final service = state.extra as ServiceModel;
+          return FirstBookView(service: service);
+        },
       ),
       GoRoute(
         path: '/secondBookView',
         name: secondBookView,
-        pageBuilder:
-            (context, state) => CustomTransitionPage(
-              transitionDuration: Duration(seconds: 1),
-              child: SecondBookView(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) =>
-                      FadeTransition(opacity: animation, child: child),
-            ),
+        pageBuilder: (context, state) {
+          final ServiceModel serviceModel = state.extra as ServiceModel;
+          return CustomTransitionPage(
+            transitionDuration: Duration(seconds: 1),
+            child: SecondBookView(serviceModel: serviceModel),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          );
+        },
       ),
       GoRoute(
         path: '/thirdBookView',
         name: thirdBookView,
-        pageBuilder:
-            (context, state) => CustomTransitionPage(
-              transitionDuration: Duration(seconds: 1),
-              child: ThirdBookView(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) =>
-                      FadeTransition(opacity: animation, child: child),
-            ),
+        pageBuilder: (context, state) {
+          final service = state.extra as ServiceModel;
+          return CustomTransitionPage(
+            transitionDuration: Duration(seconds: 1),
+            child: ThirdBookView(serviceModel: service),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          );
+        },
         onExit: (context, state) {
           final proBook = Provider.of<BookingViewModel>(context, listen: false);
           proBook.changePaymentMethodIndex(-1);
@@ -159,14 +171,15 @@ class AppRouter {
       GoRoute(
         path: '/trackOrderView',
         name: trackOrderView,
-        pageBuilder:
-            (context, state) => CustomTransitionPage(
-              transitionDuration: Duration(seconds: 1),
-              child: TrackOrderView(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) =>
-                      FadeTransition(opacity: animation, child: child),
-            ),
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+            transitionDuration: Duration(seconds: 1),
+            child: TrackOrderView(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+          );
+        },
       ),
       GoRoute(
         path: '/completeView',

@@ -1,6 +1,8 @@
 import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+
 import 'package:flutter/widgets.dart';
-import 'package:serve_home/core/notifications/notification_service.dart';
 import 'package:serve_home/features/booking/data/models/book_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_all_bookings_use_case.dart';
@@ -20,8 +22,6 @@ class BookingViewModel extends ChangeNotifier {
   String selectedPaymentMethod = '';
   String selectedDate = '';
   String note = '';
-  Set<String> notifiedBookingIds = {};
-
   List<BookModel> selectedBookings = [];
   List<BookModel> allBookings = [];
   List<BookModel> allUsersBookings = [];
@@ -108,11 +108,13 @@ class BookingViewModel extends ChangeNotifier {
   Future<void> fetchAllBookings({required String idUser}) async {
     if (_isFetched) return;
     reset();
+
     fetchAllBookingsUseCase.call(isUser: idUser).listen((bookings) {
-      _detectStatusChange(allBookings: allBookings, newBookings: bookings);
       allBookings = bookings;
       selectedBookings = allBookings;
+      notifyListeners();
       changeBookingTabIndex(selectedBookingTabIndex);
+      
       if (allBookings.isEmpty) {
         isFirstBooking = true;
         notifyListeners();
@@ -120,62 +122,6 @@ class BookingViewModel extends ChangeNotifier {
       _isFetched = true;
       notifyListeners();
     });
-  }
-
-  void _detectStatusChange({
-    required List<BookModel> allBookings,
-    required List<BookModel> newBookings,
-  }) {
-    for (final newBook in newBookings) {
-      final oldBook = allBookings.firstWhere(
-        (book) => book.id == newBook.id,
-        orElse: () => newBook,
-      );
-      if (oldBook.status != newBook.status) {
-        _onBookingStatusChanged(newBook);
-      }
-    }
-  }
-
-  Future _onBookingStatusChanged(BookModel booking) async {
-    final message = _bookingStatusMessage(
-      serviceName: booking.serviceName,
-      status: booking.status,
-    );
-    final notificationModel = NotificationModel(
-      status: booking.status,
-      title: 'Status Updated',
-      body: message,
-      read: false,
-      userId: booking.userId,
-      type: 'booking',
-      bookingId: booking.id,
-      createAt: DateTime.now(),
-    );
-    NotificationService.showNotification(notification: notificationModel);
-    await notificationViewModel.addNotification(
-      idUser: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
-      notification: notificationModel,
-    );
-    notifyListeners();
-  }
-
-  String _bookingStatusMessage({
-    required String serviceName,
-    required String status,
-  }) {
-    switch (status) {
-      case 'InProgress':
-        return 'The service $serviceName is now in progress.';
-      case 'Pending':
-        return 'The service $serviceName is now pending and awaiting confirmation.';
-      case 'Completed':
-        return 'The service $serviceName has been completed successfully.';
-      case 'Canceled':
-        return 'The service $serviceName has been canceled.';
-      default:
-        return 'The status of $serviceName has been updated.';
-    }
   }
 
   Future fetchAllUsersBookings() async {
@@ -228,22 +174,42 @@ class BookingViewModel extends ChangeNotifier {
   }
 
   Future updateBookingStatus({
+    required String lastUpdatedBy,
     required String idUser,
     required String idbook,
     required String status,
   }) async {
+    log('هنا يتم التجديث من الويب ') ; 
     await updateStatusBookUseCase.call(
+      lastUpdatedBy: lastUpdatedBy,
       idUser: idUser,
       idbook: idbook,
       status: status,
     );
-
     int index = allUsersBookings.indexOf(
       allUsersBookings.firstWhere((element) => element.id == idbook),
     );
+
     if (index != -1) {
       allUsersBookings[index].status = status;
     }
+    final book = allUsersBookings[index];
+    print(book.status);
+    print('------------');
+    print(book.serviceName);
+    final NotificationModel notification = NotificationModel(
+      status: book.status,
+      title: 'Booking is updated',
+      body: '${book.serviceName} is ${book.status}',
+      read: false,
+      userId: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
+      type: 'booking',
+    );
+
+    await notificationViewModel.addNotification(
+      idUser: idUser,
+      notification: notification,
+    );
     notifyListeners();
   }
 

@@ -11,66 +11,71 @@ import 'package:serve_home/features/services/presentation/widgets/service_featur
 import 'package:serve_home/features/services/presentation/widgets/service_header_widget.dart';
 import 'package:serve_home/features/services/presentation/widgets/service_inclusion_widget.dart';
 
-// ignore: must_be_immutable
 class ServiceDetailsView extends StatelessWidget {
-  ServiceModel service;
+  final ServiceModel service;
   ServiceDetailsView({super.key, required this.service});
 
   @override
   Widget build(BuildContext context) {
+    final double cardRadius = (ScreenSize.w(context) * 0.02).clamp(12, 25);
+    final double horizontalPadding = (ScreenSize.w(context) * 0.04).clamp(
+      12,
+      32,
+    );
+    final double verticalSpacingSmall = ScreenSize.h(context) * 0.015;
+    final double verticalSpacingMedium = ScreenSize.h(context) * 0.02;
+
     return Consumer<ServiceViewModel>(
-    builder: (context, provService, child) =>  Scaffold(
-        bottomNavigationBar: BottomNavigationBarDetailsWidget(
-          label: 'Book Now',
-          navigationToAnotherScreen: () {
-        provService.reset() ; 
-            GoRouter.of(context).pushNamed(AppRouter.fitstBookView);
-          },
-          icon: Icon(Icons.event),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: Column(
-                          children: [
-                            ServiceHeaderWidget(service: service),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 25),
-                                  ServiceFeaturesWidget(),
-                                  SizedBox(height: 25),
-                                  ServiceDescriptionWidget(service: service),
-                                  SizedBox(height: 15),
-                                  ServiceInclusionsWidget(),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: ScreenSize.h(context) * 0.03),
-                          ],
-                        ),
+      builder:
+          (context, provService, child) => Scaffold(
+            bottomNavigationBar: BottomNavigationBarDetailsWidget(
+              label: 'Book Now',
+              navigationToAnotherScreen: () {
+                provService.reset();
+                GoRouter.of(context).pushNamed(AppRouter.firstBookView , extra: provService.selectedService);
+              },
+              icon: Icon(Icons.event),
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(horizontalPadding),
+                  child: Center(
+                    child: Container(
+                      width:
+                          ScreenSize.w(context) > 600 ? 600 : double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(cardRadius),
                       ),
-                    ],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ServiceHeaderWidget(service: service),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: horizontalPadding,
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(height: verticalSpacingMedium),
+                                ServiceFeaturesWidget(),//Done Responsive
+                                SizedBox(height: verticalSpacingMedium),
+                                ServiceDescriptionWidget(service: service),//Done Responsive
+                                SizedBox(height: verticalSpacingSmall),
+                                ServiceInclusionsWidget(),//Done Responsive
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: verticalSpacingMedium),
+                        ],
+                      ),
+                    ),
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
     );
   }
 }

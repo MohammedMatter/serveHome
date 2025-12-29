@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
-import 'package:serve_home/core/router/app_router.dart';
-import 'package:serve_home/core/styles/app_style.dart';
-import 'package:serve_home/core/utils/input_validator.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/auth/presentation/widgets/forgot_password_widget.dart';
 import 'package:serve_home/features/auth/presentation/widgets/google_button_widget.dart';
@@ -19,24 +15,25 @@ class SignInView extends StatelessWidget {
   SignInView({super.key});
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
- 
- final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
         key: _key,
-        child: SafeArea(
-          child: Consumer<AuthViewModel>(
-            builder:
-                (context, provAuth, child) => Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    WelcomeSignInWidget(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 130),
-                      child: Align(
-                        alignment: Alignment.center,
+        child: Consumer<AuthViewModel>(
+          builder:
+              (context, provAuth, child) => Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  WelcomeSignInWidget(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 25),
                           padding: EdgeInsets.symmetric(
@@ -76,7 +73,11 @@ class SignInView extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               ForgotPasswordWidget(),
-                              SignInButtonWidget( password: password, email: email , keyForm: _key,),
+                              SignInButtonWidget(
+                                password: password,
+                                email: email,
+                                keyForm: _key,
+                              ),
                               SizedBox(height: 20),
                               OrContinueWidget(),
                               SizedBox(height: 15),
@@ -89,16 +90,16 @@ class SignInView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    provAuth.isLoading == true
-                        ? Center(
-                          child: CircularProgressIndicator(
-                            color: AppColor.primary,
-                          ),
-                        )
-                        : SizedBox.shrink(),
-                  ],
-                ),
-          ),
+                  ),
+                  provAuth.isLoading == true
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: AppColor.primary,
+                        ),
+                      )
+                      : SizedBox.shrink(),
+                ],
+              ),
         ),
       ),
     );

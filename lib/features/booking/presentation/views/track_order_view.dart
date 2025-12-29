@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +21,16 @@ import 'package:serve_home/features/notification/presentation/view_models/notifi
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
 
-class TrackOrderView extends StatelessWidget {
+// ignore: must_be_immutable
+class TrackOrderView extends StatefulWidget {
   const TrackOrderView({super.key});
+
+  @override
+  State<TrackOrderView> createState() => _TrackOrderViewState();
+}
+
+class _TrackOrderViewState extends State<TrackOrderView> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +68,7 @@ class TrackOrderView extends StatelessWidget {
                         serviceAddress: provLocation.address,
                         paymentMethod: provBooking.selectedPaymentMethod,
                         serviceName: provService.selectedService!.name,
-                        userId: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
+                        userId: provAuth.user!.id!,
                         status: 'Pending',
                         note: provBooking.note,
                         imageUrl: provService.selectedService!.detailImageUrl,
@@ -69,12 +80,17 @@ class TrackOrderView extends StatelessWidget {
                                         ((double.parse(
                                                   provService
                                                       .selectedService!
-                                               .price,
+                                                      .price,
                                                 ) +
                                                 1.90) *
-                                            0.2)).toStringAsFixed(2)
+                                            0.2))
+                                    .toStringAsFixed(2)
                                     .toString()
-                                : (double.parse(provService.selectedService!.price)+ 1.90).toString(),
+                                : (double.parse(
+                                          provService.selectedService!.price,
+                                        ) +
+                                        1.90)
+                                    .toString(),
                         provider: provAuth.user!.name,
                         email: provAuth.user!.email,
                       );
@@ -87,7 +103,7 @@ class TrackOrderView extends StatelessWidget {
                         bookingId: book.id!,
                         title: "Your reservation has been received",
                         body:
-                            "Your request for ${provService.selectedService!.name} awaiting confirmation",                 
+                            "Your request for ${provService.selectedService!.name} awaiting confirmation",
                         read: false,
                         userId: provAuth.user!.id!,
                         type: "booking",
@@ -99,9 +115,12 @@ class TrackOrderView extends StatelessWidget {
                       await provNotification.showNotification(
                         notification: notification,
                       );
+
                       provHome.reset();
                       provBooking.reset();
-                      GoRouter.of(context).pushNamed(AppRouter.completeView);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        GoRouter.of(context).pushNamed(AppRouter.completeView);
+                      });
                     },
                     label: 'Complete',
                     icon: null,

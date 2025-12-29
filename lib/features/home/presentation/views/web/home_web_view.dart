@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
@@ -13,6 +16,7 @@ class HomeWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        log('web : ${kIsWeb}') ; 
     return Scaffold(
       body: Consumer3<HomeViewModel, BookingViewModel, AuthViewModel>(
         builder:

@@ -9,9 +9,9 @@ class NotificationClass {
   final String type;
   final String? bookingId;
   final String  status ; 
-  final DateTime  createAt ; 
+  final DateTime ? createAt ; 
   NotificationClass({
-    required this.createAt , 
+     this.createAt , 
     required this.status , 
     this.id,
     required this.title,

@@ -3,6 +3,7 @@ import 'package:serve_home/features/booking/domain/entities/book.dart';
 
 class BookModel extends Book {
   BookModel({
+
     required super.date,
     required super.time,
     required super.serviceAddress,
@@ -35,18 +36,21 @@ class BookModel extends Book {
       'imageUrl': imageUrl,
       'price': price,
       'provider': provider,
-      'email': email,
+      'email': email, 
+ 
     };
   }
 
   factory BookModel.fromMap(Map map) {
     return BookModel(
+     
       serviceCategory: map['serviceCategory'],
       serviceDescription: map['serviceDescription'],
       date: map['date'].toString(),
       time: map['time'],
       serviceAddress: map['serviceAddress'],
       paymentMethod: map['paymentMethod'],
+
       serviceName: map['serviceName'],
       userId: map['userId'],
       status: map['status'],
@@ -60,6 +64,7 @@ class BookModel extends Book {
   }
   static BookModel copyWith(BookModel bookModel , String id) {
     return BookModel(
+ 
       date: bookModel.date,
       time: bookModel.time,
       serviceAddress: bookModel.serviceAddress,

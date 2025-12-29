@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
@@ -27,13 +26,14 @@ class BookingsListView extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBarWidget(),
-
-      body: Consumer2<BookingViewModel, ServiceViewModel>(
-        builder:
-            (context, provBooking, provService, child) => SafeArea(
-              child: Column(
+  return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        bottomNavigationBar: BottomNavigationBarWidget(),
+      
+        body: Consumer2<BookingViewModel, ServiceViewModel>(
+          builder:
+              (context, provBooking, provService, child) => Column(
                 children: [
                   BookingsHeaderWidget(),
                   SizedBox(height: 35),
@@ -72,9 +72,9 @@ class BookingsListView extends StatelessWidget {
                                                       BorderRadius.circular(20),
                                                   color: Colors.white,
                                                 ),
-
+                    
                                                 width: double.infinity,
-
+                    
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -196,8 +196,9 @@ class BookingsListView extends StatelessWidget {
                                                                                         TextButton(
                                                                                           onPressed: () async {
                                                                                             await provBooking.updateBookingStatus(
+                                                                                              lastUpdatedBy: 'mobile',
                                                                                               idUser:
-                                                                                                  "ABQ4EkIh4cbQDoyDQZZfd55p81k1",
+                                                                                                  "zW5KVTaKz4P1CPDtKr3vSdrrcjv1",
                                                                                               idbook:
                                                                                                   book.id!,
                                                                                               status:
@@ -233,7 +234,7 @@ class BookingsListView extends StatelessWidget {
                                                                             foregroundColor: WidgetStatePropertyAll(
                                                                               Colors.black,
                                                                             ),
-
+                    
                                                                             shape: WidgetStatePropertyAll(
                                                                               RoundedRectangleBorder(
                                                                                 borderRadius: BorderRadius.circular(
@@ -255,14 +256,14 @@ class BookingsListView extends StatelessWidget {
                                                                       titlePadding:
                                                                           EdgeInsets
                                                                               .zero,
-
+                    
                                                                       shape: RoundedRectangleBorder(
                                                                         borderRadius:
                                                                             BorderRadius.circular(
                                                                               8,
                                                                             ),
                                                                       ),
-
+                    
                                                                       backgroundColor:
                                                                           Colors
                                                                               .white,
@@ -312,7 +313,7 @@ class BookingsListView extends StatelessWidget {
                                                                                     padding: EdgeInsets.all(
                                                                                       5,
                                                                                     ),
-
+                    
                                                                                     child: Icon(
                                                                                       size:
                                                                                           15,
@@ -416,7 +417,7 @@ class BookingsListView extends StatelessWidget {
                                                                                 height:
                                                                                     10,
                                                                               ),
-
+                    
                                                                               LabeledInfoWidget(
                                                                                 label:
                                                                                     'Price',
@@ -453,12 +454,12 @@ class BookingsListView extends StatelessWidget {
                                                                                 height:
                                                                                     10,
                                                                               ),
-
+                    
                                                                               SizedBox(
                                                                                 height:
                                                                                     10,
                                                                               ),
-
+                    
                                                                               Column(
                                                                                 crossAxisAlignment:
                                                                                     CrossAxisAlignment.start,
@@ -592,7 +593,7 @@ class BookingsListView extends StatelessWidget {
                                                                 ),
                                                           ),
                                                         ),
-
+                    
                                                         backgroundColor:
                                                             WidgetStatePropertyAll(
                                                               AppColor.secondry,
@@ -613,7 +614,7 @@ class BookingsListView extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+        ),
       ),
     );
   }
