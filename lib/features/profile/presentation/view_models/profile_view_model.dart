@@ -16,7 +16,7 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
     await Future.delayed(Duration(seconds: 2));
     await updateUserDataUseCase.call(
-      idUser: idUser,
+      idUser: idUser, 
       name: name,
       email: email,
       phone: phone,

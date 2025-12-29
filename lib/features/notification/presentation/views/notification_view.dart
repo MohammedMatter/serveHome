@@ -106,7 +106,7 @@ class _NotificationViewState extends State<NotificationView> {
                                             await provNotification.markAsRead(
                                               idNotification: notification.id!,
                                               idUser:
-                                                  'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
+                                                  provAuth.user!.id!,
                                             );
                                           },
                                           child: Card(

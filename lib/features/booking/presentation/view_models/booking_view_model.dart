@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter/widgets.dart';
 import 'package:serve_home/features/booking/data/models/book_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
@@ -106,12 +104,16 @@ class BookingViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchAllBookings({required String idUser}) async {
+    log(_isFetched.toString()) ; 
+    log("_isFetched.toString()") ; 
     if (_isFetched) return;
     reset();
 
     fetchAllBookingsUseCase.call(isUser: idUser).listen((bookings) {
+   
       allBookings = bookings;
       selectedBookings = allBookings;
+
       notifyListeners();
       changeBookingTabIndex(selectedBookingTabIndex);
       
@@ -179,7 +181,6 @@ class BookingViewModel extends ChangeNotifier {
     required String idbook,
     required String status,
   }) async {
-    log('هنا يتم التجديث من الويب ') ; 
     await updateStatusBookUseCase.call(
       lastUpdatedBy: lastUpdatedBy,
       idUser: idUser,
@@ -202,7 +203,7 @@ class BookingViewModel extends ChangeNotifier {
       title: 'Booking is updated',
       body: '${book.serviceName} is ${book.status}',
       read: false,
-      userId: 'zW5KVTaKz4P1CPDtKr3vSdrrcjv1',
+      userId: idUser,
       type: 'booking',
     );
 
@@ -218,6 +219,7 @@ class BookingViewModel extends ChangeNotifier {
     timeIndex = -1;
     selectedDate = '';
     selectedTime = '';
+    _isFetched = false ; 
     isFirstBooking = false;
     notificationViewModel.notifications.clear();
     allBookings.clear();

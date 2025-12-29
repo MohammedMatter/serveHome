@@ -32,19 +32,17 @@ class AuthViewModel extends ChangeNotifier {
   ListenToUserUseCase listenToUserUseCase;
   SaveUserUseCase saveUserUseCase;
   GetUserUseCase getUserUseCase;
-    bool checkedLoginOnce = false; // <--- مهم: يتحقق مرة واحدة فقط
   AuthViewModel({
     required this.saveUserUseCase,
     required this.getUserUseCase,
     required this.saveLoginStatusUseCase,
     required this.getLoginStatusUseCase,
     required this.signOutUseCase,
-  required this.signUpUseCase,
+    required this.signUpUseCase,
     required this.signInUseCase,
     required this.listenToUserUseCase,
   }) {
     loadLoginStatus();
-   
   }
 
   void reset(BuildContext context) {
@@ -59,18 +57,11 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> loadLoginStatus() async {
-    _currentUser =await  getUserUseCase.call() ; 
+    _currentUser = await getUserUseCase.call();
     isLoggedIn = await getLoginStatusUseCase.call();
     notifyListeners();
   }
 
-  void checkLoginOnce() {
-    if (!checkedLoginOnce) {
-      // هنا تعمل أي فحص تسجيل دخول من SharedPreferences أو Firebase
-      checkedLoginOnce = true;
-      notifyListeners();
-    }
-  }
   Future<Either<Failure, Unit>> signUp({
     required String password,
     required UserModel userModel,
@@ -133,7 +124,7 @@ class AuthViewModel extends ChangeNotifier {
   Future listenToUser({required String idUser}) async {
     listenToUserUseCase.call(idUser).listen((user) async {
       await loadUser(user);
-
+      ;
       notifyListeners();
     });
   }
@@ -142,11 +133,14 @@ class AuthViewModel extends ChangeNotifier {
     await saveUserUseCase.call(user);
 
     _currentUser = await getUserUseCase.call();
+    log('yyyyyyyyyyyyy') ; 
+    log(_currentUser?.id!??'NoId') ; 
     notifyListeners();
   }
 
   Future<void> signOut() async {
     isLoading = true;
+
     notifyListeners();
     await saveLoginStatusUseCase.call(false);
     await Future.delayed(Duration(seconds: 2));

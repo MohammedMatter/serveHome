@@ -84,7 +84,7 @@ class AuthRemoteDataSource {
       name: pref.getString('user_name')!,
       phone: pref.getString('user_phone')!,
       email: pref.getString('user_email')!,
-      id: pref.getString('user_id')
+      id: pref.getString('user_id'),
     );
   }
 

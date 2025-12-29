@@ -28,7 +28,8 @@ class _HomeViewState extends State<HomeView> {
     final provBookings = Provider.of<BookingViewModel>(context, listen: false);
     final provAuth = Provider.of<AuthViewModel>(context, listen: false);
     await provBookings.fetchAllBookings(idUser: provAuth.user!.id!);
-  log(provAuth.user!.id!) ; 
+    log(provAuth.user!.id!) ; 
+    log("provAuth.user!.id!") ; 
     await provBookings.fetchAllUsersBookings();
     provBookings.fetchInProgressBookings(idUser: provAuth.user!.id!);
     provBookings.fetchComoletedBookings(idUser: provAuth.user!.id!);
