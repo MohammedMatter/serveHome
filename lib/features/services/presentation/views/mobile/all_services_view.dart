@@ -57,7 +57,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: provService.servicesFilterList.isNotEmpty
-                            ? provService.servicesFilterList.map(
+                            ? provService.services.map(
                                 (service) {
                                   return Padding(
                                     padding: EdgeInsets.only(

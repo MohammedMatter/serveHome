@@ -11,7 +11,7 @@ class SearchTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: ScreenSize.w(context) * 0.7,
+    width: ScreenSize.w(context) * 0.7,
       child: TextField(
         enabled: true,
         decoration: InputDecoration(

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 
+// ignore: must_be_immutable
 class SearchWidget extends StatelessWidget {
   TextEditingController search ; 
    SearchWidget({
