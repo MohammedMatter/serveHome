@@ -47,12 +47,14 @@ class SignInButtonWidget extends StatelessWidget {
                             await provAuth.signIn(
                               password: password.text,
                               email: email.text,
+                              onSuccess: () {
+                                GoRouter.of(
+                                  context,
+                                ).pushNamed(AppRouter.homeView);
+                              },
                             );
-                            if (provAuth.errorMessage.isEmpty) {
-                              GoRouter.of(
-                                context,
-                              ).pushNamed(AppRouter.homeView);
-                            } else {
+
+                            if (provAuth.errorMessage.isNotEmpty) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(
                                     SnackBar(

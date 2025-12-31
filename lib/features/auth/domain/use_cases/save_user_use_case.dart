@@ -3,7 +3,7 @@ import 'package:serve_home/features/auth/data/repositories_impl/auth_repository_
 
 class SaveUserUseCase {
   AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl() ; 
-  Future <void>call(UserModel user)async{
-    await authRepositoryImpl.saveUser(user) ; 
+  Future <void>call(UserModel user , String password)async{
+    await authRepositoryImpl.saveUser(user , password) ; 
   }
 }

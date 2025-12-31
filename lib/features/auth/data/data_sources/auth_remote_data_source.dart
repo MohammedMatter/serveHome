@@ -68,31 +68,45 @@ class AuthRemoteDataSource {
     await auth.signOut();
   }
 
-  Future<void> saveLoginStatus(bool isLoggedIn) async {
+  Future<void> saveLoginStatus(bool  isLoggedIn) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('isLoggedIn', isLoggedIn);
   }
 
   Future<bool> getLoginStatus() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    return pref.getBool('isLoggedIn')!;
+    return pref.getBool('isLoggedIn') ?? false;
   }
 
-  Future<UserModel> getUser() async {
+  Future<UserModel?> getUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    return UserModel(
+    if(pref.getBool('isLoggedIn')==null){
+      return null ; 
+    }
+  else {
+      return  UserModel(
       name: pref.getString('user_name')!,
       phone: pref.getString('user_phone')!,
       email: pref.getString('user_email')!,
       id: pref.getString('user_id'),
-    );
+      password: pref.getString('user_password'),
+    ) ;
+    } 
   }
 
-  Future<void> saveUser(UserModel user) async {
+  Future<void> saveUser(UserModel user, String password) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString('user_name', user.name);
     await pref.setString('user_email', user.email);
     await pref.setString('user_phone', user.phone);
     await pref.setString('user_id', user.id!);
+    if (password.isNotEmpty) {
+      await pref.setString('user_password', password);
+    }
+  }
+
+  Future<void> updatePassword({required String newPassword}) async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    firebaseAuth.currentUser!.updatePassword(newPassword);
   }
 }

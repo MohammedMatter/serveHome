@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:serve_home/features/auth/data/models/user_model.dart';
+import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/auth/presentation/views/sign_in_view.dart';
 import 'package:serve_home/features/auth/presentation/views/sign_up_view.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:serve_home/features/home/presentation/views/web/home_web_view.da
 import 'package:serve_home/features/notification/presentation/views/notification_view.dart';
 import 'package:serve_home/features/profile/presentation/views/about_app_view.dart';
 import 'package:serve_home/features/profile/presentation/views/change_password_view.dart';
+import 'package:serve_home/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:serve_home/features/profile/presentation/views/profile_view.dart';
 import 'package:serve_home/features/profile/presentation/views/settings_view.dart';
 import 'package:serve_home/features/services/data/models/service_model.dart';
@@ -49,6 +51,7 @@ class AppRouter {
   static final String settingsView = 'Settings View';
   static final String changePasswordView = 'Change Password View';
   static final String aboutAppView = 'About App View';
+  static final String editProfileView = 'Edit Profile View';
 
   bool isLogin;
   AppRouter({required this.isLogin});
@@ -111,6 +114,14 @@ class AppRouter {
         path: '/notificationView',
         name: notificationView,
         builder: (context, state) => NotificationView(),
+      ),
+      GoRoute(
+        path: '/editProfileView',
+        name: editProfileView,
+        builder: (context, state) {
+          final user = state.extra as UserModel;
+          return EditProfileView(user: user);
+        },
       ),
       GoRoute(
         path: '/serviceDetails',

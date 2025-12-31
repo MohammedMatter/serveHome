@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:serve_home/core/styles/app_style.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 import 'package:serve_home/features/home/presentation/widgets/mobile_widgets/bottom_navigation_bar_widget.dart';
-import 'package:serve_home/features/profile/presentation/views/edit_profile_view.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -27,7 +25,7 @@ class _ProfileViewState extends State<ProfileView> {
     final authVM = Provider.of<AuthViewModel>(context, listen: false);
     final idUser = FirebaseAuth.instance.currentUser!.uid;
 
-    authVM.listenToUser(idUser: idUser);
+    authVM.listenToUser(idUser: idUser , password: '');
   }
 
   @override
@@ -41,7 +39,7 @@ class _ProfileViewState extends State<ProfileView> {
             if (provAuth.user == null) {
               return const Center(child: CircularProgressIndicator());
             }
-            
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -135,14 +133,9 @@ class _ProfileViewState extends State<ProfileView> {
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (_) => EditProfileView(
-                                            user: provAuth.user!,
-                                          ),
-                                    ),
+                                  GoRouter.of(context).pushNamed(
+                                    AppRouter.editProfileView,
+                                    extra: provAuth.user,
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -208,6 +201,7 @@ class _ProfileViewState extends State<ProfileView> {
                                                           provAuth.reset(
                                                             context,
                                                           );
+                                                      provBooking.reset() ; 
                                                           GoRouter.of(
                                                             // ignore: use_build_context_synchronously
                                                             context,

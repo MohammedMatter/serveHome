@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +14,7 @@ import 'package:serve_home/features/auth/domain/use_cases/save_user_use_case.dar
 import 'package:serve_home/features/auth/domain/use_cases/sign_in_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/sign_up_use_case.dart';
+import 'package:serve_home/features/auth/domain/use_cases/update_password_use_case.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/domain/use_cases/create_booking_use_case.dart';
 import 'package:serve_home/features/booking/domain/use_cases/fetch_all_bookings_use_case.dart';
@@ -57,6 +56,7 @@ void main() async {
     ),
   );
   final authViewModel = AuthViewModel(
+    updatePasswordUseCase: UpdatePasswordUseCase(),
     saveLoginStatusUseCase: SaveLoginStatusUseCase(),
     getLoginStatusUseCase: GetLoginStatusUseCase(),
     signOutUseCase: SignOutUseCase(),
@@ -67,8 +67,7 @@ void main() async {
     saveUserUseCase: SaveUserUseCase(),
   );
   final isLogin = await authViewModel.getLoginStatusUseCase.call();
-    appRouter = AppRouter(isLogin: isLogin);
-
+  appRouter = AppRouter(isLogin: isLogin);
   runApp(MyApp(authViewModel: authViewModel, isLogin: isLogin));
 }
 

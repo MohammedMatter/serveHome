@@ -101,7 +101,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ),
                 ),
                 provProfile.isLoading == true
-                    ? Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator(color: AppColor.primary,))
                     : SizedBox.shrink(),
               ],
             ),

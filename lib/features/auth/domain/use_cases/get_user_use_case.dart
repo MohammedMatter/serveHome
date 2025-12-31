@@ -3,7 +3,7 @@ import 'package:serve_home/features/auth/data/repositories_impl/auth_repository_
 
 class GetUserUseCase {
   AuthRepositoryImpl authRepositoryImpl = AuthRepositoryImpl();
-    Future <UserModel>call()async{
+    Future <UserModel?>call()async{
    return await    authRepositoryImpl.getUser() ; 
   }
 }

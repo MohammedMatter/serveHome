@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class InputValidator {
 static final RegExp emailRegex = RegExp(
   r'^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$'
@@ -25,6 +27,8 @@ static final RegExp emailRegex = RegExp(
   }
 
   static String? vaildatePassSignUp(String password) {
+    print('$password') ; 
+    log('++++++++++++++++++++++++++++++') ; 
     if (password.isEmpty) {
       return 'Password is required';
     } else if (!passwordRegex.hasMatch(password)) {

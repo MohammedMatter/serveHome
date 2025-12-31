@@ -46,12 +46,17 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<UserModel> getUser() {
+  Future<UserModel?> getUser() {
     return _authRemoteDataSource.getUser();
   }
 
   @override
-  Future<void> saveUser(UserModel user) {
-    return _authRemoteDataSource.saveUser(user);
+  Future<void> saveUser(UserModel user , String password) {
+    return _authRemoteDataSource.saveUser(user , password);
+  }
+  
+  @override
+  Future<void> updatePassword({required String newPassword}) {
+  return _authRemoteDataSource.updatePassword(newPassword: newPassword) ; 
   }
 }

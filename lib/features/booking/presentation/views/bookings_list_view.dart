@@ -6,6 +6,7 @@ import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
+import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 import 'package:serve_home/features/booking/presentation/widgets/booking_status_tab_widget.dart';
 import 'package:serve_home/features/booking/presentation/widgets/bookings_header_widget.dart';
@@ -31,9 +32,9 @@ class BookingsListView extends StatelessWidget {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBarWidget(),
       
-        body: Consumer2<BookingViewModel, ServiceViewModel>(
+        body: Consumer3<BookingViewModel, ServiceViewModel , AuthViewModel>(
           builder:
-              (context, provBooking, provService, child) => Column(
+              (context, provBooking, provService,provAuth ,  child) => Column(
                 children: [
                   BookingsHeaderWidget(),
                   SizedBox(height: 35),
@@ -198,7 +199,7 @@ class BookingsListView extends StatelessWidget {
                                                                                             await provBooking.updateBookingStatus(
                                                                                               lastUpdatedBy: 'mobile',
                                                                                               idUser:
-                                                                                                  "zW5KVTaKz4P1CPDtKr3vSdrrcjv1",
+                                                                                                 provAuth.user!.id!,
                                                                                               idbook:
                                                                                                   book.id!,
                                                                                               status:

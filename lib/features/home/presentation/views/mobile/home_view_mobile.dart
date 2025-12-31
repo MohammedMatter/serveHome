@@ -16,18 +16,12 @@ class HomeViewMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         actionsPadding: EdgeInsets.only(right: 15),
         backgroundColor: AppColor.primary,
         title: Text('ServeHome', style: AppStyle.appBarTitle),
-        actions: [
-          Icon(Icons.notifications_none, color: Colors.white),
-          SizedBox(width: 10),
-          Icon(Icons.person, color: Colors.white),
-        ],
       ),
       bottomNavigationBar: BottomNavigationBarWidget(),
       body: SafeArea(
@@ -53,7 +47,7 @@ class HomeViewMobile extends StatelessWidget {
                     SizedBox(height: ScreenSize.h(context) * 0.01),
                     FeaturesProvidersWidget(), //Done Responsive
                     SizedBox(height: ScreenSize.h(context) * 0.02),
-                    DiscountWidget(),//Done Responsive
+                    DiscountWidget(), //Done Responsive
                   ],
                 ),
               ),

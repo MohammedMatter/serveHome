@@ -27,6 +27,7 @@ class TextFormFieldWidget extends StatelessWidget {
         Text(label),
         SizedBox(height: 3),
         TextFormField(
+          
           validator: (value) {
             if (label == 'Email' && isSignIn) {
               return InputValidator.vaildateEmailSignIn(value!);
@@ -50,6 +51,7 @@ class TextFormFieldWidget extends StatelessWidget {
           },
           controller: contoller,
           decoration: InputDecoration(
+            errorMaxLines: 3,
             filled: true,
             prefixIcon: Icon(icon, color: Colors.grey),
             hintText: hintText,

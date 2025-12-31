@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
-import 'package:serve_home/features/auth/presentation/widgets/forgot_password_widget.dart';
 import 'package:serve_home/features/auth/presentation/widgets/google_button_widget.dart';
 import 'package:serve_home/features/auth/presentation/widgets/or_continue_widget.dart';
 import 'package:serve_home/features/auth/presentation/widgets/sign_in_button_widget.dart';
@@ -11,12 +11,27 @@ import 'package:serve_home/features/auth/presentation/widgets/text_form_field_wi
 import 'package:serve_home/features/auth/presentation/widgets/welcome_sign_in_widget.dart';
 
 // ignore: must_be_immutable
-class SignInView extends StatelessWidget {
-  SignInView({super.key});
+class SignInView extends StatefulWidget {
+  const SignInView({super.key});
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
   TextEditingController email = TextEditingController();
+
   TextEditingController password = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    email = TextEditingController(text: email.text);
+    password = TextEditingController(text: password.text);
+  }
+
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +86,8 @@ class SignInView extends StatelessWidget {
                                 icon: Icons.password,
                                 label: 'Password',
                               ),
-                              SizedBox(height: 10),
-                              ForgotPasswordWidget(),
+                              SizedBox(height: ScreenSize.h(context)*0.05),
+
                               SignInButtonWidget(
                                 password: password,
                                 email: email,

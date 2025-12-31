@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:serve_home/core/colors/app_color.dart';
 
 class AboutAppView extends StatelessWidget {
   const AboutAppView({super.key});
@@ -19,7 +18,6 @@ class AboutAppView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ====== HEADER ======
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 35),
@@ -53,7 +51,6 @@ class AboutAppView extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            // ====== CONTENT ======
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
@@ -115,10 +112,6 @@ class AboutAppView extends StatelessWidget {
       ),
     );
   }
-
-  // ============================
-  // WIDGETS
-  // ============================
 
   Widget _textBlock(String text) {
     return Text(

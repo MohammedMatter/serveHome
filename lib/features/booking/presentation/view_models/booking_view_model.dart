@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -33,6 +34,8 @@ class BookingViewModel extends ChangeNotifier {
   FetchAllUsersBookingsUseCase fetchAllUsersBookingsUseCase;
   FetchBookingsByStatusUseCase fetchBookingsByStatusUseCase;
   UpdateStatusBookUseCase updateStatusBookUseCase;
+  String? _currentUserId;
+  StreamSubscription? _bookingsSub;
 
   BookingViewModel({
     required this.notificationViewModel,
@@ -104,19 +107,22 @@ class BookingViewModel extends ChangeNotifier {
   }
 
   Future<void> fetchAllBookings({required String idUser}) async {
-    log(_isFetched.toString()) ; 
-    log("_isFetched.toString()") ; 
-    if (_isFetched) return;
-    reset();
+    if (_currentUserId != idUser) {
+      _bookingsSub?.cancel();
+      reset();
+      _currentUserId = idUser;
+    }
 
-    fetchAllBookingsUseCase.call(isUser: idUser).listen((bookings) {
-   
+    if (_isFetched) return;
+    _bookingsSub = fetchAllBookingsUseCase.call(isUser: idUser).listen((
+      bookings,
+    ) {
       allBookings = bookings;
       selectedBookings = allBookings;
 
       notifyListeners();
       changeBookingTabIndex(selectedBookingTabIndex);
-      
+
       if (allBookings.isEmpty) {
         isFirstBooking = true;
         notifyListeners();
@@ -195,9 +201,6 @@ class BookingViewModel extends ChangeNotifier {
       allUsersBookings[index].status = status;
     }
     final book = allUsersBookings[index];
-    print(book.status);
-    print('------------');
-    print(book.serviceName);
     final NotificationModel notification = NotificationModel(
       status: book.status,
       title: 'Booking is updated',
@@ -215,14 +218,17 @@ class BookingViewModel extends ChangeNotifier {
   }
 
   void reset() {
+    _bookingsSub?.cancel();
+    _bookingsSub = null;
     selectedBookingTabIndex = 0;
     timeIndex = -1;
     selectedDate = '';
     selectedTime = '';
-    _isFetched = false ; 
+    _isFetched = false;
     isFirstBooking = false;
     notificationViewModel.notifications.clear();
     allBookings.clear();
+    allUsersBookings.clear();
     selectedBookings.clear();
     notifyListeners();
   }
