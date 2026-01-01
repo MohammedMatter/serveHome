@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 
 class SignInButtonWidget extends StatelessWidget {
@@ -22,11 +22,14 @@ class SignInButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double btnHeight = ScreenSize.h(context) * 0.07;
+    final double borderRadius = ScreenSize.h(context) * 0.018;
+
     return Consumer<AuthViewModel>(
       builder:
           (context, provAuth, child) => Center(
             child: SizedBox(
-              height: 50,
+              height: btnHeight,
               width: double.infinity,
               child: ElevatedButton(
                 style: ButtonStyle(
@@ -34,7 +37,7 @@ class SignInButtonWidget extends StatelessWidget {
                   backgroundColor: WidgetStatePropertyAll(AppColor.primary),
                   shape: WidgetStatePropertyAll(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(borderRadius),
                     ),
                   ),
                 ),
@@ -42,7 +45,6 @@ class SignInButtonWidget extends StatelessWidget {
                     provAuth.isLoading || provAuth.errorMessage.isNotEmpty
                         ? null
                         : () async {
-                          log('I am here');
                           if (keyForm.currentState!.validate()) {
                             await provAuth.signIn(
                               password: password.text,
@@ -55,12 +57,13 @@ class SignInButtonWidget extends StatelessWidget {
                             );
 
                             if (provAuth.errorMessage.isNotEmpty) {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(
                                     SnackBar(
                                       content: Text(
                                         provAuth.errorMessage,
-                                        style: AppStyle.button,
+                                        style: AppStyle.button(context),
                                       ),
                                       backgroundColor: Colors.red,
                                     ),
@@ -75,7 +78,12 @@ class SignInButtonWidget extends StatelessWidget {
                             }
                           }
                         },
-                child: Text('Sign In'),
+                child: Text(
+                  'Sign In',
+                  style: AppStyle.button(context).copyWith(
+                    fontSize: ScreenSize.h(context) * 0.02,
+                  ),
+                ),
               ),
             ),
           ),

@@ -4,10 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/errors/failure.dart';
-import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/auth/domain/use_cases/get_login_status_use_case.dart';
 import 'package:serve_home/features/auth/domain/use_cases/get_user_use_case.dart';
@@ -38,7 +36,6 @@ class AuthViewModel extends ChangeNotifier {
   SaveUserUseCase saveUserUseCase;
   GetUserUseCase getUserUseCase;
   UpdatePasswordUseCase updatePasswordUseCase;
-
   AuthViewModel({
     required this.updatePasswordUseCase,
     required this.saveUserUseCase,
@@ -52,7 +49,6 @@ class AuthViewModel extends ChangeNotifier {
   }) {
     loadLoginStatus();
   }
-
   void reset(BuildContext context) {
     errorMessage = '';
     isLoading = false;
@@ -73,6 +69,7 @@ class AuthViewModel extends ChangeNotifier {
   Future<Either<Failure, Unit>> signUp({
     required String password,
     required UserModel userModel,
+    required VoidCallback? onSuccess,
   }) async {
     isLoading = true;
     notifyListeners();
@@ -89,14 +86,17 @@ class AuthViewModel extends ChangeNotifier {
         errorMessage = error.message;
         isLoading = false;
       },
-      (_) async {
+      (user) async {
         final idUser = FirebaseAuth.instance.currentUser!.uid;
+        log('444444');
+        log(idUser);
         _currentUser = await getUserOnce(idUser);
         await saveUserUseCase.call(_currentUser!, password);
         await saveLoginStatusUseCase.call(true);
 
         errorMessage = '';
         isLoading = false;
+        if (onSuccess != null) onSuccess();
         notifyListeners();
       },
     );
@@ -113,7 +113,6 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
     final result = await signInUseCase.call(password: password, email: email);
     await Future.delayed(Duration(seconds: 2));
-
     result.fold(
       (error) {
         errorMessage = error.message;
@@ -139,8 +138,6 @@ class AuthViewModel extends ChangeNotifier {
     final auth = FirebaseFirestore.instance;
     final docRef = await auth.collection('users').doc(idUser).get();
     final data = docRef.data();
-    log('data');
-    log(data.toString());
     if (!docRef.exists || data == null) {
       throw Exception('User not found');
     }
@@ -152,11 +149,7 @@ class AuthViewModel extends ChangeNotifier {
     required String password,
   }) async {
     listenToUserUseCase.call(idUser).listen((user) async {
-      log('User');
-      log('---------------------');
-      log(user.name);
       await loadUser(user, password);
-
       notifyListeners();
     });
   }
@@ -164,15 +157,11 @@ class AuthViewModel extends ChangeNotifier {
   Future loadUser(UserModel user, String? password) async {
     await saveUserUseCase.call(user, password ?? '');
     _currentUser = await getUserUseCase.call();
-    log(_currentUser!.password!);
-    log(_currentUser?.id! ?? 'NoId');
     notifyListeners();
   }
 
   Future<void> signOut() async {
     isLoading = true;
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.clear();
     errorMessage = '';
     notifyListeners();
     await saveLoginStatusUseCase.call(false);
@@ -183,14 +172,12 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> updatePassword(String newPassword) async {
-    log('تم تحديث كلمة السر ');
-    log('كلمة السر $newPassword');
-
     isLoading = true;
     notifyListeners();
     await Future.delayed(Duration(seconds: 4));
     await updatePasswordUseCase.call(newPassword: newPassword);
     await saveUserUseCase.call(user!, newPassword);
+
     _currentUser = await getUserUseCase.call();
     isLoading = false;
     notifyListeners();

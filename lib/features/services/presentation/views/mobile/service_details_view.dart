@@ -5,11 +5,11 @@ import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/services/data/models/service_model.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
-import 'package:serve_home/features/services/presentation/widgets/bottom_navigation_bar_details_widget.dart';
-import 'package:serve_home/features/services/presentation/widgets/service_description_widget.dart';
-import 'package:serve_home/features/services/presentation/widgets/service_features_widget.dart';
-import 'package:serve_home/features/services/presentation/widgets/service_header_widget.dart';
-import 'package:serve_home/features/services/presentation/widgets/service_inclusion_widget.dart';
+import 'package:serve_home/features/services/presentation/widgets/mobile_widgets/bottom_navigation_bar_details_widget.dart';
+import 'package:serve_home/features/services/presentation/widgets/mobile_widgets/service_description_widget.dart';
+import 'package:serve_home/features/services/presentation/widgets/mobile_widgets/service_features_widget.dart';
+import 'package:serve_home/features/services/presentation/widgets/mobile_widgets/service_header_widget.dart';
+import 'package:serve_home/features/services/presentation/widgets/mobile_widgets/service_inclusion_widget.dart';
 
 class ServiceDetailsView extends StatelessWidget {
   final ServiceModel service;

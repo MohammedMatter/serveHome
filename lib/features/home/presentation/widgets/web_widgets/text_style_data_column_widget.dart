@@ -11,7 +11,7 @@ String  txt ;
   Widget build(BuildContext context) {
     return Text(
      txt,
-      style: AppStyle.body15.copyWith(
+      style: AppStyle.body15(context).copyWith(
         fontWeight: FontWeight.w600,
       ),
     );

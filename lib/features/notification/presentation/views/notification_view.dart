@@ -18,21 +18,14 @@ class NotificationView extends StatefulWidget {
 
 class _NotificationViewState extends State<NotificationView> {
   late NotificationViewModel provNotification;
-  late ServiceViewModel provService;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    provNotification = Provider.of<NotificationViewModel>(
-      context,
-      listen: false,
-    );
+    provNotification = Provider.of<NotificationViewModel>(context, listen: false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final  provAuth = Provider.of<AuthViewModel>(
-      context,
-      listen: false,
-    );
+      final provAuth = Provider.of<AuthViewModel>(context, listen: false);
       provNotification.startListening(idUser: provAuth.user!.id!);
     });
   }
@@ -45,205 +38,151 @@ class _NotificationViewState extends State<NotificationView> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = ScreenSize.h(context);
+    double screenWidth = ScreenSize.w(context);
+
+    double appBarHeight = screenHeight * 0.10;
+    double notificationBadgeWidth = screenWidth * 0.15;
+    double circleAvatarRadius = screenWidth * 0.04;
+
     return Consumer2<NotificationViewModel, ServiceViewModel>(
-      builder:
-          (context, provNotification, provService, child) => Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              toolbarHeight: ScreenSize.h(context) * 0.10,
-              backgroundColor: AppColor.primary,
-              centerTitle: true,
-              elevation: 4,
-              title: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Notifications',
-                    style: AppStyle.body17.copyWith(color: Colors.white),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColor.secondry,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    width: 68,
-                    child: Text(
-                      '${provNotification.unreadNotifications.length} ${provNotification.unreadNotifications.length == 1 ? 'new' : 'news'} ',
-                      style: AppStyle.body15,
-                    ),
-                  ),
-                ],
+      builder: (context, provNotification, provService, child) => Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: appBarHeight,
+          backgroundColor: AppColor.primary,
+          centerTitle: true,
+          elevation: 4,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Notifications',
+                style: AppStyle.body17(context).copyWith(color: Colors.white, fontSize: screenWidth * 0.045),
               ),
-            ),
-            backgroundColor: Color(0xFFF5F7FA),
-
-            bottomNavigationBar: BottomNavigationBarWidget(),
-            body: Consumer2<BookingViewModel, AuthViewModel>(
-              builder:
-                  (
-                    context,
-                    provBooking,
-                    provAuth,
-                    child,
-                  ) => SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        provNotification.notifications.isNotEmpty
-                            ? Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children:
-                                      provNotification.notifications.map((
-                                        notification,
-                                      ) {
-                                        final difference = DateTime.now()
-                                            .difference(notification.createAt!);
-                                        return GestureDetector(
-                                          onTap: () async {
-                                            await provNotification.markAsRead(
-                                              idNotification: notification.id!,
-                                              idUser:
-                                                  provAuth.user!.id!,
-                                            );
-                                          },
-                                          child: Card(
-                                            elevation:
-                                                notification.read ? 0 : 1.7,
-
-                                            shadowColor: AppColor.secondry,
-                                            color: Colors.white,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    vertical: 9,
-                                                  ),
-                                              child: ListTile(
-                                                trailing:
-                                                    notification.read
-                                                        ? null
-                                                        : CircleAvatar(
-                                                          backgroundColor:
-                                                              AppColor.secondry,
-                                                          radius: 6,
-                                                        ),
-                                                leading: CircleAvatar(
-                                                  radius: 16,
-                                                  backgroundColor:
-                                                      const Color.fromARGB(
-                                                        255,
-                                                        245,
-                                                        248,
-                                                        248,
-                                                      ),
-                                                  child: Icon(
-                                                    size: 25,
-                                                    notification.status ==
-                                                            'Pending'
-                                                        ? Icons.schedule
-                                                        : notification.status ==
-                                                            'InProgress'
-                                                        ? Icons.hourglass_top
-                                                        : notification.status ==
-                                                            'Completed'
-                                                        ? Icons
-                                                            .done_all_outlined
-                                                        : Icons.cancel,
-
-                                                    color:
-                                                        notification.status ==
-                                                                'Pending'
-                                                            ? Color.fromARGB(
-                                                              255,
-                                                              138,
-                                                              136,
-                                                              136,
-                                                            )
-                                                            : notification
-                                                                    .status ==
-                                                                'InProgress'
-                                                            ? Colors.amber[600]
-                                                            : notification
-                                                                    .status ==
-                                                                'Completed'
-                                                            ? Colors.green
-                                                            : Colors.red,
-                                                  ),
-                                                ),
-                                                title: Text(
-                                                  notification.title,
-                                                  style: AppStyle.body13
-                                                      .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors.black,
-                                                      ),
-                                                ),
-                                                subtitle: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      notification.body,
-                                                      style: AppStyle.subTitle
-                                                          .copyWith(
-                                                            fontSize: 11,
-                                                          ),
-                                                    ),
-                                                    SizedBox(height: 10),
-                                                    Text(
-                                                      difference.inMinutes <
-                                                                  60 &&
-                                                              difference
-                                                                      .inMinutes ==
-                                                                  0
-                                                          ? '1 minute ago'
-                                                          : difference
-                                                                  .inMinutes <
-                                                              60
-                                                          ? '${difference.inMinutes.toString()} minutes ago'
-                                                          : difference.inHours <
-                                                              24
-                                                          ? '${difference.inHours.toString()} hours ago'
-                                                          : '${difference.inDays.toString()} days ago',
-
-                                                      style: AppStyle.body12
-                                                          .copyWith(
-                                                            color:
-                                                                const Color.fromARGB(
-                                                                  255,
-                                                                  109,
-                                                                  109,
-                                                                  109,
-                                                                ),
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
+              SizedBox(height: screenHeight * 0.01),
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: AppColor.secondry,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                width: notificationBadgeWidth,
+                child: Text(
+                  '${provNotification.unreadNotifications.length} ${provNotification.unreadNotifications.length == 1 ? 'new' : 'news'}',
+                  style: AppStyle.body15(context).copyWith(fontSize: screenWidth * 0.035),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: const Color(0xFFF5F7FA),
+        bottomNavigationBar: const BottomNavigationBarWidget(),
+        body: Consumer2<BookingViewModel, AuthViewModel>(
+          builder: (context, provBooking, provAuth, child) => SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenHeight * 0.02),
+              child: Column(
+                children: provNotification.notifications.isNotEmpty
+                    ? provNotification.notifications.map((notification) {
+                        final difference = DateTime.now().difference(notification.createAt!);
+                        return GestureDetector(
+                          onTap: () async {
+                            await provNotification.markAsRead(
+                              idNotification: notification.id!,
+                              idUser: provAuth.user!.id!,
+                            );
+                          },
+                          child: Card(
+                            elevation: notification.read ? 0 : 2,
+                            shadowColor: AppColor.secondry,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenHeight * 0.012, horizontal: screenWidth * 0.02),
+                              child: ListTile(
+                                trailing: notification.read
+                                    ? null
+                                    : CircleAvatar(
+                                        backgroundColor: AppColor.secondry,
+                                        radius: circleAvatarRadius * 0.3,
+                                      ),
+                                leading: CircleAvatar(
+                                  radius: circleAvatarRadius,
+                                  backgroundColor: const Color.fromARGB(255, 245, 248, 248),
+                                  child: Icon(
+                                    notification.status == 'Pending'
+                                        ? Icons.schedule
+                                        : notification.status == 'InProgress'
+                                            ? Icons.hourglass_top
+                                            : notification.status == 'Completed'
+                                                ? Icons.done_all_outlined
+                                                : Icons.cancel,
+                                    color: notification.status == 'Pending'
+                                        ? const Color.fromARGB(255, 138, 136, 136)
+                                        : notification.status == 'InProgress'
+                                            ? Colors.amber[600]
+                                            : notification.status == 'Completed'
+                                                ? Colors.green
+                                                : Colors.red,
+                                    size: screenWidth * 0.06,
+                                  ),
                                 ),
-                              ),
-                            )
-                            : Container(
-                              height: 300,
-                              child: Center(
-                                child: Text(
-                                  'No notification has been sent yet.',
-                                  style: AppStyle.body16,
+                                title: Text(
+                                  notification.title,
+                                  style: AppStyle.body13(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: screenWidth * 0.038,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: screenHeight * 0.005),
+                                    Text(
+                                      notification.body,
+                                      style: AppStyle.subTitle(context).copyWith(fontSize: screenWidth * 0.03),
+                                    ),
+                                    SizedBox(height: screenHeight * 0.008),
+                                    Text(
+                                      difference.inMinutes < 60 && difference.inMinutes == 0
+                                          ? '1 minute ago'
+                                          : difference.inMinutes < 60
+                                              ? '${difference.inMinutes} minutes ago'
+                                              : difference.inHours < 24
+                                                  ? '${difference.inHours} hours ago'
+                                                  : '${difference.inDays} days ago',
+                                      style: AppStyle.body12(context).copyWith(
+                                        fontSize: screenWidth * 0.028,
+                                        color: const Color.fromARGB(255, 109, 109, 109),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
+                          ),
+                        );
+                      }).toList()
+                    : [
+                        SizedBox(
+                          height: screenHeight * 0.4,
+                          child: Center(
+                            child: Text(
+                              'No notification has been sent yet.',
+                              style: AppStyle.body16(context).copyWith(fontSize: screenWidth * 0.04),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
                       ],
-                    ),
-                  ),
+              ),
             ),
           ),
+        ),
+      ),
     );
   }
 }

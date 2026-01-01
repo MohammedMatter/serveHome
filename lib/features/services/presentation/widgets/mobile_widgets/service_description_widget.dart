@@ -12,7 +12,6 @@ class ServiceDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // المتغيرات Responsive
     final double horizontalPadding = (ScreenSize.w(context) * 0.02).clamp(12, 24);
     final double verticalSpacing = (ScreenSize.h(context) * 0.015).clamp(8, 20);
     final double textWidth = (ScreenSize.w(context) * 0.9).clamp(250, 600);
@@ -26,14 +25,14 @@ class ServiceDescriptionWidget extends StatelessWidget {
         children: [
           Text(
             'About this Service',
-            style: AppStyle.body19.copyWith(fontSize: titleFontSize),
+            style: AppStyle.body19(context).copyWith(fontSize: titleFontSize),
           ),
           SizedBox(height: verticalSpacing),
           SizedBox(
             width: textWidth,
             child: Text(
               service.description,
-              style: AppStyle.subTitle.copyWith(fontSize: descriptionFontSize),
+              style: AppStyle.subTitle(context).copyWith(fontSize: descriptionFontSize),
             ),
           ),
         ],

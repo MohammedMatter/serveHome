@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/styles/app_style.dart';
-import 'package:serve_home/features/booking/presentation/view_models/booking_view_model.dart';
 import 'package:serve_home/features/booking/presentation/view_models/location_view_model.dart';
 
 // ignore: must_be_immutable
@@ -45,7 +43,7 @@ class _TextFieldServiceAddressState extends State<TextFieldServiceAddressWidget>
               prefixIcon: Icon(Icons.location_on_outlined),
               hintText: widget.hint,
               filled: true,
-              hintStyle: AppStyle.hintTextStyle,
+              hintStyle: AppStyle.hintTextStyle(context),
               prefixIconColor: Colors.grey,
               fillColor: AppColor.filledTextField,
               focusedBorder: OutlineInputBorder(

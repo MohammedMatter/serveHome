@@ -45,6 +45,8 @@ class _BarChartWidgetState extends State<BarChartWidget>
     BuildContext context,
     double t,
   ) {
+    double barWidth = (ScreenSize.w(context) * 0.04).clamp(12, 40);
+
     return List.generate(_values.length, (i) {
       final currentHeight = _values[i] * t;
 
@@ -53,7 +55,7 @@ class _BarChartWidgetState extends State<BarChartWidget>
         barRods: [
           BarChartRodData(
             toY: currentHeight,
-            width: ScreenSize.w(context) * 0.04,
+            width: barWidth,
             borderRadius: BorderRadius.circular(8),
             gradient: const LinearGradient(
               begin: Alignment.bottomCenter,
@@ -71,15 +73,17 @@ class _BarChartWidgetState extends State<BarChartWidget>
 
   @override
   Widget build(BuildContext context) {
+    double chartHeight = (ScreenSize.h(context) * 0.45).clamp(250, 400);
+
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(0, 100 * (1 - _animation.value)),
+          offset: Offset(0, chartHeight * (1 - _animation.value) * 0.3),
           child: Opacity(
             opacity: _animation.value,
             child: SizedBox(
-              height: 350,
+              height: chartHeight,
               width: double.infinity,
               child: BarChart(
                 BarChartData(
@@ -87,9 +91,13 @@ class _BarChartWidgetState extends State<BarChartWidget>
                     touchTooltipData: BarTouchTooltipData(
                       getTooltipItem:
                           (group, groupIndex, rod, rodIndex) => BarTooltipItem(
-                            '${rod.toY.toStringAsFixed(0)} bookings',
-                            const TextStyle(color: Colors.white),
-                          ),
+                                '${rod.toY.toStringAsFixed(0)} bookings',
+                                TextStyle(
+                                  color: Colors.white,
+                                  fontSize: (ScreenSize.w(context) * 0.03)
+                                      .clamp(10, 14),
+                                ),
+                              ),
                       getTooltipColor: (group) => AppColor.primary,
                     ),
                   ),
@@ -116,7 +124,15 @@ class _BarChartWidgetState extends State<BarChartWidget>
                             'Fri',
                             'Sat',
                           ];
-                          return Text(days[value.toInt()]);
+                          double fontSize =
+                              (ScreenSize.w(context) * 0.035).clamp(10, 14);
+                          return Text(
+                            days[value.toInt()],
+                            style: TextStyle(
+                              fontSize: fontSize,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          );
                         },
                       ),
                     ),

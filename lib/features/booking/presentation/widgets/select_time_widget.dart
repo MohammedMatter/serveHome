@@ -30,7 +30,7 @@ class SelectTimeWidget extends StatelessWidget {
       children: [
         Text(
           'Select Time',
-          style: AppStyle.body15.copyWith(
+          style: AppStyle.body15(context).copyWith(
             color: Colors.black,
             fontSize: titleFontSize,
             fontWeight: FontWeight.w500,
@@ -72,7 +72,7 @@ class SelectTimeWidget extends StatelessWidget {
                   children: [
                     Text(
                       times[index],
-                      style: AppStyle.subTitle.copyWith(
+                      style: AppStyle.subTitle(context).copyWith(
                         fontSize: fontSize,
                         color: Colors.black,
                       ),

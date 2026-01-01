@@ -4,94 +4,100 @@ import 'package:serve_home/core/helpers/responsive_config.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/styles/app_style.dart';
 
-// ignore: must_be_immutable
 class ServiceDetailsWebWidget extends StatelessWidget {
-  ServiceDetailsWebWidget({
-    required this.category,
-    super.key,
-    required this.confegResposive,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.time,
-  });
-  String name;
-  String category;
-  String price;
-  String description;
-  String time;
+  final String name;
+  final String category;
+  final String price;
+  final String description;
+  final String time;
   final ResponsiveConfig confegResposive;
+
+  const ServiceDetailsWebWidget({
+    super.key,
+    required this.name,
+    required this.category,
+    required this.price,
+    required this.description,
+    required this.time,
+    required this.confegResposive,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: ScreenSize.w(context) * 0.006),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  name,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: ScreenSize.h(context) * 0.01),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
 
-                  style: AppStyle.body17.copyWith(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text(
+                  name,
+                  style: AppStyle.body17(context).copyWith(
                     fontSize: confegResposive.titleFontSize,
+                    fontWeight: FontWeight.bold,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                SizedBox(width: 5),
-                Text(
+              ),
+              SizedBox(width: ScreenSize.w(context) * 0.02),
+              Flexible(
+                child: Text(
                   category,
-
-                  style: AppStyle.body15.copyWith(
+                  style: AppStyle.body15(context).copyWith(
                     color: AppColor.secondry,
-                    fontSize: confegResposive.titleFontSize,
+                    fontSize: confegResposive.titleFontSize * 0.9,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
                 ),
-              ],
-            ),
-            Text(
-              description,
-              overflow: TextOverflow.ellipsis,
-
-              maxLines: 2,
-              style: AppStyle.subTitle.copyWith(
-                fontSize: confegResposive.titleFontSize,
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: ScreenSize.w(context) * 0.005),
-        Row(
-          children: [
-            Text(
-              '$price \$',
-              style: AppStyle.body15.copyWith(
-                fontWeight: FontWeight.w700,
-                color: Colors.green,
-                fontSize: confegResposive.titleFontSize,
-              ),
-            ),
-            SizedBox(width: ScreenSize.w(context) * 0.02),
-            Row(
-              children: [
-                Icon(Icons.timer_outlined, size: 15),
-                Text(
-                  '$time hours',
+            ],
+          ),
+          SizedBox(height: ScreenSize.h(context) * 0.005),
 
-                  style: AppStyle.body15.copyWith(
-                    fontSize: confegResposive.titleFontSize,
+
+          Text(
+            description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: AppStyle.subTitle(context).copyWith(
+              fontSize: confegResposive.titleFontSize * 0.9,
+            ),
+          ),
+          SizedBox(height: ScreenSize.h(context) * 0.01),
+
+
+          Row(
+            children: [
+              Text(
+                '$price \$',
+                style: AppStyle.body15(context).copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.green,
+                  fontSize: confegResposive.titleFontSize,
+                ),
+              ),
+              SizedBox(width: ScreenSize.w(context) * 0.03),
+              Row(
+                children: [
+                  Icon(Icons.timer_outlined, size: confegResposive.titleFontSize * 0.9),
+                  SizedBox(width: 4),
+                  Text(
+                    '$time hours',
+                    style: AppStyle.body15(context).copyWith(
+                      fontSize: confegResposive.titleFontSize * 0.9,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

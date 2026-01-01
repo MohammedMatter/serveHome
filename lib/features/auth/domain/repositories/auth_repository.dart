@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:serve_home/core/errors/failure.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
 

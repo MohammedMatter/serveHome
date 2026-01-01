@@ -4,41 +4,35 @@ import 'package:flutter/widgets.dart';
 class DashboardItem {
   final String title;
   final IconData icon;
-  final int count;
   final Color color;
   DashboardItem({
     required this.title,
     required this.icon,
-    required this.count,
     required this.color,
   });
 
   static List<DashboardItem> dashboardItems = [
     DashboardItem(
-      title: 'New Bookings Today',
+      title: 'Pending Bookings',
       icon: Icons.calendar_today_outlined,
-      count: 2,
       color: Colors.orange,
     ),
        DashboardItem(
       title: 'InProgress Bookings',
       icon: Icons.access_time_rounded,
-      count: 5,
       color: Colors.blue,
     ),
    
     DashboardItem(
-      title: 'Completed Today',
+      title: 'Completed Bookings',
       icon: Icons.done_outline_outlined,
-      count: 8,
       color: Colors.green,
     ),
  
   DashboardItem(
-      title: 'Active Bookings',
-      icon: Icons.bar_chart_outlined,
-      count: 1,
-      color: Colors.deepPurpleAccent,
+      title: 'Canceled Bookings',
+      icon: Icons.cancel_outlined,
+      color: Colors.red,
     ),
 
   ];

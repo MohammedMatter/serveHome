@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 
 class ImageServiceWidget extends StatelessWidget {
-  double imageSize ; 
-  String imageUrl;
-  ImageServiceWidget({required this.imageUrl, super.key , required this.imageSize});
+  final double? imageSize;
+  final String imageUrl;
+
+  const ImageServiceWidget({
+    super.key,
+    required this.imageUrl,
+    this.imageSize,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final double height = imageSize ?? (ScreenSize.h(context) * 0.25); 
+    final BorderRadius borderRadius = BorderRadius.circular(12);
+
     return Container(
+      height: height,
+      width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(12),
-          bottom: Radius.circular(12),
-        ),
+        borderRadius: borderRadius,
       ),
-      height: imageSize,
-      width: double.infinity,
-
       child: ClipRRect(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(12),
-          bottom: Radius.circular(12),
+        borderRadius: borderRadius,
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover, 
+          errorBuilder: (context, error, stackTrace) => Image.asset(
+            'assets/images/placeholderImage/placeholder.png',
+            fit: BoxFit.cover,
+          ),
         ),
-        child: Image.network(imageUrl, fit: BoxFit.fill),
       ),
     );
   }

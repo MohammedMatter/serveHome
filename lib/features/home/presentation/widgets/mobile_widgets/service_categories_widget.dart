@@ -64,7 +64,7 @@ class ServiceCtegoriesWidget extends StatelessWidget {
                             Text(
                               provService.categories[index].name,
                               textAlign: TextAlign.center,
-                              style: AppStyle.body15.copyWith(
+                              style: AppStyle.body15(context).copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: AppColor.primary,
                                 fontSize: (ScreenSize.w(context) * 0.04).clamp(

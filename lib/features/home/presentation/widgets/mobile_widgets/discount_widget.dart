@@ -33,7 +33,7 @@ class DiscountWidget extends StatelessWidget {
           children: [
             Text(
               'Get 20% off Today !',
-              style: AppStyle.body19.copyWith(
+              style: AppStyle.body19(context).copyWith(
                 fontSize: (ScreenSize.h(context)*0.02).clamp(18, double.infinity),
                 color: Colors.white,
               ),
@@ -47,7 +47,7 @@ class DiscountWidget extends StatelessWidget {
                 ),
                 label: Text(
                   'Learn More',
-                  style: AppStyle.body19.copyWith(
+                  style: AppStyle.body19(context).copyWith(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                  fontSize: (ScreenSize.h(context)*0.018).clamp(14, 18) , 

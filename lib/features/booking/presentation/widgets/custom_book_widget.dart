@@ -54,14 +54,14 @@ class CusstomBookWidget extends StatelessWidget {
                       children: [
                         Text(
                           'Book Service',
-                          style: AppStyle.body19.copyWith(
+                          style: AppStyle.body19(context).copyWith(
                             color: Colors.black,
                             fontSize: titleFontSize,
                           ),
                         ),
                         Text(
                          serviceModel.name ,
-                          style: AppStyle.subTitle.copyWith(
+                          style: AppStyle.subTitle(context).copyWith(
                             color: AppColor.primary,
                             fontSize: subTitleFontSize,
                           ),

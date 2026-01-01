@@ -44,7 +44,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                   Center(
                     child: Text(
                       'All Services',
-                      style: AppStyle.body19.copyWith(
+                      style: AppStyle.body19(context).copyWith(
                         fontSize: (ScreenSize.w(context) * 0.05).clamp(18, 26),
                       ),
                     ),
@@ -119,7 +119,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                                                     Flexible(
                                                       child: Text(
                                                         service.name,
-                                                        style: AppStyle.body17
+                                                        style: AppStyle.body17(context)
                                                             .copyWith(
                                                           fontSize:
                                                               (ScreenSize.w(context) *
@@ -132,7 +132,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                                                     ),
                                                     Text(
                                                       '(${service.category})',
-                                                      style: AppStyle.body15
+                                                      style: AppStyle.body15(context)
                                                           .copyWith(
                                                         color:
                                                             AppColor.secondry,
@@ -153,7 +153,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                                                   maxLines: 2,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  style: AppStyle.body15
+                                                  style: AppStyle.body15(context)
                                                       .copyWith(
                                                     fontSize:
                                                         (ScreenSize.w(context) *
@@ -226,7 +226,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                                                       ),
                                                       child: Text(
                                                         'Book now',
-                                                        style: AppStyle.body16
+                                                        style: AppStyle.body16(context)
                                                             .copyWith(
                                                               color: Colors.white,
                                                           fontSize:
@@ -254,7 +254,7 @@ class _AllServicesViewState extends State<AllServicesView> {
                                 Center(
                                   child: Text(
                                     'No services matched your search',
-                                    style: AppStyle.body16.copyWith(
+                                    style: AppStyle.body16(context).copyWith(
                                       fontSize: (ScreenSize.w(context) * 0.045)
                                           .clamp(16, 22),
                                     ),

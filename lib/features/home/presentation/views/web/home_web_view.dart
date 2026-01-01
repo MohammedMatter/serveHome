@@ -16,7 +16,6 @@ class HomeWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        log('web : ${kIsWeb}') ; 
     return Scaffold(
       body: Consumer3<HomeViewModel, BookingViewModel, AuthViewModel>(
         builder:

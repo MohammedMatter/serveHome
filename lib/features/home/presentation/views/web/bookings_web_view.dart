@@ -11,11 +11,13 @@ class BookingsWebView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Row(
-          children: [
-            DrawerWidget(),
-            Expanded(
+    
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DrawerWidget(),
+          Expanded(
+            child: SingleChildScrollView(
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final configResponsive = ResponsiveConfig.fromConstraints(
@@ -35,7 +37,7 @@ class BookingsWebView extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'All Bookings',
-                            style: AppStyle.body19
+                            style: AppStyle.body19(context),
                           ),
                         ),
                         AllBookingsTableWidget(
@@ -48,8 +50,8 @@ class BookingsWebView extends StatelessWidget {
                 },
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

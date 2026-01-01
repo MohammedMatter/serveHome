@@ -4,36 +4,43 @@ import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
 
 class AddServiceTextField extends StatelessWidget {
-  AddServiceTextField({
+  final String hint;
+  final int maxLines;
+  final TextInputFormatter? textInputFormatter;
+  final TextEditingController controller;
+
+  const AddServiceTextField({
     super.key,
     required this.hint,
     required this.maxLines,
     this.textInputFormatter,
     required this.controller,
   });
-  String? hint;
-  int? maxLines;
-  TextInputFormatter? textInputFormatter;
-  TextEditingController controller;
+
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = ScreenSize.w(context);
+    final double screenHeight = ScreenSize.h(context);
+
+
+    final double dynamicHeight = (maxLines * 25.0).clamp(40, screenHeight * 0.2);
+
     return SizedBox(
-      height: ScreenSize.w(context) * 0.040,
+      height: dynamicHeight,
       child: TextField(
         controller: controller,
         inputFormatters:
             textInputFormatter != null ? [textInputFormatter!] : [],
-
         maxLines: maxLines,
-        cursorHeight: 15,
-        enabled: true,
+        cursorHeight: 18,
         decoration: InputDecoration(
-          hintStyle: TextStyle(fontSize: 15),
-          contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 13),
           hintText: hint,
+          hintStyle: TextStyle(fontSize: screenWidth * 0.035), 
+          contentPadding: EdgeInsets.symmetric(
+            vertical: screenHeight * 0.012,
+            horizontal: screenWidth * 0.035,
+          ),
           fillColor: AppColor.filledTextField,
-          enabled: true,
-
           filled: true,
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
@@ -41,7 +48,7 @@ class AddServiceTextField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(width: 3.5, color: Colors.grey),
+            borderSide: BorderSide(width: 2.5, color: Colors.grey),
           ),
         ),
       ),

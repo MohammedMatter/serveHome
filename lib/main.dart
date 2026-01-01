@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:serve_home/core/notifications/firebase_messaging_service.dart';
 import 'package:serve_home/core/notifications/notification_service.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/features/auth/domain/use_cases/get_login_status_use_case.dart';
@@ -40,14 +41,16 @@ import 'package:serve_home/features/services/domain/user_cases/get_services_use_
 import 'package:serve_home/features/services/domain/user_cases/update_service_use_case.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 import 'package:serve_home/firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 late final AppRouter appRouter;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (!kIsWeb) {
     await NotificationService.init();
-    await FirebaseMessagingService.init();
   }
+  final prefs = await SharedPreferences.getInstance();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -67,11 +70,11 @@ void main() async {
     saveUserUseCase: SaveUserUseCase(),
   );
   final isLogin = await authViewModel.getLoginStatusUseCase.call();
-  appRouter = AppRouter(isLogin: isLogin);
+ appRouter = AppRouter(isLogin: isLogin);
   runApp(MyApp(authViewModel: authViewModel, isLogin: isLogin));
 }
 
-// ignore: must_be_immutable
+
 class MyApp extends StatelessWidget {
   final AuthViewModel authViewModel;
   bool isLogin;

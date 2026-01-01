@@ -1,8 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:serve_home/core/colors/app_color.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/core/utils/input_validator.dart';
 
+// ignore: must_be_immutable
 class TextFormFieldWidget extends StatelessWidget {
   TextFormFieldWidget({
     super.key,
@@ -24,10 +25,12 @@ class TextFormFieldWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label),
-        SizedBox(height: 3),
+        Text(
+          label,
+          style: TextStyle(fontSize: ScreenSize.h(context) * 0.02),
+        ),
+        SizedBox(height: ScreenSize.h(context) * 0.008), 
         TextFormField(
-          
           validator: (value) {
             if (label == 'Email' && isSignIn) {
               return InputValidator.vaildateEmailSignIn(value!);
@@ -53,16 +56,19 @@ class TextFormFieldWidget extends StatelessWidget {
           decoration: InputDecoration(
             errorMaxLines: 3,
             filled: true,
-            prefixIcon: Icon(icon, color: Colors.grey),
+            prefixIcon: Icon(icon, color: Colors.grey, size: ScreenSize.h(context) * 0.03),
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: ScreenSize.h(context) * 0.018,
+            ),
             fillColor: AppColor.filledTextField,
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(ScreenSize.h(context) * 0.015), 
               borderSide: BorderSide(style: BorderStyle.none),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(ScreenSize.h(context) * 0.015),
               borderSide: BorderSide(style: BorderStyle.none),
             ),
           ),

@@ -24,7 +24,7 @@ class SelectDateWidget extends StatelessWidget {
         children: [
           Text(
             'Select Date',
-            style: AppStyle.body15.copyWith(
+            style: AppStyle.body15(context).copyWith(
               color: Colors.black,
               fontSize: titleFontSize,
               fontWeight: FontWeight.w500,
@@ -58,7 +58,7 @@ class SelectDateWidget extends StatelessWidget {
                 provBooking.selectedDate.isEmpty
                     ? 'Tap here to select date'
                     : provBooking.selectedDate,
-                style: AppStyle.subTitle.copyWith(
+                style: AppStyle.subTitle(context).copyWith(
                   fontSize: textFontSize,
                   color: provBooking.selectedDate.isEmpty
                       ? Colors.grey

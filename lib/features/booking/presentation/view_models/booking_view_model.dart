@@ -170,7 +170,7 @@ class BookingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchComoletedBookings({required String idUser}) {
+  void fetchCompletedBookings({required String idUser}) {
     fetchBookingsByStatusUseCase
         .call(idUser: idUser, status: 'Completed')
         .listen((bookings) {

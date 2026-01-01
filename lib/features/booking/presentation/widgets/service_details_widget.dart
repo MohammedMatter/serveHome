@@ -11,85 +11,92 @@ class ServiceDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<BookingViewModel, ServiceViewModel, LocationViewModel>(
-      builder:
-          (context, provBooking, provService, provLocation, child) => Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            child: Container(
-              // height: ScreenSize.h(context)*0.6,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 25,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Service details', style: AppStyle.body19),
-                    SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Service', style: AppStyle.body16),
-                        Text(
-                          provService.selectedService!.name,
-                          style: AppStyle.body15,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Text('Date&Time', style: AppStyle.body16)),
-                        Text(
-                          '${provBooking.selectedDate} at ${provBooking.selectedTime}',
-                          style: AppStyle.body15,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Text('Address', style: AppStyle.body16)),
-                        Expanded(
-                          child: Text(
-                            provLocation.address,
-                            style: AppStyle.body15,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
+    final double horizontalPadding = (ScreenSize.w(context) * 0.05).clamp(15, 25);
+    final double verticalPadding = (ScreenSize.h(context) * 0.03).clamp(20, 30);
+    final double spacing = (ScreenSize.h(context) * 0.02).clamp(10, 25);
+    final double titleFontSize = (ScreenSize.w(context) * 0.045).clamp(16, 20);
+    final double labelFontSize = (ScreenSize.w(context) * 0.038).clamp(14, 18);
+    final double infoFontSize = (ScreenSize.w(context) * 0.035).clamp(13, 16);
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Payment Method ', style: AppStyle.body16),
-                        Text(
-                          provBooking.selectedPaymentMethod,
-                          style: AppStyle.body15,
-                        ),
-                      ],
+    return Consumer3<BookingViewModel, ServiceViewModel, LocationViewModel>(
+      builder: (context, provBooking, provService, provLocation, child) => Padding(
+        padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 4,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Service details', style: AppStyle.body17(context).copyWith(fontSize: titleFontSize)),
+  
+                Divider() , 
+                 SizedBox(height: spacing),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Service', style: AppStyle.body16(context).copyWith(fontSize: labelFontSize)),
+                    Text(
+                      provService.selectedService!.name,
+                      style: AppStyle.body15(context).copyWith(fontSize: infoFontSize),
                     ),
                   ],
                 ),
-              ),
+                SizedBox(height: spacing),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text('Date & Time', style: AppStyle.body16(context).copyWith(fontSize: labelFontSize)),
+                    ),
+                    Text(
+                      '${provBooking.selectedDate} at ${provBooking.selectedTime}',
+                      style: AppStyle.body15(context).copyWith(fontSize: infoFontSize),
+                    ),
+                  ],
+                ),
+                SizedBox(height: spacing),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text('Address', style: AppStyle.body16(context).copyWith(fontSize: labelFontSize)),
+                    ),
+                    Expanded(
+                      child: Text(
+                        provLocation.address,
+                        style: AppStyle.body15(context).copyWith(fontSize: infoFontSize),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: spacing),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Payment Method', style: AppStyle.body16(context).copyWith(fontSize: labelFontSize)),
+                    Text(
+                      provBooking.selectedPaymentMethod,
+                      style: AppStyle.body15(context).copyWith(fontSize: infoFontSize),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
+        ),
+      ),
     );
   }
 }

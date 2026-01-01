@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +7,6 @@ import 'package:serve_home/features/home/presentation/views/mobile/home_view_mob
 import 'package:serve_home/features/home/presentation/views/web/home_web_view.dart';
 import 'package:serve_home/features/services/presentation/view_models/service_view_model.dart';
 
-// ignore: must_be_immutable
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -17,25 +15,28 @@ class HomeView extends StatelessWidget {
     return Consumer<AuthViewModel>(
       builder: (context, auth, _) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          context.read<BookingViewModel>().fetchAllBookings(
-            idUser: auth.user!.id!,
-          );
-
           context.read<BookingViewModel>().fetchAllUsersBookings();
-          context.read<BookingViewModel>().fetchInProgressBookings(
-            idUser: auth.user!.id!,
-          );
-          context.read<BookingViewModel>().fetchComoletedBookings(
-            idUser: auth.user!.id!,
-          );
-          context.read<BookingViewModel>().fetchCanceledBookings(
-            idUser: auth.user!.id!,
-          );
-          context.read<BookingViewModel>().fetchPendingBookings(
-            idUser: auth.user!.id!,
-          );
 
-          context.read<ServiceViewModel>().getServices();
+          if (!kIsWeb) {
+            context.read<BookingViewModel>().fetchAllBookings(
+              idUser: auth.user!.id!,
+            );
+
+            context.read<BookingViewModel>().fetchInProgressBookings(
+              idUser: auth.user!.id!,
+            );
+            context.read<BookingViewModel>().fetchCompletedBookings(
+              idUser: auth.user!.id!,
+            );
+            context.read<BookingViewModel>().fetchCanceledBookings(
+              idUser: auth.user!.id!,
+            );
+            context.read<BookingViewModel>().fetchPendingBookings(
+              idUser: auth.user!.id!,
+            );
+
+            context.read<ServiceViewModel>().getServices();
+          }
         });
 
         return kIsWeb ? HomeWebView() : HomeViewMobile();

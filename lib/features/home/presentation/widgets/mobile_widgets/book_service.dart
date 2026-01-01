@@ -50,7 +50,7 @@ class BookServiceWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Ready to book your service?',
-                    style: AppStyle.appBarTitle.copyWith(fontSize: (ScreenSize.w(context)*0.04).clamp(20, 25)),
+                    style: AppStyle.appBarTitle(context).copyWith(fontSize: (ScreenSize.w(context)*0.04).clamp(20, 25)),
                   ),
                   SizedBox(height: ScreenSize.h(context)*0.01),
                   Consumer<HomeViewModel>(
@@ -73,7 +73,7 @@ class BookServiceWidget extends StatelessWidget {
                                 ),
                                 label: Text(
                                   'Book a Service',
-                                  style: AppStyle.button,
+                                  style: AppStyle.button(context),
                                 ),
                                 style: ButtonStyle(
                                   shape: WidgetStatePropertyAll(

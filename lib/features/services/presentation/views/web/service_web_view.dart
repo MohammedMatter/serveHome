@@ -77,12 +77,12 @@ class _ServicesWebViewState extends State<ServicesWebView> {
                                       children: [
                                         Text(
                                           'Services Management',
-                                          style: AppStyle.body19,
+                                          style: AppStyle.body19(context),
                                         ),
                                         SizedBox(height: 5),
                                         Text(
                                           'Manage all available services in your platform',
-                                          style: AppStyle.body15,
+                                          style: AppStyle.body15(context),
                                         ),
                                       ],
                                     ),
@@ -268,7 +268,7 @@ class _ServicesWebViewState extends State<ServicesWebView> {
                                     child: Center(
                                       child: Text(
                                         'There are currently no services available. Use the "Add New Service" button above to create one.',
-                                        style: AppStyle.body30,
+                                        style: AppStyle.body30(context),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),

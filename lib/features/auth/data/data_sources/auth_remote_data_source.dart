@@ -32,6 +32,7 @@ class AuthRemoteDataSource {
             .collection('users')
             .doc(firebaseUser.uid)
             .set(updateUserModel.toMap());
+            
       }
       return right(unit);
     } on FirebaseAuthException catch (e) {
@@ -68,7 +69,7 @@ class AuthRemoteDataSource {
     await auth.signOut();
   }
 
-  Future<void> saveLoginStatus(bool  isLoggedIn) async {
+  Future<void> saveLoginStatus(bool isLoggedIn) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool('isLoggedIn', isLoggedIn);
   }
@@ -80,18 +81,17 @@ class AuthRemoteDataSource {
 
   Future<UserModel?> getUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    if(pref.getBool('isLoggedIn')==null){
-      return null ; 
+    if (pref.getBool('isLoggedIn') == null) {
+      return null;
+    } else {
+      return UserModel(
+        name: pref.getString('user_name')!,
+        phone: pref.getString('user_phone')!,
+        email: pref.getString('user_email')!,
+        id: pref.getString('user_id'),
+        password: pref.getString('user_password'),
+      );
     }
-  else {
-      return  UserModel(
-      name: pref.getString('user_name')!,
-      phone: pref.getString('user_phone')!,
-      email: pref.getString('user_email')!,
-      id: pref.getString('user_id'),
-      password: pref.getString('user_password'),
-    ) ;
-    } 
   }
 
   Future<void> saveUser(UserModel user, String password) async {

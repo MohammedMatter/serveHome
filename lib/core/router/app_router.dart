@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -56,8 +59,8 @@ class AppRouter {
   bool isLogin;
   AppRouter({required this.isLogin});
   late final routers = GoRouter(
-    initialLocation: isLogin ? '/home' : '/signInView',
-
+    initialLocation:kIsWeb?'/home' :    isLogin ? '/home' : '/signInView',
+//
     routes: [
       GoRoute(
         path: '/signInView',

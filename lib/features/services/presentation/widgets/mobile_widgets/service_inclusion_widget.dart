@@ -7,7 +7,6 @@ class ServiceInclusionsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // متغيرات Responsive
     final double titleFontSize = (ScreenSize.w(context) * 0.045).clamp(18, 22);
     final double iconSize = (ScreenSize.w(context) * 0.035).clamp(16, 20);
     final double spacingWidth = (ScreenSize.w(context) * 0.04).clamp(10, 20);
@@ -26,7 +25,7 @@ class ServiceInclusionsWidget extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: AppStyle.subTitle.copyWith(fontSize: textFontSize),
+                style: AppStyle.subTitle(context).copyWith(fontSize: textFontSize),
               ),
             ),
           ],
@@ -41,7 +40,7 @@ class ServiceInclusionsWidget extends StatelessWidget {
         children: [
           Text(
             'What\'s included',
-            style: AppStyle.body19.copyWith(fontSize: titleFontSize),
+            style: AppStyle.body19(context).copyWith(fontSize: titleFontSize),
           ),
           SizedBox(height: spacingHeight),
           inclusionRow('Professional equipment and supplies'),

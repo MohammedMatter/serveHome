@@ -9,7 +9,17 @@ import 'package:serve_home/features/services/presentation/view_models/service_vi
 import 'package:serve_home/features/services/presentation/widgets/services_web_widget/add_service_text_field.dart';
 
 class ServiceFormFieldWidget extends StatelessWidget {
-  ServiceFormFieldWidget({
+  final String title;
+  final String labelButton;
+  final Function() method;
+  final TextEditingController nameServiceController;
+  final TextEditingController descriptionServiceController;
+  final TextEditingController priceServiceController;
+  final TextEditingController timeServiceController;
+  final TextEditingController categoryServiceController;
+  final TextEditingController imageUrlServiceControllwer;
+
+  const ServiceFormFieldWidget({
     super.key,
     required this.title,
     required this.labelButton,
@@ -21,162 +31,125 @@ class ServiceFormFieldWidget extends StatelessWidget {
     required this.imageUrlServiceControllwer,
     required this.timeServiceController,
   });
-  String title;
-  String labelButton;
-  Function() method;
-  TextEditingController nameServiceController;
-  TextEditingController descriptionServiceController;
-  TextEditingController priceServiceController;
-  TextEditingController timeServiceController;
-  TextEditingController categoryServiceController;
-  TextEditingController imageUrlServiceControllwer;
 
   @override
   Widget build(BuildContext context) {
+    final double dialogWidth = ScreenSize.w(context) > 500 ? 500 : ScreenSize.w(context) * 0.9;
+    final double fieldSpacing = ScreenSize.h(context) * 0.015;
+
     return Consumer<ServiceViewModel>(
-      builder:
-          (context, provService, child) => AlertDialog(
-            actions: [
-              OutlinedButton(
-                style: ButtonStyle(
-                  foregroundColor: WidgetStatePropertyAll(Colors.black),
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-                onPressed:
-                    !provService.isLoading
-                        ? () {
-                          GoRouter.of(context).pop();
-                        }
-                        : null,
-
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(AppColor.primary),
-                  foregroundColor: WidgetStatePropertyAll(Colors.white),
-                ),
-                onPressed: method,
-                child: Text(labelButton),
-              ),
-            ],
-            backgroundColor: Colors.white,
-            title: Text(title, style: AppStyle.body17),
-            content: SizedBox(
-              height: ScreenSize.h(context) * 0.5,
-              width: 400,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: AppStyle.body15),
-                  AddServiceTextField(
-                    controller: nameServiceController,
-                    textInputFormatter: FilteringTextInputFormatter.allow(
-                      RegExp(r'[a-zA-Z\s]'),
-                    ),
-                    hint: 'eg : Fix Electrical Problem',
-                    maxLines: 1,
-                  ),
-                  Text('Description', style: AppStyle.body15),
-                  AddServiceTextField(
-                    controller: descriptionServiceController,
-                    textInputFormatter: FilteringTextInputFormatter.allow(
-                      RegExp(r'[a-zA-Z\s]'),
-                    ),
-                    hint: 'Describe the service',
-                    maxLines: 4,
-                  ),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Base Price', style: AppStyle.body15),
-
-                            AddServiceTextField(
-                              controller: priceServiceController,
-                              textInputFormatter:
-                                  FilteringTextInputFormatter.digitsOnly,
-                              hint: 'eg : 80\$',
-                              maxLines: 1,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 5),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Time', style: AppStyle.body15),
-
-                            AddServiceTextField(
-                              controller: timeServiceController,
-                              textInputFormatter:
-                                  FilteringTextInputFormatter.digitsOnly,
-                              hint: '2-3 hours',
-                              maxLines: 1,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Text('Category', style: AppStyle.body15),
-
-                  DropdownButton(
-                    isExpanded: true,
-                    hint: Text('Select Category'),
-                    value: provService.selectedCategory,
-                    items: [
-                      DropdownMenuItem(
-                        value: provService.categories[0].name,
-                        child: Text(provService.categories[0].name),
-                      ),
-                      DropdownMenuItem(
-                        value: provService.categories[1].name,
-                        child: Text(provService.categories[1].name),
-                      ),
-                      DropdownMenuItem(
-                        value: provService.categories[2].name,
-                        child: Text(provService.categories[2].name),
-                      ),
-                      DropdownMenuItem(
-                        value: provService.categories[3].name,
-                        child: Text(provService.categories[3].name),
-                      ),
-                      DropdownMenuItem(
-                        value: provService.categories[4].name,
-                        child: Text(provService.categories[4].name),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      provService.selectCategory(value!);
-                    },
-                  ),
-
-                  Text('Image Url ', style: AppStyle.body15),
-                  AddServiceTextField(
-                    controller: imageUrlServiceControllwer,
-
-                    hint: 'http://...',
-                    maxLines: 1,
-                  ),
-                ],
+      builder: (context, provService, child) => AlertDialog(
+        actionsPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        actions: [
+          OutlinedButton(
+            style: ButtonStyle(
+              foregroundColor: WidgetStatePropertyAll(Colors.black),
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
             ),
+            onPressed: !provService.isLoading ? () => GoRouter.of(context).pop() : null,
+            child: const Text('Cancel'),
           ),
+          ElevatedButton(
+            style: ButtonStyle(
+              shape: WidgetStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              backgroundColor: WidgetStatePropertyAll(AppColor.primary),
+              foregroundColor: WidgetStatePropertyAll(Colors.white),
+            ),
+            onPressed: method,
+            child: Text(labelButton),
+          ),
+        ],
+        backgroundColor: Colors.white,
+        title: Text(title, style: AppStyle.body17(context)),
+        content: SizedBox(
+          width: dialogWidth,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: fieldSpacing),
+                Text('Service Name', style: AppStyle.body15(context)),
+                AddServiceTextField(
+                  controller: nameServiceController,
+                  textInputFormatter: FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                  hint: 'eg: Fix Electrical Problem',
+                  maxLines: 1,
+                ),
+                SizedBox(height: fieldSpacing),
+                Text('Description', style: AppStyle.body15(context)),
+                AddServiceTextField(
+                  controller: descriptionServiceController,
+                  textInputFormatter: FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
+                  hint: 'Describe the service',
+                  maxLines: 4,
+                ),
+                SizedBox(height: fieldSpacing),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Base Price', style: AppStyle.body15(context)),
+                          AddServiceTextField(
+                            controller: priceServiceController,
+                            textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+                            hint: 'eg: 80\$',
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Time', style: AppStyle.body15(context)),
+                          AddServiceTextField(
+                            controller: timeServiceController,
+                            textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+                            hint: '2-3 hours',
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: fieldSpacing),
+                Text('Category', style: AppStyle.body15(context)),
+                DropdownButton(
+                  isExpanded: true,
+                  hint: const Text('Select Category'),
+                  value: provService.selectedCategory,
+                  items: provService.categories
+                      .map(
+                        (cat) => DropdownMenuItem(
+                          value: cat.name,
+                          child: Text(cat.name),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (value) => provService.selectCategory(value!),
+                ),
+                SizedBox(height: fieldSpacing),
+                Text('Image URL', style: AppStyle.body15(context)),
+                AddServiceTextField(
+                  controller: imageUrlServiceControllwer,
+                  hint: 'http://...',
+                  maxLines: 1,
+                ),
+                SizedBox(height: fieldSpacing),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/router/app_router.dart';
 import 'package:serve_home/core/styles/app_style.dart';
+import 'package:serve_home/core/helpers/screen_size.dart';
 import 'package:serve_home/features/auth/data/models/user_model.dart';
 import 'package:serve_home/features/auth/presentation/view_models/auth_view_model.dart';
 import 'package:serve_home/features/auth/presentation/widgets/text_form_field_widget.dart';
 import 'package:serve_home/features/auth/presentation/widgets/welcome_sign_up_widget.dart';
 
-// ignore: must_be_immutable
 class SignUpView extends StatefulWidget {
-  SignUpView({super.key});
+  const SignUpView({super.key});
 
   @override
   State<SignUpView> createState() => _SignUpViewState();
@@ -20,29 +19,24 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   TextEditingController name = TextEditingController();
-
   TextEditingController email = TextEditingController();
-
   TextEditingController phone = TextEditingController();
-
   TextEditingController password = TextEditingController();
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-     name = TextEditingController(text: name.text);
-
-   email = TextEditingController(text: email.text);
-
- phone = TextEditingController(text: phone.text);
-
- password = TextEditingController(text: password.text);
-  }
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    // responsive measurements
+    double topPadding = ScreenSize.h(context) * 0.18;
+    double containerMarginH = ScreenSize.w(context) * 0.06;
+    double containerPadding = ScreenSize.h(context) * 0.04;
+    double borderRadius = ScreenSize.h(context) * 0.03;
+    double spacing = ScreenSize.h(context) * 0.02;
+    double btnHeight = ScreenSize.h(context) * 0.07;
+    double btnRadius = ScreenSize.h(context) * 0.018;
+    double btnFontSize = ScreenSize.h(context) * 0.02;
+
     return Scaffold(
       body: Form(
         key: _key,
@@ -52,17 +46,18 @@ class _SignUpViewState extends State<SignUpView> {
                 clipBehavior: Clip.none,
                 children: [
                   WelcomeSignUpWidget(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 130),
-                    child: Align(
-                      alignment: Alignment.center,
+                  SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: topPadding),
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 25),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 40,
-                          vertical: 35,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: containerMarginH,
                         ),
-                        height: 620,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: containerPadding,
+                          vertical: containerPadding,
+                        ),
+
                         width: double.infinity,
                         decoration: BoxDecoration(
                           boxShadow: [
@@ -73,7 +68,7 @@ class _SignUpViewState extends State<SignUpView> {
                             ),
                           ],
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +80,7 @@ class _SignUpViewState extends State<SignUpView> {
                               label: 'Name',
                               isSignIn: false,
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: spacing),
                             TextFormFieldWidget(
                               contoller: email,
                               hintText: 'Enter your address',
@@ -93,7 +88,7 @@ class _SignUpViewState extends State<SignUpView> {
                               label: 'Email',
                               isSignIn: false,
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: spacing),
                             TextFormFieldWidget(
                               contoller: phone,
                               hintText: 'Enter your phone number',
@@ -101,7 +96,7 @@ class _SignUpViewState extends State<SignUpView> {
                               label: 'Phone Number',
                               isSignIn: false,
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: spacing),
                             TextFormFieldWidget(
                               contoller: password,
                               hintText: 'Enter your password',
@@ -109,11 +104,10 @@ class _SignUpViewState extends State<SignUpView> {
                               label: 'Password',
                               isSignIn: false,
                             ),
-        
-                            SizedBox(height: 20),
+                            SizedBox(height: spacing * 2),
                             Center(
                               child: SizedBox(
-                                height: 50,
+                                height: btnHeight,
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   style: ButtonStyle(
@@ -126,48 +120,46 @@ class _SignUpViewState extends State<SignUpView> {
                                     shape: WidgetStatePropertyAll(
                                       RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
-                                          15,
+                                          btnRadius,
                                         ),
                                       ),
                                     ),
                                   ),
                                   onPressed:
-                                      provAuth.isLoading 
+                                      provAuth.isLoading
                                           ? null
                                           : () async {
-                                            if (_key.currentState!
-                                                .validate()) {
+                                            if (_key.currentState!.validate()) {
                                               UserModel userModel = UserModel(
                                                 name: name.text,
                                                 phone: phone.text,
                                                 email: email.text,
                                                 role: 'user',
                                               );
-                                         
                                               await provAuth.signUp(
                                                 password: password.text,
                                                 userModel: userModel,
+                                                onSuccess: () {
+                                                  GoRouter.of(
+                                                    context,
+                                                  ).pushNamed(
+                                                    AppRouter.homeView,
+                                                  );
+                                                },
                                               );
-                                              if (provAuth
-                                                  .errorMessage
-                                                  .isEmpty) {
-                                                GoRouter.of(
-                                                  context,
-                                                ).pushNamed(
-                                                  AppRouter.homeView,
-                                                );
-                                              } else {
+                                            if(provAuth.errorMessage.isNotEmpty) {
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(
                                                       SnackBar(
-                                                        content: SizedBox(
-                                                          child: Text(
-                                                            provAuth
-                                                                .errorMessage,
-                                                            style:
-                                                                AppStyle
-                                                                    .button,
-                                                          ),
+                                                        content: Text(
+                                                          provAuth.errorMessage,
+                                                          style:
+                                                              AppStyle.button(
+                                                                context,
+                                                              ).copyWith(
+                                                                fontSize:
+                                                                    btnFontSize,
+                                                              ),
                                                         ),
                                                         backgroundColor:
                                                             Colors.red,
@@ -175,7 +167,6 @@ class _SignUpViewState extends State<SignUpView> {
                                                     )
                                                     .closed
                                                     .then((value) {
-                                                      ;
                                                       provAuth.errorMessage =
                                                           '';
                                                       provAuth.isLoading =
@@ -184,21 +175,28 @@ class _SignUpViewState extends State<SignUpView> {
                                               }
                                             }
                                           },
-                                  child: Text('Create Account'),
+                                  child: Text(
+                                    'Create Account',
+                                    style: AppStyle.button(
+                                      context,
+                                    ).copyWith(fontSize: btnFontSize),
+                                  ),
                                 ),
                               ),
                             ),
-        
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text('Already have an account ?'),
                                 TextButton(
-                                  onPressed: () {
-                                    GoRouter.of(
-                                      context,
-                                    ).pushNamed(AppRouter.signInView);
-                                  },
+                                  onPressed:
+                                      provAuth.isLoading
+                                          ? null
+                                          : () {
+                                            GoRouter.of(
+                                              context,
+                                            ).pushNamed(AppRouter.signInView);
+                                          },
                                   child: Text(
                                     'Sign in',
                                     style: TextStyle(color: AppColor.primary),
@@ -206,19 +204,15 @@ class _SignUpViewState extends State<SignUpView> {
                                 ),
                               ],
                             ),
-                            Spacer(),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  provAuth.isLoading == true
-                      ? Center(
-                        child: CircularProgressIndicator(
-                          color: AppColor.primary,
-                        ),
-                      )
-                      : SizedBox.shrink(),
+                  if (provAuth.isLoading)
+                    Center(
+                      child: CircularProgressIndicator(color: AppColor.primary),
+                    ),
                 ],
               ),
         ),

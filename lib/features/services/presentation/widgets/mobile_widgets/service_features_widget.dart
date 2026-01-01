@@ -42,7 +42,7 @@ class ServiceFeaturesWidget extends StatelessWidget {
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: AppStyle.subTitle.copyWith(fontSize: fontSize),
+              style: AppStyle.subTitle(context).copyWith(fontSize: fontSize),
             ),
           ),
         ],

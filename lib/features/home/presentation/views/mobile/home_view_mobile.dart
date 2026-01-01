@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:serve_home/core/colors/app_color.dart';
 import 'package:serve_home/core/helpers/screen_size.dart';
@@ -21,7 +18,7 @@ class HomeViewMobile extends StatelessWidget {
         automaticallyImplyLeading: false,
         actionsPadding: EdgeInsets.only(right: 15),
         backgroundColor: AppColor.primary,
-        title: Text('ServeHome', style: AppStyle.appBarTitle),
+        title: Text('ServeHome', style: AppStyle.appBarTitle(context)),
       ),
       bottomNavigationBar: BottomNavigationBarWidget(),
       body: SafeArea(
@@ -38,12 +35,12 @@ class HomeViewMobile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: ScreenSize.h(context) * 0.01),
-                    Text('Services Categories ', style: AppStyle.body19),
+                    Text('Services Categories ', style: AppStyle.body19(context)),
                     SizedBox(height: ScreenSize.h(context) * 0.01),
                     ServiceCtegoriesWidget(), //Done Responsive
                     SizedBox(height: ScreenSize.h(context) * 0.01),
                     SizedBox(height: 15),
-                    Text('Featured Providers', style: AppStyle.body19),
+                    Text('Featured Providers', style: AppStyle.body19(context)),
                     SizedBox(height: ScreenSize.h(context) * 0.01),
                     FeaturesProvidersWidget(), //Done Responsive
                     SizedBox(height: ScreenSize.h(context) * 0.02),

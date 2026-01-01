@@ -57,7 +57,7 @@ class FeaturesProvidersWidget extends StatelessWidget {
                         children: [
                           Text(
                             'John Doe',
-                            style: AppStyle.body19.copyWith(
+                            style: AppStyle.body19(context).copyWith(
                               fontSize: (ScreenSize.w(context) * 0.04).clamp(
                                 15,
                                 25,

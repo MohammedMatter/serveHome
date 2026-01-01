@@ -12,187 +12,191 @@ class CategoryServicesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = ScreenSize.w(context);
+    final double screenHeight = ScreenSize.h(context);
+    final double cardRadius = (screenWidth * 0.03).clamp(12, 20);
+    final double cardHeight = (screenHeight * 0.4).clamp(220, 400);
+
     return Scaffold(
       body: Consumer<ServiceViewModel>(
-        builder:
-            (context, provService, child) => SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
+        builder: (context, provService, child) => SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(screenWidth * 0.04),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            GoRouter.of(context).pop();
-                          },
-                          style: ButtonStyle(
-                            iconSize: WidgetStatePropertyAll(25),
-                            shape: WidgetStatePropertyAll(CircleBorder()),
-                            backgroundColor: WidgetStatePropertyAll(
-                              Theme.of(context).scaffoldBackgroundColor,
-                            ),
-                          ),
-                          child: Icon(Icons.arrow_back, color: Colors.black),
+                    ElevatedButton(
+                      onPressed: () => GoRouter.of(context).pop(),
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(CircleBorder()),
+                        backgroundColor: MaterialStatePropertyAll(
+                            Theme.of(context).scaffoldBackgroundColor),
+                        padding: MaterialStatePropertyAll(
+                          EdgeInsets.all(screenWidth * 0.03),
                         ),
-                        Center(
-                          child: Text(
-                            'Services in ${provService.selectedCategory}',
-                            style: AppStyle.body19,
-                          ),
-                        ),
-                      ],
+                      ),
+                      child: Icon(Icons.arrow_back, color: Colors.black, size: screenWidth * 0.06),
                     ),
-              
-                    Divider(),
-                    SizedBox(height: 10),
+                    SizedBox(width: screenWidth * 0.02),
                     Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children:
-                              provService.servicesFilterList
-                                  .map(
-                                    (service) => Padding(
-                                      padding: const EdgeInsets.only(bottom: 20),
-                                      child: Container(
-                                        height: ScreenSize.h(context) * 0.4,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black12,
-                                              offset: Offset(0, 10),
-                                              blurRadius: 10,
-                                            ),
-                                          ],
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15),
+                      child: Text(
+                        'Services in ${provService.selectedCategory}',
+                        style: AppStyle.body19(context).copyWith(
+                          fontSize: (screenWidth * 0.05).clamp(18, 26),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(height: screenHeight * 0.02),
+                Expanded(
+                  child: provService.servicesFilterList.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: provService.servicesFilterList.length,
+                          itemBuilder: (context, index) {
+                            final service = provService.servicesFilterList[index];
+                            return Padding(
+                              padding: EdgeInsets.only(bottom: screenHeight * 0.02),
+                              child: Container(
+                                height: cardHeight,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(cardRadius),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 10,
+                                      offset: Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: cardHeight * 0.45,
+                                      width: double.infinity,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.vertical(top: Radius.circular(cardRadius)),
+                                        child: Image.network(
+                                          service.categoryImageUrl,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) => Image.asset(
+                                            'assets/images/placeholderImage/placeholder.png',
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(screenWidth * 0.04),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            SizedBox(
-                                              height:
-                                                  ScreenSize.h(context) * 0.20,
-                                              width: double.infinity,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.vertical(
-                                                      top: Radius.circular(15),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    service.name,
+                                                    style: AppStyle.body17(context).copyWith(
+                                                      fontSize: (screenWidth * 0.045).clamp(16, 22),
+                                                      fontWeight: FontWeight.bold,
                                                     ),
-                                                child: Image.network(
-                                                  fit: BoxFit.fill,
-                                                  service.categoryImageUrl,
+                                                    maxLines: 1,
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
                                                 ),
+                                                Text(
+                                                  '(${service.category})',
+                                                  style: AppStyle.body15(context).copyWith(
+                                                    color: AppColor.secondry,
+                                                    fontSize: (screenWidth * 0.04).clamp(14, 20),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              service.description,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: AppStyle.body15(context).copyWith(
+                                                fontSize: (screenWidth * 0.04).clamp(14, 20),
                                               ),
                                             ),
-                                            Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                  14.0,
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${service.price}\$',
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(255, 38, 165, 42),
+                                                    fontSize: (screenWidth * 0.05).clamp(16, 24),
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                  Row(
-                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          service.name,
-                                                          style: AppStyle.body17,
-                                                        ),
-                                                            Text(
-                                                      '(${service.category})',
-                                                      style: AppStyle.body15
-                                                          .copyWith(
-                                                            color:
-                                                                AppColor
-                                                                    .secondry,
-                                                          ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    provService.selectService(service);
+                                                    GoRouter.of(context).pushNamed(
+                                                      AppRouter.serviceDetailsView,
+                                                      extra: provService.selectedService,
+                                                    );
+                                                  },
+                                                  style: ButtonStyle(
+                                                    shape: MaterialStatePropertyAll(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(cardRadius)),
                                                     ),
-                                                      ],
+                                                    backgroundColor: MaterialStatePropertyAll(AppColor.primary),
+                                                    foregroundColor: MaterialStatePropertyAll(Colors.white),
+                                                    padding: MaterialStatePropertyAll(
+                                                      EdgeInsets.symmetric(
+                                                        vertical: (screenHeight * 0.015).clamp(8, 15),
+                                                        horizontal: (screenWidth * 0.03).clamp(12, 20),
+                                                      ),
                                                     ),
-                                                
-                                                    Text(
-                                                      service.description,
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: AppStyle.body15,
+                                                  ),
+                                                  child: Text(
+                                                    'Book now',
+                                                    style: AppStyle.body16(context).copyWith(
+                                                      color: Colors.white,
+                                                      fontSize: (screenWidth * 0.04).clamp(14, 20),
                                                     ),
-                        
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          '${service.price}\$',
-                                                          style: TextStyle(
-                                                            color:
-                                                                const Color.fromARGB(
-                                                                  255,
-                                                                  38,
-                                                                  165,
-                                                                  42,
-                                                                ),
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        ElevatedButton(
-                                                          onPressed: () {
-                                                            provService.selectService(service) ; 
-                                                            GoRouter.of(context).pushNamed(AppRouter.serviceDetailsView , extra:provService.selectedService ) ; 
-                                                          },
-                                                          style: ButtonStyle(
-                                                            shape: WidgetStatePropertyAll(
-                                                              RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius.circular(
-                                                                      15,
-                                                                    ),
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                WidgetStatePropertyAll(
-                                                                  AppColor
-                                                                      .primary,
-                                                                ),
-                                                            foregroundColor:
-                                                                WidgetStatePropertyAll(
-                                                                  Colors.white,
-                                                                ),
-                                                          ),
-                                                          child: Text('Book now'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
-                                  )
-                                  .toList(),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Center(
+                          child: Text(
+                            'No services matched your search',
+                            style: AppStyle.body16(context).copyWith(
+                              fontSize: (screenWidth * 0.045).clamp(16, 22),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
+              ],
             ),
+          ),
+        ),
       ),
     );
   }
