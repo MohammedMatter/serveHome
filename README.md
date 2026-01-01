@@ -1,65 +1,44 @@
 # ServeHome 🏠
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.0-blue)](https://flutter.dev/) [![Firebase](https://img.shields.io/badge/Firebase-Orange)](https://firebase.google.com/) [![Dart](https://img.shields.io/badge/Dart-2.20-blue)](https://dart.dev/)  
-
-## Table of Contents
-1. [Overview](#overview)  
-2. [Features](#features)  
-3. [Screenshots](#screenshots)  
-4. [Technologies](#technologies)  
-5. [Installation](#installation)  
-6. [Usage](#usage)  
-7. [Project Structure](#project-structure)  
-8. [Contributing](#contributing)  
-9. [License](#license)  
+**ServeHome** is a complete Flutter application for managing home service bookings. It allows users to browse available services, make reservations, choose payment methods, and track their bookings in a seamless and efficient way.  
+This project is built with the latest Flutter and Firebase technologies to deliver a professional and user-friendly experience.
 
 ---
 
-## Overview
-**ServeHome** is a **cross-platform mobile application** built with **Flutter & Firebase**, designed to connect users with home service providers seamlessly.  
-It focuses on **user-friendly UI/UX**, **secure authentication**, and **dynamic booking management** for services like cleaning, maintenance, and more.  
-
-This project demonstrates professional Flutter development skills including **state management**, **API integration**, **Firestore database**, and **responsive design** for both mobile and web platforms.
-
----
-
-## Features
-- ✅ User authentication (Sign Up / Sign In / Sign Out)  
-- ✅ Profile management  
-- ✅ Browse and book services  
-- ✅ Track booking status: Pending, In Progress, Completed, Cancelled  
-- ✅ Payment methods selection (Cash, Card, Apple Pay)  
-- ✅ Real-time updates using Firebase Firestore  
-- ✅ Responsive design for **mobile and web**  
+## 🏆 Project Goals
+- Allow users to book home services easily.  
+- Display all available services in an organized manner.  
+- Manage bookings and track their status (In Progress, Completed, Canceled).  
+- Integrate multiple payment methods including Credit/Debit Card, Cash, and Apple Pay.  
+- Provide developers and engineers with a control panel to manage data efficiently.
 
 ---
 
-## Screenshots
-*(Replace these with actual screenshots of your app)*  
-
-**Mobile View:**  
-![Mobile Home](screenshots/home_mobile.png)  
-
-**Web View:**  
-![Web Home](screenshots/home_web.png)  
-
-**Booking Page:**  
-![Booking](screenshots/booking_page.png)  
+## ⚡️ Technologies Used
+- **Flutter 3.29.3** (Stable Channel)  
+- **Dart 3.7.2**  
+- **Firebase Authentication** & **Firestore**  
+- **Provider** for state management  
+- **GoRouter** for page navigation  
+- Responsive design supporting Web and Mobile platforms  
 
 ---
 
-## Technologies
-- **Flutter** - Frontend framework  
-- **Dart** - Programming language  
-- **Firebase Auth** - Authentication  
-- **Firebase Firestore** - Database  
-- **Provider** - State management  
-- **Shared Preferences** - Local storage  
+## 📱 Screenshots
+
+| Home Page | Services Page | Booking Page |
+|-----------|---------------|--------------|
+| ![Home](screenshots/home.png) | ![Services](screenshots/services.png) | ![Booking](screenshots/booking.png) |
+
+| Payment Page | Profile Page |
+|--------------|--------------|
+| ![Payment](screenshots/payment.png) | ![Profile](screenshots/profile.png) |
+
+> 💡 Note: Clickable links can be added to see the interactive version or Figma design.
 
 ---
 
-## Installation
-
-1. Clone the repository:  
+## 🚀 How to Run Locally
+1. Make sure you have **Flutter 3.29.3** and **Dart 3.7.2** installed:  
 ```bash
-git clone https://github.com/yourusername/ServeHome.git
+flutter --version
