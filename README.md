@@ -73,8 +73,6 @@ The app supports **mobile and web platforms**, features **real-time booking upda
 
 ### Installation
 ```bash
-[git clone https://github.com/<username>/ServeHome.git](https://github.com/MohammedMatter/serveHome.git)
-cd ServeHome
-flutter pub get
+https://github.com/MohammedMatter/serveHome.git
 
 
