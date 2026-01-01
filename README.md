@@ -54,7 +54,7 @@ The app supports **mobile and web platforms**, features **real-time booking upda
 
 | Home Page | Services Page | Booking Page |
 |-----------|---------------|--------------|
-| ![Home](ServeHome/Screenshot_1767275035.png) | ![Services](screenshots/services.png) | ![Booking](screenshots/booking.png) |
+| ![Home](screenshots/Screenshot_1767275035.png) | ![Services](screenshots/services.png) | ![Booking](screenshots/booking.png) |
 
 | Payment Page | Profile Page |
 |--------------|--------------|
