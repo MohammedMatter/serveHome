@@ -41,5 +41,40 @@ The app supports **mobile and web platforms**, features **real-time booking upda
   - Detailed logs for tracking app behavior
 
 ---
+## 🏗 Project Structure
+
+**Layer Explanation:**
+- **Presentation:** UI & state management (Provider)  
+- **Domain:** Business logic & UseCases  
+- **Data:** Firebase repositories, models, and local storage
+
+---
+
+## 🎨 Screenshots & Design Preview
+
+| Home Page | Services Page | Booking Page |
+|-----------|---------------|--------------|
+| ![Home](screenshots/home.png) | ![Services](screenshots/services.png) | ![Booking](screenshots/booking.png) |
+
+| Payment Page | Profile Page |
+|--------------|--------------|
+| ![Payment](screenshots/payment.png) | ![Profile](screenshots/profile.png) |
+
+> ⚡ Screenshots can be replaced with **interactive Figma prototypes** for live previews.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter **3.29.3**
+- Dart **3.7.2**
+- Firebase project configured
+
+### Installation
+```bash
+git clone https://github.com/<username>/ServeHome.git
+cd ServeHome
+flutter pub get
 
 
