@@ -56,7 +56,7 @@ The app supports **mobile and web platforms**, features **real-time booking upda
 |-----------|---------------|--------------|
 | ![Home](screenshots/Screenshot_1767275035.png) | ![Services](screenshots/Screenshot_1767275060.png) | ![Booking](screenshots/Screenshot_1767275048.png) |
 
-| Payment Page | Profile Page |
+| Payment Page | Notification Page |
 |--------------|--------------|
 | ![Payment](screenshots/Screenshot_1767275104.png) | ![Profile](screenshots/Screenshot_1767275407.png) |
 
