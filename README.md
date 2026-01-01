@@ -1,44 +1,45 @@
-# ServeHome 🏠
+# ServeHome 🏠 – Ultimate Home Service Booking App
 
-**ServeHome** is a complete Flutter application for managing home service bookings. It allows users to browse available services, make reservations, choose payment methods, and track their bookings in a seamless and efficient way.  
-This project is built with the latest Flutter and Firebase technologies to deliver a professional and user-friendly experience.
-
----
-
-## 🏆 Project Goals
-- Allow users to book home services easily.  
-- Display all available services in an organized manner.  
-- Manage bookings and track their status (In Progress, Completed, Canceled).  
-- Integrate multiple payment methods including Credit/Debit Card, Cash, and Apple Pay.  
-- Provide developers and engineers with a control panel to manage data efficiently.
+[![Flutter](https://img.shields.io/badge/Flutter-3.29.3-blue?logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.7.2-blue?logo=dart)](https://dart.dev)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
-## ⚡️ Technologies Used
-- **Flutter 3.29.3** (Stable Channel)  
-- **Dart 3.7.2**  
-- **Firebase Authentication** & **Firestore**  
-- **Provider** for state management  
-- **GoRouter** for page navigation  
-- Responsive design supporting Web and Mobile platforms  
+## 🌟 Project Overview
+**ServeHome** is a **professional, high-performance Flutter application** designed to provide a seamless **home service booking experience**.  
+It is built using **Clean Architecture**, following best practices for **scalable and maintainable code**.  
+The app supports **mobile and web platforms**, features **real-time booking updates**, **multi-method payments**, and persistent authentication.
 
 ---
 
-## 📱 Screenshots
-
-| Home Page | Services Page | Booking Page |
-|-----------|---------------|--------------|
-| ![Home](screenshots/home.png) | ![Services](screenshots/services.png) | ![Booking](screenshots/booking.png) |
-
-| Payment Page | Profile Page |
-|--------------|--------------|
-| ![Payment](screenshots/payment.png) | ![Profile](screenshots/profile.png) |
-
-> 💡 Note: Clickable links can be added to see the interactive version or Figma design.
+## 🏆 Key Features
+- **Authentication & Security**
+  - Sign Up / Sign In / Sign Out
+  - Password update & persistent login with SharedPreferences
+  - Firebase Authentication integration
+- **Booking System**
+  - View all bookings (pending, in-progress, completed, canceled)
+  - Real-time updates using Firestore streams
+  - Create, cancel, or update bookings
+- **Services**
+  - Browse services with details
+  - Dynamic UI for service listings
+- **Payment Methods**
+  - Credit/Debit Card
+  - Cash
+  - Apple Pay
+- **Responsive UI**
+  - Adaptive layouts for mobile & web
+- **State Management**
+  - Provider for efficient state updates
+- **Clean Architecture**
+  - Full separation of **Presentation**, **Domain**, and **Data** layers
+- **Error Handling**
+  - Loading indicators & snackbars for smooth UX
+- **Logging & Debugging**
+  - Detailed logs for tracking app behavior
 
 ---
 
-## 🚀 How to Run Locally
-1. Make sure you have **Flutter 3.29.3** and **Dart 3.7.2** installed:  
-```bash
-flutter --version
+
